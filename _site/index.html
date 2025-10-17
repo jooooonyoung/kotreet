@@ -13,13 +13,9 @@
     <!-- HOME 페이지 -->
     <div id="homePage">
         <header>
-            <img class="logo" src="/img/logo.png">
+            <div class="logo">로컬가이드</div>
             <button class="admin-btn" onclick="goToAdmin()">관리</button>
         </header>
-
-        <section class="search-section">
-            <input type="text" class="search-box" placeholder="검색을 시작해보세요." id="searchInput" onclick="openSearchModal()">
-        </section>
 
         <section class="title-section">
             <h2>어디를 찾으시나요?</h2>
@@ -41,6 +37,10 @@
                     <div class="label">성수</div>
                 </div>
             </div>
+        </section>
+
+        <section class="search-section">
+            <input type="text" class="search-box" placeholder="검색을 시작해보세요." id="searchInput" onclick="openSearchModal()">
         </section>
 
         <section class="category-section">
@@ -175,15 +175,7 @@
                     <input type="number" id="adminPrice" placeholder="50000">
                 </div>
                 <div class="form-group">
-                    <label>썸네일 이미지 (카테고리 페이지용, 800x800px)</label>
-                    <input type="text" id="adminThumbnail" placeholder="https://example.com/thumbnail.jpg">
-                </div>
-                <div class="form-group">
-                    <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
-                    <input type="text" id="adminMainImage" placeholder="https://example.com/main-image.jpg">
-                </div>
-                <div class="form-group">
-                    <label>추가 이미지 URL (쉼표로 구분하여 여러 개 입력)</label>
+                    <label>이미지 URL (쉼표로 구분하여 여러 개 입력)</label>
                     <input type="text" id="adminImages" placeholder="https://example.com/img1.jpg,https://example.com/img2.jpg">
                 </div>
                 <div class="form-group">

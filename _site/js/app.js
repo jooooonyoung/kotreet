@@ -115,6 +115,9 @@ function getCurrentLocation() {
 // ==================== 네비게이션 ====================
 function goToHome() {
     document.getElementById('homePage').classList.remove('hidden');
+    document.getElementById('locationPage').classList.add('hidden');
+    document.getElementById('categoryFilterPage').classList.add('hidden');
+    document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
     closeSearchModal();
     renderPopularShops();
@@ -423,10 +426,7 @@ function addShop() {
     const category = document.getElementById('adminCategory').value;
     const location = document.getElementById('adminLocation').value;
     const price = parseInt(document.getElementById('adminPrice').value);
-    const thumbnail = document.getElementById('adminThumbnail').value.trim();
-    const mainImage = document.getElementById('adminMainImage').value.trim();
-    const additionalImages = document.getElementById('adminImages').value.split(',').map(s => s.trim()).filter(s => s);
-    const images = [thumbnail, mainImage, ...additionalImages].filter(s => s);
+    const images = document.getElementById('adminImages').value.split(',').map(s => s.trim());
     const video = document.getElementById('adminVideo').value;
     const mood = document.getElementById('adminMood').value;
     const communication = document.getElementById('adminComm').value;
@@ -436,16 +436,14 @@ function addShop() {
     const latitude = parseFloat(document.getElementById('adminLat').value);
     const longitude = parseFloat(document.getElementById('adminLng').value);
 
-    if (!name || !category || !location || !price || !thumbnail || !mainImage || !mood || !communication || !payment) {
+    if (!name || !category || !location || !price || !images[0] || !mood || !communication || !payment) {
         alert('모든 필수 항목을 입력하세요');
         return;
     }
 
     const newShop = {
         id: Math.max(...shopsData.map(s => s.id), 0) + 1,
-        name, category, location, price, 
-        thumbnail, mainImage,
-        images, video, mood,
+        name, category, location, price, images, video, mood,
         communication, payment, hours, description, latitude, longitude,
         views: 0
     };

@@ -10,16 +10,11 @@ body {
     color: #343a40;
 }
 
-/* ==================== 전역 유틸 ==================== */
 .hidden {
     display: none !important;
 }
 
-/* ==================== HOME 페이지 ==================== */
-#homePage {
-    min-height: 100vh;
-}
-
+/* ==================== HEADER ==================== */
 header {
     background: white;
     padding: 12px 16px;
@@ -61,20 +56,19 @@ header .header-title {
     border-radius: 6px;
     font-size: 12px;
     cursor: pointer;
-    transition: background 0.3s;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 600;
-}
-
-.admin-btn:hover {
-    background: #495057;
 }
 
 .admin-btn:active {
     background: #212529;
 }
 
-/* 타이틀 영역 */
+/* ==================== HOME PAGE ==================== */
+#homePage {
+    min-height: 100vh;
+}
+
 .title-section {
     padding: 20px 16px;
     background: white;
@@ -85,7 +79,6 @@ header .header-title {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 15px;
-    color: #343a40;
 }
 
 .scroll-container {
@@ -139,7 +132,6 @@ header .header-title {
     font-weight: 600;
 }
 
-/* 검색창 */
 .search-section {
     padding: 12px 16px;
     background: white;
@@ -241,7 +233,6 @@ header .header-title {
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 4px;
-    color: #343a40;
 }
 
 .search-result-meta {
@@ -250,7 +241,6 @@ header .header-title {
     font-weight: 400;
 }
 
-/* 카테고리 */
 .category-section {
     padding: 20px 16px;
     background: white;
@@ -296,7 +286,6 @@ header .header-title {
     color: #343a40;
 }
 
-/* 배너 */
 .banner-section {
     padding: 8px 16px;
     background: white;
@@ -318,7 +307,6 @@ header .header-title {
     padding: 20px;
 }
 
-/* 인기 가게 */
 .popular-section {
     padding: 20px 16px;
     background: white;
@@ -329,7 +317,6 @@ header .header-title {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 15px;
-    color: #343a40;
 }
 
 .popular-scroll {
@@ -390,57 +377,87 @@ header .header-title {
 }
 
 .location-page-content {
-    padding: 20px 16px;
+    padding: 0;
 }
 
-.location-intro {
-    margin-bottom: 30px;
+/* ==================== 카테고리 필터 섹션 ==================== */
+.category-filter-section {
+    background: white;
+    padding: 16px;
+    border-bottom: 8px solid #f8f9fa;
 }
 
-.location-intro h2 {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: #343a40;
-}
-
-.location-intro p {
+.category-filter-title {
     font-size: 14px;
-    color: #6c757d;
-    font-weight: 400;
-}
-
-.category-section-block {
-    margin-bottom: 30px;
-}
-
-.category-section-title {
-    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 15px;
     color: #343a40;
+    margin-bottom: 12px;
 }
 
+.category-filter-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    scroll-behavior: smooth;
+}
+
+.category-filter-scroll::-webkit-scrollbar {
+    height: 4px;
+}
+
+.category-filter-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #343a40;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.category-filter-btn:active {
+    background: #f0f0f0;
+    border-color: #cd2e3a;
+}
+
+.cat-dot {
+    width: 12px;
+    height: 12px;
+    background: #cd2e3a;
+    border-radius: 50%;
+}
+
+/* 가게 그리드 */
 .shops-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    padding: 16px;
+    background: white;
 }
 
 .shop-card {
-    background: white;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s;
+    background: white;
 }
 
 .shop-card:active {
     transform: translateY(-4px);
 }
 
-.shop-card-image {
+.shop-card img {
     width: 100%;
     aspect-ratio: 1/1;
     object-fit: cover;
@@ -457,17 +474,22 @@ header .header-title {
     margin-bottom: 4px;
 }
 
-.shop-card-price {
-    font-size: 12px;
+.shop-card-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #cd2e3a;
+    color: white;
+    border-radius: 3px;
+    font-size: 10px;
     font-weight: 600;
-    color: #cd2e3a;
-    margin-bottom: 4px;
+    margin-right: 4px;
+    margin-bottom: 6px;
 }
 
-.shop-card-location {
-    font-size: 11px;
-    color: #6c757d;
-    font-weight: 400;
+.shop-card-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: #343a40;
 }
 
 /* ==================== 카테고리 필터 페이지 ==================== */
@@ -476,34 +498,28 @@ header .header-title {
 }
 
 .filter-page-content {
-    padding: 20px 16px;
+    padding: 0;
 }
 
-.breadcrumb {
-    font-size: 12px;
-    color: #6c757d;
-    margin-bottom: 12px;
-    font-weight: 400;
-}
-
-#filterPageTitle {
+.filter-intro-title {
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 8px;
     color: #343a40;
+    padding: 20px 16px 8px 16px;
+    background: white;
 }
 
-#filterPageDesc {
+.filter-intro-desc {
     font-size: 14px;
     color: #6c757d;
-    margin-bottom: 20px;
+    padding: 0 16px 20px 16px;
+    background: white;
+    margin-bottom: 8px;
     font-weight: 400;
 }
 
-.filter-shops-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+#filteredShopsGrid {
+    background: white;
 }
 
 /* ==================== 상세 페이지 ==================== */
@@ -815,15 +831,6 @@ header .header-title {
     background: #dee2e6;
 }
 
-.btn-danger {
-    background: #ff6b6b;
-    color: white;
-}
-
-.btn-danger:active {
-    background: #ee5a52;
-}
-
 .shop-list {
     display: flex;
     flex-direction: column;
@@ -890,7 +897,7 @@ header .header-title {
     background: #ffb3b3;
 }
 
-/* 푸터 */
+/* ==================== 푸터 ==================== */
 footer {
     background: #343a40;
     color: white;

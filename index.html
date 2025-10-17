@@ -7,8 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- HOME 페이지 -->
@@ -86,8 +85,6 @@
             <p><strong>로컬가이드</strong></p>
             <p>한국의 소상공인, 로컬 가게를 소개하고 홍보해주는 플랫폼</p>
             <div class="footer-divider"></div>
-            <p><a href="#">소개</a> | <a href="#">파트너</a> | <a href="#">연락처</a></p>
-            <div class="footer-divider"></div>
             <div class="footer-bottom">
                 <p>&copy; 2025 로컬가이드. All rights reserved.</p>
             </div>
@@ -112,12 +109,29 @@
         </header>
 
         <div class="location-page-content">
-            <div class="location-intro">
-                <h2 id="locationIntroTitle">홍대</h2>
-                <p id="locationIntroDesc">한국의 소상공인을 매우지합니다.</p>
+            <div class="category-filter-section">
+                <h3 class="category-filter-title">카테고리</h3>
+                <div class="category-filter-scroll">
+                    <button class="category-filter-btn" onclick="goToCategoryPage('nail', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>안경점</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('hair', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>네일샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('glasses', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>빈티지샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('vintage', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>한복대여</span>
+                    </button>
+                </div>
             </div>
 
-            <div id="categorySections"></div>
+            <div id="allShopsGrid" class="shops-grid"></div>
         </div>
 
         <footer>
@@ -130,20 +144,41 @@
         </footer>
     </div>
 
-    <!-- 카테고리별 필터 페이지 -->
+    <!-- 카테고리 필터 페이지 -->
     <div id="categoryFilterPage" class="hidden">
         <header>
-            <button class="header-back" onclick="goToLocationPage(currentLocation)">←</button>
+            <button class="header-back" onclick="goToLocationPage(getCurrentLocation())">←</button>
             <div class="header-title" id="filterTitle">안경점</div>
             <div style="width:24px;"></div>
         </header>
 
         <div class="filter-page-content">
-            <div class="breadcrumb" id="filterBreadcrumb">명동 > 안경점</div>
-            <h2 id="filterPageTitle">직접 보고 방문하세요</h2>
-            <p id="filterPageDesc">한국의 소상공인을 매우지합니다.</p>
+            <div class="category-filter-section">
+                <h3 class="category-filter-title">카테고리</h3>
+                <div class="category-filter-scroll">
+                    <button class="category-filter-btn" onclick="goToCategoryPage('nail', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>안경점</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('hair', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>네일샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('glasses', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>빈티지샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('vintage', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>한복대여</span>
+                    </button>
+                </div>
+            </div>
 
-            <div class="filter-shops-grid" id="filterShopsGrid"></div>
+            <h2 class="filter-intro-title">직접 보고 방문하세요</h2>
+            <p class="filter-intro-desc">한국의 소상공인을 매우지합니다.</p>
+
+            <div id="filteredShopsGrid" class="shops-grid"></div>
         </div>
 
         <footer>
@@ -159,7 +194,7 @@
     <!-- 상세 페이지 -->
     <div id="detailPage" class="hidden">
         <div class="detail-header">
-            <button class="detail-back-btn" onclick="goToHome()">←</button>
+            <button class="detail-back-btn" onclick="goBack()">←</button>
             <div></div>
         </div>
         <div id="detailContent"></div>
@@ -244,7 +279,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>영업시간 (예: 화~일 11:00 AM - 9:00 PM / 월요일 휴무)</label>
+                    <label>영업시간</label>
                     <input type="text" id="adminHours" placeholder="화~일 11:00 AM - 9:00 PM / 월요일 휴무">
                 </div>
                 <div class="form-group">
@@ -252,11 +287,11 @@
                     <textarea id="adminDescription" placeholder="가게에 대한 설명을 작성해주세요"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Google Maps 좌표 (위도, 예: 37.5665)</label>
+                    <label>Google Maps 위도</label>
                     <input type="text" id="adminLat" placeholder="37.5665">
                 </div>
                 <div class="form-group">
-                    <label>Google Maps 좌표 (경도, 예: 126.9780)</label>
+                    <label>Google Maps 경도</label>
                     <input type="text" id="adminLng" placeholder="126.9780">
                 </div>
                 <div class="form-buttons">
@@ -275,7 +310,7 @@
         <div id="exportTab" class="admin-tab-content hidden">
             <div class="admin-form">
                 <div class="form-group">
-                    <label>📥 JSON 데이터 가져오기 (파일 선택)</label>
+                    <label>📥 JSON 데이터 가져오기</label>
                     <input type="file" id="jsonFile" accept=".json" onchange="importJSON(event)">
                 </div>
                 <div class="form-buttons">
@@ -285,11 +320,13 @@
                     <p><strong>💡 사용 방법:</strong></p>
                     <p>1. "JSON 다운로드"로 현재 데이터를 백업하세요</p>
                     <p>2. 파일을 열어서 데이터를 수정하거나 새로 추가하세요</p>
-                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하면 자동 반영됩니다</p>
-                    <p>4. GitHub에 이 JSON 파일을 업로드하면 됩니다</p>
+                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하세요</p>
+                    <p>4. GitHub에 JSON 파일을 업로드하면 됩니다</p>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

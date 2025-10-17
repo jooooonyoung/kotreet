@@ -1,9 +1,8 @@
-// ==================== 데이터 관리 ====================
 let shopsData = [];
 let currentLocation = null;
 let currentCategory = null;
+let previousPage = 'home';
 
-// 초기 샘플 데이터
 const sampleData = [
     {
         id: 1,
@@ -24,26 +23,9 @@ const sampleData = [
     },
     {
         id: 2,
-        name: "감성 카페 홍대",
-        category: "goods",
-        location: "홍대",
-        price: 8000,
-        images: ["https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=300&fit=crop"],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        mood: "quiet",
-        communication: "easy",
-        payment: "both",
-        hours: "월~일 10:00 AM - 10:00 PM",
-        description: "홍대의 숨겨진 감성 카페입니다.",
-        latitude: 37.5519,
-        longitude: 126.9255,
-        views: 980
-    },
-    {
-        id: 3,
-        name: "프리미엄 네일 강남",
+        name: "프리미엄 네일 홍대",
         category: "nail",
-        location: "강남",
+        location: "홍대",
         price: 50000,
         images: ["https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop"],
         video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -51,31 +33,64 @@ const sampleData = [
         communication: "easy",
         payment: "both",
         hours: "월~일 10:00 AM - 8:00 PM",
-        description: "강남의 최고 트렌드 네일 샵입니다.",
+        description: "홍대의 최고 트렌드 네일 샵입니다.",
+        latitude: 37.5519,
+        longitude: 126.9255,
+        views: 980
+    },
+    {
+        id: 3,
+        name: "감성 헤어 강남",
+        category: "hair",
+        location: "강남",
+        price: 45000,
+        images: ["https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop"],
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        mood: "quiet",
+        communication: "easy",
+        payment: "both",
+        hours: "화~일 10:00 AM - 9:00 PM / 월요일 휴무",
+        description: "강남의 감성 헤어샵입니다.",
         latitude: 37.4979,
         longitude: 127.0276,
         views: 750
     },
     {
         id: 4,
-        name: "트렌드 헤어 성수",
-        category: "hair",
+        name: "빈티지 마켓 성수",
+        category: "vintage",
         location: "성수",
-        price: 45000,
-        images: ["https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop"],
+        price: 30000,
+        images: ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop"],
         video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
         mood: "busy",
         communication: "easy",
         payment: "both",
-        hours: "화~일 10:00 AM - 9:00 PM / 월요일 휴무",
-        description: "성수의 인기 헤어샵입니다.",
+        hours: "월~일 10:00 AM - 10:00 PM",
+        description: "성수의 인기 빈티지 마켓입니다.",
         latitude: 37.5349,
         longitude: 127.0566,
         views: 620
+    },
+    {
+        id: 5,
+        name: "한복 스튜디오 명동",
+        category: "hanbok",
+        location: "명동",
+        price: 80000,
+        images: ["https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop"],
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        mood: "quiet",
+        communication: "easy",
+        payment: "both",
+        hours: "화~일 10:00 AM - 7:00 PM / 월요일 휴무",
+        description: "명동의 한복 스튜디오입니다.",
+        latitude: 37.5628,
+        longitude: 126.9845,
+        views: 550
     }
 ];
 
-// 페이지 로드 시 샘플 데이터 초기화
 window.addEventListener('load', () => {
     if (localStorage.getItem('shopsData')) {
         shopsData = JSON.parse(localStorage.getItem('shopsData'));
@@ -88,6 +103,10 @@ window.addEventListener('load', () => {
 
 function saveToStorage() {
     localStorage.setItem('shopsData', JSON.stringify(shopsData));
+}
+
+function getCurrentLocation() {
+    return currentLocation;
 }
 
 // ==================== 네비게이션 ====================
@@ -113,6 +132,7 @@ function goToAdmin() {
 function goToLocationPage(location) {
     currentLocation = location;
     currentCategory = null;
+    previousPage = 'location';
     
     document.getElementById('homePage').classList.add('hidden');
     document.getElementById('locationPage').classList.remove('hidden');
@@ -121,15 +141,13 @@ function goToLocationPage(location) {
     document.getElementById('adminPage').classList.add('hidden');
     
     document.getElementById('locationTitle').textContent = location;
-    document.getElementById('locationIntroTitle').textContent = location;
-    document.getElementById('locationIntroDesc').textContent = location + '의 소상공인을 매우지합니다.';
-    
     renderLocationPage(location);
 }
 
-function goToCategoryFilterPage(location, category) {
-    currentLocation = location;
+function goToCategoryPage(category, location) {
     currentCategory = category;
+    currentLocation = location;
+    previousPage = 'category';
     
     document.getElementById('homePage').classList.add('hidden');
     document.getElementById('locationPage').classList.add('hidden');
@@ -139,10 +157,6 @@ function goToCategoryFilterPage(location, category) {
     
     const categoryLabel = getCategoryLabel(category);
     document.getElementById('filterTitle').textContent = categoryLabel;
-    document.getElementById('filterBreadcrumb').textContent = `${location} > ${categoryLabel}`;
-    document.getElementById('filterPageTitle').textContent = '직접 보고 방문하세요';
-    document.getElementById('filterPageDesc').textContent = location + '의 ' + categoryLabel + '을(를) 매우지합니다.';
-    
     renderCategoryFilterPage(location, category);
 }
 
@@ -162,6 +176,16 @@ function goToDetail(shopId) {
     renderDetailPage(shop);
 }
 
+function goBack() {
+    if (previousPage === 'category') {
+        goToLocationPage(currentLocation);
+    } else if (previousPage === 'location') {
+        goToHome();
+    } else {
+        goToHome();
+    }
+}
+
 // ==================== HOME 페이지 ====================
 function renderPopularShops() {
     const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
@@ -179,63 +203,36 @@ function renderPopularShops() {
 
 // ==================== 지역별 페이지 ====================
 function renderLocationPage(location) {
-    const categories = ['nail', 'hair', 'glasses', 'vintage', 'hanbok', 'goods'];
-    const categoryMap = {
-        nail: '💅 네일샵',
-        hair: '✂️ 헤어샵',
-        glasses: '👓 안경점',
-        vintage: '👔 빈티지샵',
-        hanbok: '👗 한복대여',
-        goods: '🎁 굿즈샵'
-    };
-
-    let html = '';
+    const allShopsInLocation = shopsData.filter(s => s.location === location);
     
-    categories.forEach(category => {
-        const shopsInCategory = shopsData.filter(s => s.location === location && s.category === category);
-        
-        if (shopsInCategory.length > 0) {
-            html += `
-                <div class="category-section-block">
-                    <div class="category-section-title" onclick="goToCategoryFilterPage('${location}', '${category}')" style="cursor: pointer;">
-                        ${categoryMap[category]}
-                    </div>
-                    <div class="shops-grid">
-                        ${shopsInCategory.map(shop => `
-                            <div class="shop-card" onclick="goToDetail(${shop.id})">
-                                <img src="${shop.images[0]}" alt="${shop.name}" class="shop-card-image">
-                                <div class="shop-card-info">
-                                    <div class="shop-card-name">${shop.name}</div>
-                                    <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
-                                    <div class="shop-card-location">조회수: ${shop.views}</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
-    });
-
-    document.getElementById('categorySections').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">이 지역의 가게가 없습니다.</p>';
-}
-
-// ==================== 카테고리 필터 페이지 ====================
-function renderCategoryFilterPage(location, category) {
-    const shops = shopsData.filter(s => s.location === location && s.category === category);
-    
-    const html = shops.map(shop => `
+    const html = allShopsInLocation.map(shop => `
         <div class="shop-card" onclick="goToDetail(${shop.id})">
-            <img src="${shop.images[0]}" alt="${shop.name}" class="shop-card-image">
+            <img src="${shop.images[0]}" alt="${shop.name}">
             <div class="shop-card-info">
                 <div class="shop-card-name">${shop.name}</div>
                 <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
-                <div class="shop-card-location">조회수: ${shop.views}</div>
             </div>
         </div>
     `).join('');
 
-    document.getElementById('filterShopsGrid').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">등록된 가게가 없습니다.</p>';
+    document.getElementById('allShopsGrid').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">이 지역의 가게가 없습니다.</p>';
+}
+
+// ==================== 카테고리 필터 페이지 ====================
+function renderCategoryFilterPage(location, category) {
+    const filteredShops = shopsData.filter(s => s.location === location && s.category === category);
+    
+    const html = filteredShops.map(shop => `
+        <div class="shop-card" onclick="goToDetail(${shop.id})">
+            <img src="${shop.images[0]}" alt="${shop.name}">
+            <div class="shop-card-info">
+                <div class="shop-card-name">${shop.name}</div>
+                <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
+            </div>
+        </div>
+    `).join('');
+
+    document.getElementById('filteredShopsGrid').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">등록된 가게가 없습니다.</p>';
 }
 
 // ==================== 검색 기능 ====================
@@ -275,7 +272,6 @@ document.getElementById('searchModal')?.addEventListener('click', (e) => {
     if (e.target.id === 'searchModal') closeSearchModal();
 });
 
-// ==================== 필터링 ====================
 function filterByCategory(category) {
     openSearchModal();
     const categoryLabel = getCategoryLabel(category);
@@ -495,9 +491,13 @@ function editShop(id) {
     document.getElementById('adminLat').value = shop.latitude;
     document.getElementById('adminLng').value = shop.longitude;
 
+    // 기존 가게 삭제 후 새로 추가하는 방식으로 수정
+    shopsData = shopsData.filter(s => s.id !== id);
+    saveToStorage();
+
     document.querySelectorAll('.admin-tab')[0].click();
     window.scrollTo(0, 0);
-    alert('수정 후 다시 추가 버튼을 누르면 업데이트됩니다');
+    alert('수정 후 "가게 추가" 버튼을 눌러주세요');
 }
 
 // ==================== JSON 관리 ====================

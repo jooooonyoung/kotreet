@@ -3,6 +3,9 @@ let currentLocation = null;
 let currentCategory = null;
 let previousPage = 'home';
 
+// 카테고리 순서 고정
+const categoryOrder = ['nail', 'glasses', 'hair', 'hanbok', 'vintage', 'goods'];
+
 const sampleData = [
     {
         id: 1,
@@ -116,6 +119,7 @@ function goToHome() {
     document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
+    document.getElementById('floatingBtn').classList.add('hidden');
     closeSearchModal();
     renderPopularShops();
 }
@@ -126,6 +130,7 @@ function goToAdmin() {
     document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.remove('hidden');
+    document.getElementById('floatingBtn').classList.add('hidden');
     refreshShopList();
 }
 
@@ -139,6 +144,7 @@ function goToLocationPage(location) {
     document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
+    document.getElementById('floatingBtn').classList.remove('hidden');
     
     document.getElementById('locationTitle').textContent = location;
     renderLocationPage(location);
@@ -154,6 +160,7 @@ function goToCategoryPage(category, location) {
     document.getElementById('categoryFilterPage').classList.remove('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
+    document.getElementById('floatingBtn').classList.remove('hidden');
     
     const categoryLabel = getCategoryLabel(category);
     document.getElementById('filterTitle').textContent = categoryLabel;
@@ -172,6 +179,7 @@ function goToDetail(shopId) {
     document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.remove('hidden');
     document.getElementById('adminPage').classList.add('hidden');
+    document.getElementById('floatingBtn').classList.add('hidden');
     
     renderDetailPage(shop);
 }
@@ -282,12 +290,12 @@ function filterByCategory(category) {
 // ==================== 상세 페이지 ====================
 function renderDetailPage(shop) {
     const categoryMap = {
-        nail: '💅 네일샵',
-        hair: '✂️ 헤어샵',
-        glasses: '👓 안경점',
-        vintage: '👔 빈티지샵',
-        hanbok: '👗 한복대여',
-        goods: '🎁 굿즈샵'
+        nail: '네일샵',
+        hair: '헤어샵',
+        glasses: '안경점',
+        vintage: '빈티지샵',
+        hanbok: '한복대여',
+        goods: '굿즈샵'
     };
 
     const moodMap = {
@@ -491,7 +499,6 @@ function editShop(id) {
     document.getElementById('adminLat').value = shop.latitude;
     document.getElementById('adminLng').value = shop.longitude;
 
-    // 기존 가게 삭제 후 새로 추가하는 방식으로 수정
     shopsData = shopsData.filter(s => s.id !== id);
     saveToStorage();
 
@@ -546,4 +553,19 @@ function getCategoryLabel(category) {
         goods: '굿즈샵'
     };
     return map[category] || category;
+}
+
+// ==================== 플로팅 버튼 ====================
+function openCurrentLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+        }, () => {
+            window.open('https://www.google.com/maps', '_blank');
+        });
+    } else {
+        window.open('https://www.google.com/maps', '_blank');
+    }
 }

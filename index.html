@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/app.js"></script>
 </head>
 <body>
     <!-- HOME 페이지 -->
@@ -47,27 +46,55 @@
         <section class="category-section">
             <div class="category-grid">
                 <div class="category-item" onclick="filterByCategory('nail')">
-                    <div class="category-icon">💅</div>
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cd2e3a" stroke-width="2">
+                            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+                            <path d="M12 6v12M6 12h12"/>
+                        </svg>
+                    </div>
                     <div class="category-label">네일샵</div>
                 </div>
-                <div class="category-item" onclick="filterByCategory('hair')">
-                    <div class="category-icon">✂️</div>
-                    <div class="category-label">헤어샵</div>
-                </div>
                 <div class="category-item" onclick="filterByCategory('glasses')">
-                    <div class="category-icon">👓</div>
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cd2e3a" stroke-width="2">
+                            <path d="M6 15h12M6 15c-1.5 0-3-1.5-3-3s1.5-3 3-3M18 15c1.5 0 3-1.5 3-3s-1.5-3-3-3M6 9h12"/>
+                        </svg>
+                    </div>
                     <div class="category-label">안경점</div>
                 </div>
-                <div class="category-item" onclick="filterByCategory('vintage')">
-                    <div class="category-icon">👔</div>
-                    <div class="category-label">빈티지샵</div>
+                <div class="category-item" onclick="filterByCategory('hair')">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cd2e3a" stroke-width="2">
+                            <path d="M4 20h16M8 4l4 6 4-6M12 10v10"/>
+                        </svg>
+                    </div>
+                    <div class="category-label">헤어샵</div>
                 </div>
                 <div class="category-item" onclick="filterByCategory('hanbok')">
-                    <div class="category-icon">👗</div>
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cd2e3a" stroke-width="2">
+                            <path d="M12 2L4 6v6l8 4 8-4V6l-8-4z"/>
+                            <path d="M12 12v10M4 12l8 4 8-4"/>
+                        </svg>
+                    </div>
                     <div class="category-label">한복대여</div>
                 </div>
+                <div class="category-item" onclick="filterByCategory('vintage')">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cd2e3a" stroke-width="2">
+                            <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                        </svg>
+                    </div>
+                    <div class="category-label">빈티지샵</div>
+                </div>
                 <div class="category-item" onclick="filterByCategory('goods')">
-                    <div class="category-icon">🎁</div>
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#cd2e3a" stroke-width="2">
+                            <path d="M20 7h-4V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2H4a1 1 0 00-1 1v12a2 2 0 002 2h14a2 2 0 002-2V8a1 1 0 00-1-1z"/>
+                            <path d="M10 5h4v2h-4V5z"/>
+                        </svg>
+                    </div>
                     <div class="category-label">굿즈샵</div>
                 </div>
             </div>
@@ -90,6 +117,15 @@
                 <p>&copy; 2025 로컬가이드. All rights reserved.</p>
             </div>
         </footer>
+    </div>
+
+    <!-- 플로팅 버튼 -->
+    <div id="floatingBtn" class="floating-btn hidden" onclick="openCurrentLocation()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>Directions</span>
     </div>
 
     <!-- 검색 모달 -->
@@ -115,19 +151,27 @@
                 <div class="category-filter-scroll">
                     <button class="category-filter-btn" onclick="goToCategoryPage('nail', getCurrentLocation())">
                         <div class="cat-dot"></div>
-                        <span>안경점</span>
-                    </button>
-                    <button class="category-filter-btn" onclick="goToCategoryPage('hair', getCurrentLocation())">
-                        <div class="cat-dot"></div>
                         <span>네일샵</span>
                     </button>
                     <button class="category-filter-btn" onclick="goToCategoryPage('glasses', getCurrentLocation())">
                         <div class="cat-dot"></div>
-                        <span>빈티지샵</span>
+                        <span>안경점</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('hair', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>헤어샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('hanbok', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>한복대여</span>
                     </button>
                     <button class="category-filter-btn" onclick="goToCategoryPage('vintage', getCurrentLocation())">
                         <div class="cat-dot"></div>
-                        <span>한복대여</span>
+                        <span>빈티지샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('goods', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>굿즈샵</span>
                     </button>
                 </div>
             </div>
@@ -159,19 +203,27 @@
                 <div class="category-filter-scroll">
                     <button class="category-filter-btn" onclick="goToCategoryPage('nail', getCurrentLocation())">
                         <div class="cat-dot"></div>
-                        <span>안경점</span>
-                    </button>
-                    <button class="category-filter-btn" onclick="goToCategoryPage('hair', getCurrentLocation())">
-                        <div class="cat-dot"></div>
                         <span>네일샵</span>
                     </button>
                     <button class="category-filter-btn" onclick="goToCategoryPage('glasses', getCurrentLocation())">
                         <div class="cat-dot"></div>
-                        <span>빈티지샵</span>
+                        <span>안경점</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('hair', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>헤어샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('hanbok', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>한복대여</span>
                     </button>
                     <button class="category-filter-btn" onclick="goToCategoryPage('vintage', getCurrentLocation())">
                         <div class="cat-dot"></div>
-                        <span>한복대여</span>
+                        <span>빈티지샵</span>
+                    </button>
+                    <button class="category-filter-btn" onclick="goToCategoryPage('goods', getCurrentLocation())">
+                        <div class="cat-dot"></div>
+                        <span>굿즈샵</span>
                     </button>
                 </div>
             </div>
@@ -328,6 +380,6 @@
         </div>
     </div>
 
-
+    <script src="js/app.js"></script>
 </body>
 </html>

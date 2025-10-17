@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로컬가이드 - 한국 소상공인 플랫폼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* 헤더 */
+        header {
+            background: white;
+            padding: 15px 16px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 1. 타이틀 영역 */
+        .title-section {
+            padding: 20px 16px;
+            background: white;
+            border-bottom: 8px solid #f8f9fa;
+        }
+
+        .title-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* 이미지 스크롤 박스 */
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            scroll-behavior: smooth;
+            padding-bottom: 10px;
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+
+        .location-card {
+            flex-shrink: 0;
+            width: 140px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .location-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .location-card .label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* 2. 검색창 */
+        .search-section {
+            padding: 15px 16px;
+            background: white;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #666;
+            background-color: #fafafa;
+        }
+
+        /* 3. 카테고리 아이콘 */
+        .category-section {
+            padding: 20px 16px;
+            background: white;
+            border-bottom: 8px solid #f8f9fa;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .category-item:active {
+            background-color: #f0f0f0;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background-color: #f0f0f0;
+        }
+
+        .category-label {
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            color: #333;
+        }
+
+        /* 4. 배너 */
+        .banner-section {
+            padding: 8px 16px;
+            background: white;
+            margin-bottom: 8px;
+        }
+
+        .banner {
+            width: 100%;
+            height: 234px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* 5. 가장 많이 본 페이지 */
+        .popular-section {
+            padding: 20px 16px;
+            background: white;
+            border-bottom: 8px solid #f8f9fa;
+        }
+
+        .popular-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .popular-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            scroll-behavior: smooth;
+        }
+
+        .popular-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .popular-card {
+            flex-shrink: 0;
+            width: 110px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .popular-card img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+        }
+
+        .popular-card-info {
+            padding: 8px;
+            background: white;
+        }
+
+        .popular-card-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .popular-card-category {
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        /* 풋터 */
+        footer {
+            background: #2d3436;
+            color: white;
+            padding: 30px 16px 40px;
+            margin-top: 20px;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: #b2bec3;
+            text-decoration: none;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background-color: #636e72;
+            margin: 15px 0;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: #636e72;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>로컬가이드 - 한국 소상공인 플랫폼</header>
+
+    <div class="container">
+        <!-- 1. 타이틀 & 지역 스크롤 -->
+        <section class="title-section">
+            <h2>어디를 찾으시나요?</h2>
+            <div class="scroll-container" id="locationScroll">
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561de8?w=300&h=240&fit=crop" alt="홍대">
+                    <div class="label">홍대</div>
+                </div>
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1540959375944-7049f642e9f1?w=300&h=240&fit=crop" alt="강남">
+                    <div class="label">강남</div>
+                </div>
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=300&h=240&fit=crop" alt="성수">
+                    <div class="label">성수</div>
+                </div>
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=300&h=240&fit=crop" alt="명동">
+                    <div class="label">명동</div>
+                </div>
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1489749798305-4fea3ba63d60?w=300&h=240&fit=crop" alt="강북">
+                    <div class="label">강북</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 검색창 -->
+        <section class="search-section">
+            <input type="text" class="search-box" placeholder="검색을 시작해보세요." id="searchInput">
+        </section>
+
+        <!-- 3. 카테고리 -->
+        <section class="category-section">
+            <div class="category-grid">
+                <div class="category-item" data-category="restaurant">
+                    <div class="category-icon">🍽️</div>
+                    <div class="category-label">음식점</div>
+                </div>
+                <div class="category-item" data-category="nail">
+                    <div class="category-icon">💅</div>
+                    <div class="category-label">네일샵</div>
+                </div>
+                <div class="category-item" data-category="hair">
+                    <div class="category-icon">✂️</div>
+                    <div class="category-label">헤어샵</div>
+                </div>
+                <div class="category-item" data-category="glasses">
+                    <div class="category-icon">👓</div>
+                    <div class="category-label">안경점</div>
+                </div>
+                <div class="category-item" data-category="sauna">
+                    <div class="category-icon">🧖</div>
+                    <div class="category-label">사우나</div>
+                </div>
+                <div class="category-item" data-category="vintage">
+                    <div class="category-icon">👔</div>
+                    <div class="category-label">빈티지샵</div>
+                </div>
+                <div class="category-item" data-category="hanbok">
+                    <div class="category-icon">👗</div>
+                    <div class="category-label">한복대여</div>
+                </div>
+                <div class="category-item" data-category="goods">
+                    <div class="category-icon">🎁</div>
+                    <div class="category-label">굿즈샵</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 배너 -->
+        <section class="banner-section">
+            <div class="banner">
+                🎉 새로운 소상공인들을 발견해보세요!
+            </div>
+        </section>
+
+        <!-- 5. 가장 많이 본 페이지 -->
+        <section class="popular-section">
+            <h3>🔥 가장 많이 본 가게</h3>
+            <div class="popular-scroll" id="popularScroll">
+                <div class="popular-card">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop" alt="가게1">
+                    <div class="popular-card-info">
+                        <div class="popular-card-name">감성카페</div>
+                        <div class="popular-card-category">홍대</div>
+                    </div>
+                </div>
+                <div class="popular-card">
+                    <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=200&h=200&fit=crop" alt="가게2">
+                    <div class="popular-card-info">
+                        <div class="popular-card-name">프리미엄 네일</div>
+                        <div class="popular-card-category">강남</div>
+                    </div>
+                </div>
+                <div class="popular-card">
+                    <img src="https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=200&h=200&fit=crop" alt="가게3">
+                    <div class="popular-card-info">
+                        <div class="popular-card-name">트렌드 헤어</div>
+                        <div class="popular-card-category">강남</div>
+                    </div>
+                </div>
+                <div class="popular-card">
+                    <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=200&h=200&fit=crop" alt="가게4">
+                    <div class="popular-card-info">
+                        <div class="popular-card-name">빈티지 마켓</div>
+                        <div class="popular-card-category">성수</div>
+                    </div>
+                </div>
+                <div class="popular-card">
+                    <img src="https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=200&h=200&fit=crop" alt="가게5">
+                    <div class="popular-card-info">
+                        <div class="popular-card-name">한복스튜디오</div>
+                        <div class="popular-card-category">명동</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 풋터 -->
+    <footer>
+        <p><strong>로컬가이드</strong></p>
+        <p>한국의 소상공인, 로컬 가게를 소개하고 홍보해주는 플랫폼</p>
+        
+        <div class="footer-divider"></div>
+        
+        <p>
+            <a href="#about">소개</a> | 
+            <a href="#partners">파트너</a> | 
+            <a href="#contact">연락처</a>
+        </p>
+        
+        <div class="footer-divider"></div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 로컬가이드. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 검색 기능 (예시)
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function(e) {
+            console.log('검색:', e.target.value);
+            // 나중에 실제 검색 로직 추가
+        });
+
+        // 카테고리 클릭
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const category = this.dataset.category;
+                console.log('선택된 카테고리:', category);
+                // 나중에 카테고리별 페이지로 이동
+            });
+        });
+
+        // 지역 클릭
+        document.querySelectorAll('.location-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const location = this.querySelector('.label').textContent;
+                console.log('선택된 지역:', location);
+                // 나중에 지역별 페이지로 이동
+            });
+        });
+    </script>
+</body>
+</html>

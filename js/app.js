@@ -119,18 +119,13 @@ function goToHome() {
     document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
-    document.getElementById('floatingBtn').classList.add('hidden');
     closeSearchModal();
     renderPopularShops();
 }
 
 function goToAdmin() {
     document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('locationPage').classList.add('hidden');
-    document.getElementById('categoryFilterPage').classList.add('hidden');
-    document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.remove('hidden');
-    document.getElementById('floatingBtn').classList.add('hidden');
     refreshShopList();
 }
 
@@ -144,7 +139,6 @@ function goToLocationPage(location) {
     document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
-    document.getElementById('floatingBtn').classList.remove('hidden');
     
     document.getElementById('locationTitle').textContent = location;
     renderLocationPage(location);
@@ -160,7 +154,6 @@ function goToCategoryPage(category, location) {
     document.getElementById('categoryFilterPage').classList.remove('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
-    document.getElementById('floatingBtn').classList.remove('hidden');
     
     const categoryLabel = getCategoryLabel(category);
     document.getElementById('filterTitle').textContent = categoryLabel;
@@ -174,14 +167,9 @@ function goToDetail(shopId) {
     shop.views = (shop.views || 0) + 1;
     saveToStorage();
 
-    document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('locationPage').classList.add('hidden');
-    document.getElementById('categoryFilterPage').classList.add('hidden');
-    document.getElementById('detailPage').classList.remove('hidden');
-    document.getElementById('adminPage').classList.add('hidden');
-    document.getElementById('floatingBtn').classList.add('hidden');
-    
-    renderDetailPage(shop);
+    // 4자리 숫자로 변환
+    const shopNo = String(shopId).padStart(4, '0');
+    window.location.href = `detail.html?no=${shopNo}`;
 }
 
 function goBack() {
@@ -198,32 +186,59 @@ function goBack() {
 function renderPopularShops() {
     const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
     const container = document.getElementById('popularScroll');
-    container.innerHTML = sorted.map(shop => `
-        <div class="popular-card" onclick="goToDetail(${shop.id})">
-            <img src="${shop.images[0]}" alt="${shop.name}">
-            <div class="popular-card-info">
-                <div class="popular-card-name">${shop.name}</div>
-                <div class="popular-card-location">${shop.location}</div>
+    container.innerHTML = sorted.map(shop => {
+        const shopNo = String(shop.id).padStart(4, '0');
+        return `
+            <div class="popular-card" onclick="window.location.href='detail.html?no=${shopNo}'">
+                <img src="${shop.images[0]}" alt="${shop.name}">
+                <div class="popular-card-info">
+                    <div class="popular-card-name">${shop.name}</div>
+                    <div class="popular-card-location">${shop.location}</div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // ==================== 지역별 페이지 ====================
 function renderLocationPage(location) {
-    const allShopsInLocation = shopsData.filter(s => s.location === location);
-    
-    const html = allShopsInLocation.map(shop => `
-        <div class="shop-card" onclick="goToDetail(${shop.id})">
-            <img src="${shop.images[0]}" alt="${shop.name}">
-            <div class="shop-card-info">
-                <div class="shop-card-name">${shop.name}</div>
-                <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
-            </div>
-        </div>
-    `).join('');
+    const categories = ['nail', 'glasses', 'hair', 'hanbok', 'vintage', 'goods'];
+    const categoryLabels = {
+        nail: '네일샵',
+        glasses: '안경점',
+        hair: '헤어샵',
+        hanbok: '한복대여',
+        vintage: '빈티지샵',
+        goods: '굿즈샵'
+    };
 
-    document.getElementById('allShopsGrid').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">이 지역의 가게가 없습니다.</p>';
+    let html = '';
+    
+    categories.forEach(category => {
+        const shopsInCategory = shopsData.filter(s => s.location === location && s.category === category);
+        
+        html += `
+            <div class="category-shops-section">
+                <div class="category-shops-title">${categoryLabels[category]}</div>
+                <div class="category-shops-desc">${location}의 ${categoryLabels[category]}은 매우지합니다.</div>
+                ${shopsInCategory.length > 0 ? `
+                    <div class="shops-grid">
+                        ${shopsInCategory.map(shop => `
+                            <div class="shop-card" onclick="goToDetail(${shop.id})">
+                                <img src="${shop.images[0]}" alt="${shop.name}">
+                                <div class="shop-card-info">
+                                    <div class="shop-card-name">${shop.name}</div>
+                                    <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : '<p style="color: #6c757d; font-size: 13px;">등록된 가게가 없습니다.</p>'}
+            </div>
+        `;
+    });
+
+    document.getElementById('categoryShopsSections').innerHTML = html;
 }
 
 // ==================== 카테고리 필터 페이지 ====================

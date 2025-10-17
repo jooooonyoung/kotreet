@@ -6,756 +6,8 @@
     <title>로컬가이드 - 한국 소상공인 플랫폼</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-
-        /* ==================== 전역 유틸 ==================== */
-        .hidden {
-            display: none !important;
-        }
-
-        /* ==================== HOME 페이지 ==================== */
-        #homePage {
-            min-height: 100vh;
-        }
-
-        header {
-            background: white;
-            padding: 12px 16px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header .logo {
-            font-size: 16px;
-            font-weight: 700;
-            color: #333;
-        }
-
-        header .admin-btn {
-            background: #333;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        header .admin-btn:hover {
-            background: #555;
-        }
-
-        /* 타이틀 영역 */
-        .title-section {
-            padding: 20px 16px;
-            background: white;
-            border-bottom: 8px solid #f8f9fa;
-        }
-
-        .title-section h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .scroll-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            scroll-behavior: smooth;
-            padding-bottom: 8px;
-        }
-
-        .scroll-container::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 2px;
-        }
-
-        .location-card {
-            flex-shrink: 0;
-            width: 140px;
-            height: 120px;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-
-        .location-card:active {
-            transform: scale(0.98);
-        }
-
-        .location-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .location-card .label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            color: white;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        /* 검색창 */
-        .search-section {
-            padding: 12px 16px;
-            background: white;
-            position: sticky;
-            top: 50px;
-            z-index: 99;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #333;
-            font-weight: 400;
-            background: white;
-            cursor: pointer;
-        }
-
-        .search-box::placeholder {
-            color: #999;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: #333;
-            background-color: #fafafa;
-        }
-
-        /* 검색 모달 */
-        .search-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .search-modal-header {
-            background: white;
-            padding: 12px 16px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .search-modal-input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-
-        .search-modal-close {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0 8px;
-        }
-
-        .search-modal-content {
-            flex: 1;
-            overflow-y: auto;
-            background: white;
-        }
-
-        .search-result-item {
-            padding: 12px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .search-result-item:active {
-            background: #f5f5f5;
-        }
-
-        .search-result-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .search-result-meta {
-            font-size: 12px;
-            color: #999;
-        }
-
-        /* 카테고리 */
-        .category-section {
-            padding: 20px 16px;
-            background: white;
-            border-bottom: 8px solid #f8f9fa;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-        }
-
-        .category-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .category-item:active {
-            background: #f0f0f0;
-        }
-
-        .category-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background: #f0f0f0;
-        }
-
-        .category-label {
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-            color: #333;
-        }
-
-        /* 배너 */
-        .banner-section {
-            padding: 8px 16px;
-            background: white;
-            margin-bottom: 8px;
-        }
-
-        .banner {
-            width: 100%;
-            height: 234px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            padding: 20px;
-        }
-
-        /* 인기 가게 */
-        .popular-section {
-            padding: 20px 16px;
-            background: white;
-            border-bottom: 8px solid #f8f9fa;
-        }
-
-        .popular-section h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .popular-scroll {
-            display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            scroll-behavior: smooth;
-        }
-
-        .popular-scroll::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .popular-card {
-            flex-shrink: 0;
-            width: 110px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .popular-card:active {
-            transform: scale(0.98);
-        }
-
-        .popular-card img {
-            width: 100%;
-            height: 110px;
-            object-fit: cover;
-        }
-
-        .popular-card-info {
-            padding: 8px;
-            background: white;
-        }
-
-        .popular-card-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: #333;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .popular-card-location {
-            font-size: 11px;
-            color: #999;
-            margin-top: 2px;
-        }
-
-        /* 푸터 */
-        footer {
-            background: #2d3436;
-            color: white;
-            padding: 30px 16px 40px;
-            margin-top: 20px;
-            font-size: 12px;
-            line-height: 1.8;
-            font-weight: 400;
-        }
-
-        footer a {
-            color: #b2bec3;
-            text-decoration: none;
-        }
-
-        footer p {
-            margin-bottom: 10px;
-        }
-
-        .footer-divider {
-            height: 1px;
-            background-color: #636e72;
-            margin: 15px 0;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            color: #636e72;
-            margin-top: 15px;
-        }
-
-        /* ==================== 상세 페이지 ==================== */
-        #detailPage {
-            background: white;
-        }
-
-        .detail-header {
-            background: white;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e9ecef;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .detail-back-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .detail-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .carousel-container {
-            display: flex;
-            transition: transform 0.3s ease-out;
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            aspect-ratio: 16/9;
-            overflow: hidden;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-counter {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .detail-content {
-            padding: 20px 16px;
-        }
-
-        .breadcrumb {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 12px;
-            font-weight: 400;
-        }
-
-        .detail-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .detail-price {
-            font-size: 16px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .detail-video {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #f0f0f0;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .detail-video iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .detail-features {
-            margin-bottom: 20px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        .feature-icon {
-            font-size: 20px;
-            min-width: 24px;
-        }
-
-        .detail-section-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            margin-top: 20px;
-        }
-
-        .detail-description {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #555;
-            font-weight: 400;
-            margin-bottom: 20px;
-        }
-
-        .detail-map {
-            width: 100%;
-            height: 300px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-        }
-
-        .map-button {
-            width: 100%;
-            padding: 12px;
-            background: #ff0000;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-
-        .map-button:active {
-            background: #cc0000;
-        }
-
-        /* ==================== 관리자 대시보드 ==================== */
-        #adminPage {
-            padding: 20px 16px;
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .admin-header h1 {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .admin-header .back-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .admin-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .admin-tab {
-            padding: 12px 16px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: #999;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .admin-tab.active {
-            color: #333;
-            border-bottom-color: #333;
-        }
-
-        .admin-form {
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-weight: 400;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #333;
-            background: #fafafa;
-        }
-
-        .form-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-primary {
-            background: #333;
-            color: white;
-        }
-
-        .btn-primary:active {
-            background: #555;
-        }
-
-        .btn-secondary {
-            background: #e9ecef;
-            color: #333;
-        }
-
-        .btn-secondary:active {
-            background: #dee2e6;
-        }
-
-        .btn-danger {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .btn-danger:active {
-            background: #ee5a52;
-        }
-
-        .shop-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .shop-item {
-            background: white;
-            padding: 12px;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .shop-item-info {
-            flex: 1;
-        }
-
-        .shop-item-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .shop-item-meta {
-            font-size: 12px;
-            color: #999;
-            font-weight: 400;
-        }
-
-        .shop-item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .shop-item-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .shop-item-edit {
-            background: #333;
-            color: white;
-        }
-
-        .shop-item-delete {
-            background: #ffdbdb;
-            color: #ff6b6b;
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .export-buttons button {
-            flex: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- HOME 페이지 -->
@@ -768,19 +20,19 @@
         <section class="title-section">
             <h2>어디를 찾으시나요?</h2>
             <div class="scroll-container" id="locationScroll">
-                <div class="location-card" onclick="filterByLocation('홍대')">
+                <div class="location-card" onclick="goToLocationPage('홍대')">
                     <img src="https://images.unsplash.com/photo-1555939594-58d7cb561de8?w=300&h=240&fit=crop" alt="홍대">
                     <div class="label">홍대</div>
                 </div>
-                <div class="location-card" onclick="filterByLocation('명동')">
+                <div class="location-card" onclick="goToLocationPage('명동')">
                     <img src="https://images.unsplash.com/photo-1540959375944-7049f642e9f1?w=300&h=240&fit=crop" alt="명동">
                     <div class="label">명동</div>
                 </div>
-                <div class="location-card" onclick="filterByLocation('강남')">
+                <div class="location-card" onclick="goToLocationPage('강남')">
                     <img src="https://images.unsplash.com/photo-1567521464027-f127ff144326?w=300&h=240&fit=crop" alt="강남">
                     <div class="label">강남</div>
                 </div>
-                <div class="location-card" onclick="filterByLocation('성수')">
+                <div class="location-card" onclick="goToLocationPage('성수')">
                     <img src="https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=300&h=240&fit=crop" alt="성수">
                     <div class="label">성수</div>
                 </div>
@@ -850,6 +102,59 @@
         <div class="search-modal-content" id="searchResults"></div>
     </div>
 
+    <!-- 지역별 페이지 -->
+    <div id="locationPage" class="hidden">
+        <header>
+            <button class="header-back" onclick="goToHome()">←</button>
+            <div class="header-title" id="locationTitle">홍대</div>
+            <div style="width:24px;"></div>
+        </header>
+
+        <div class="location-page-content">
+            <div class="location-intro">
+                <h2 id="locationIntroTitle">홍대</h2>
+                <p id="locationIntroDesc">한국의 소상공인을 매우지합니다.</p>
+            </div>
+
+            <div id="categorySections"></div>
+        </div>
+
+        <footer>
+            <p><strong>로컬가이드</strong></p>
+            <p>한국의 소상공인, 로컬 가게를 소개하고 홍보해주는 플랫폼</p>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 로컬가이드. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 카테고리별 필터 페이지 -->
+    <div id="categoryFilterPage" class="hidden">
+        <header>
+            <button class="header-back" onclick="goToLocationPage(currentLocation)">←</button>
+            <div class="header-title" id="filterTitle">안경점</div>
+            <div style="width:24px;"></div>
+        </header>
+
+        <div class="filter-page-content">
+            <div class="breadcrumb" id="filterBreadcrumb">명동 > 안경점</div>
+            <h2 id="filterPageTitle">직접 보고 방문하세요</h2>
+            <p id="filterPageDesc">한국의 소상공인을 매우지합니다.</p>
+
+            <div class="filter-shops-grid" id="filterShopsGrid"></div>
+        </div>
+
+        <footer>
+            <p><strong>로컬가이드</strong></p>
+            <p>한국의 소상공인, 로컬 가게를 소개하고 홍보해주는 플랫폼</p>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 로컬가이드. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
     <!-- 상세 페이지 -->
     <div id="detailPage" class="hidden">
         <div class="detail-header">
@@ -873,7 +178,7 @@
         </div>
 
         <!-- 가게 추가 탭 -->
-        <div id="addTab">
+        <div id="addTab" class="admin-tab-content">
             <div class="admin-form">
                 <div class="form-group">
                     <label>가게명</label>
@@ -951,3 +256,41 @@
                 </div>
                 <div class="form-group">
                     <label>Google Maps 좌표 (경도, 예: 126.9780)</label>
+                    <input type="text" id="adminLng" placeholder="126.9780">
+                </div>
+                <div class="form-buttons">
+                    <button class="btn btn-primary" onclick="addShop()">가게 추가</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">초기화</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 가게 관리 탭 -->
+        <div id="listTab" class="admin-tab-content hidden">
+            <div class="shop-list" id="shopList"></div>
+        </div>
+
+        <!-- 데이터 관리 탭 -->
+        <div id="exportTab" class="admin-tab-content hidden">
+            <div class="admin-form">
+                <div class="form-group">
+                    <label>📥 JSON 데이터 가져오기 (파일 선택)</label>
+                    <input type="file" id="jsonFile" accept=".json" onchange="importJSON(event)">
+                </div>
+                <div class="form-buttons">
+                    <button class="btn btn-primary" onclick="exportJSON()">📥 JSON 다운로드</button>
+                </div>
+                <div style="margin-top: 20px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; line-height: 1.6; color: #666;">
+                    <p><strong>💡 사용 방법:</strong></p>
+                    <p>1. "JSON 다운로드"로 현재 데이터를 백업하세요</p>
+                    <p>2. 파일을 열어서 데이터를 수정하거나 새로 추가하세요</p>
+                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하면 자동 반영됩니다</p>
+                    <p>4. GitHub에 이 JSON 파일을 업로드하면 됩니다</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

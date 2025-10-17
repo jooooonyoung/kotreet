@@ -7,7 +7,7 @@
 body {
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #f8f9fa;
-    color: #333;
+    color: #343a40;
 }
 
 /* ==================== 전역 유틸 ==================== */
@@ -35,11 +35,26 @@ header {
 header .logo {
     font-size: 16px;
     font-weight: 700;
-    color: #333;
+    color: #343a40;
 }
 
-header .admin-btn {
-    background: #333;
+header .header-back {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    color: #343a40;
+}
+
+header .header-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #343a40;
+}
+
+.admin-btn {
+    background: #343a40;
     color: white;
     border: none;
     padding: 6px 12px;
@@ -51,12 +66,12 @@ header .admin-btn {
     font-weight: 600;
 }
 
-header .admin-btn:hover {
-    background: #555;
+.admin-btn:hover {
+    background: #495057;
 }
 
-header .admin-btn:active {
-    background: #222;
+.admin-btn:active {
+    background: #212529;
 }
 
 /* 타이틀 영역 */
@@ -70,6 +85,7 @@ header .admin-btn:active {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 15px;
+    color: #343a40;
 }
 
 .scroll-container {
@@ -139,7 +155,7 @@ header .admin-btn:active {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     font-size: 14px;
-    color: #333;
+    color: #343a40;
     font-weight: 400;
     background: white;
     cursor: pointer;
@@ -147,12 +163,12 @@ header .admin-btn:active {
 }
 
 .search-box::placeholder {
-    color: #999;
+    color: #6c757d;
 }
 
 .search-box:focus {
     outline: none;
-    border-color: #333;
+    border-color: #343a40;
     background-color: #fafafa;
 }
 
@@ -186,11 +202,12 @@ header .admin-btn:active {
     font-size: 14px;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
+    color: #343a40;
 }
 
 .search-modal-input:focus {
     outline: none;
-    border-color: #333;
+    border-color: #343a40;
 }
 
 .search-modal-close {
@@ -200,6 +217,7 @@ header .admin-btn:active {
     cursor: pointer;
     padding: 0 8px;
     font-weight: 600;
+    color: #343a40;
 }
 
 .search-modal-content {
@@ -223,11 +241,12 @@ header .admin-btn:active {
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 4px;
+    color: #343a40;
 }
 
 .search-result-meta {
     font-size: 12px;
-    color: #999;
+    color: #6c757d;
     font-weight: 400;
 }
 
@@ -274,7 +293,7 @@ header .admin-btn:active {
     font-size: 12px;
     font-weight: 600;
     text-align: center;
-    color: #333;
+    color: #343a40;
 }
 
 /* 배너 */
@@ -287,7 +306,7 @@ header .admin-btn:active {
 .banner {
     width: 100%;
     height: 234px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #cd2e3a 0%, #a02329 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -310,6 +329,7 @@ header .admin-btn:active {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 15px;
+    color: #343a40;
 }
 
 .popular-scroll {
@@ -351,7 +371,7 @@ header .admin-btn:active {
 .popular-card-name {
     font-size: 12px;
     font-weight: 600;
-    color: #333;
+    color: #343a40;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -359,41 +379,131 @@ header .admin-btn:active {
 
 .popular-card-location {
     font-size: 11px;
-    color: #999;
+    color: #6c757d;
     margin-top: 2px;
     font-weight: 400;
 }
 
-/* 푸터 */
-footer {
-    background: #2d3436;
-    color: white;
-    padding: 30px 16px 40px;
-    margin-top: 20px;
-    font-size: 12px;
-    line-height: 1.8;
+/* ==================== 지역별 페이지 ==================== */
+#locationPage {
+    min-height: 100vh;
+}
+
+.location-page-content {
+    padding: 20px 16px;
+}
+
+.location-intro {
+    margin-bottom: 30px;
+}
+
+.location-intro h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+.location-intro p {
+    font-size: 14px;
+    color: #6c757d;
     font-weight: 400;
 }
 
-footer a {
-    color: #b2bec3;
-    text-decoration: none;
+.category-section-block {
+    margin-bottom: 30px;
 }
 
-footer p {
-    margin-bottom: 10px;
+.category-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #343a40;
 }
 
-.footer-divider {
-    height: 1px;
-    background-color: #636e72;
-    margin: 15px 0;
+.shops-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
-.footer-bottom {
-    text-align: center;
-    color: #636e72;
-    margin-top: 15px;
+.shop-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.shop-card:active {
+    transform: translateY(-4px);
+}
+
+.shop-card-image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.shop-card-info {
+    padding: 12px;
+}
+
+.shop-card-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #343a40;
+    margin-bottom: 4px;
+}
+
+.shop-card-price {
+    font-size: 12px;
+    font-weight: 600;
+    color: #cd2e3a;
+    margin-bottom: 4px;
+}
+
+.shop-card-location {
+    font-size: 11px;
+    color: #6c757d;
+    font-weight: 400;
+}
+
+/* ==================== 카테고리 필터 페이지 ==================== */
+#categoryFilterPage {
+    min-height: 100vh;
+}
+
+.filter-page-content {
+    padding: 20px 16px;
+}
+
+.breadcrumb {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 12px;
+    font-weight: 400;
+}
+
+#filterPageTitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+#filterPageDesc {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+
+.filter-shops-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 }
 
 /* ==================== 상세 페이지 ==================== */
@@ -419,6 +529,7 @@ footer p {
     font-size: 20px;
     cursor: pointer;
     padding: 8px;
+    color: #343a40;
 }
 
 .detail-carousel {
@@ -462,7 +573,7 @@ footer p {
 
 .breadcrumb {
     font-size: 12px;
-    color: #999;
+    color: #6c757d;
     margin-bottom: 12px;
     font-weight: 400;
 }
@@ -471,12 +582,13 @@ footer p {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 8px;
+    color: #343a40;
 }
 
 .detail-price {
     font-size: 16px;
     font-weight: 700;
-    color: #333;
+    color: #cd2e3a;
     margin-bottom: 20px;
 }
 
@@ -507,6 +619,7 @@ footer p {
     border-bottom: 1px solid #f0f0f0;
     font-size: 14px;
     font-weight: 400;
+    color: #343a40;
 }
 
 .feature-icon {
@@ -519,12 +632,13 @@ footer p {
     font-weight: 700;
     margin-bottom: 12px;
     margin-top: 20px;
+    color: #343a40;
 }
 
 .detail-description {
     font-size: 14px;
     line-height: 1.6;
-    color: #555;
+    color: #495057;
     font-weight: 400;
     margin-bottom: 20px;
 }
@@ -539,7 +653,7 @@ footer p {
 .map-button {
     width: 100%;
     padding: 12px;
-    background: #ff0000;
+    background: #cd2e3a;
     color: white;
     border: none;
     border-radius: 8px;
@@ -556,7 +670,7 @@ footer p {
 }
 
 .map-button:active {
-    background: #cc0000;
+    background: #a02329;
 }
 
 /* ==================== 관리자 대시보드 ==================== */
@@ -576,6 +690,7 @@ footer p {
 .admin-header h1 {
     font-size: 20px;
     font-weight: 700;
+    color: #343a40;
 }
 
 .admin-header .back-btn {
@@ -583,6 +698,7 @@ footer p {
     border: none;
     font-size: 20px;
     cursor: pointer;
+    color: #343a40;
 }
 
 .admin-tabs {
@@ -599,15 +715,23 @@ footer p {
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
-    color: #999;
+    color: #6c757d;
     border-bottom: 2px solid transparent;
     transition: all 0.2s;
     font-family: 'Noto Sans KR', sans-serif;
 }
 
 .admin-tab.active {
-    color: #333;
-    border-bottom-color: #333;
+    color: #343a40;
+    border-bottom-color: #cd2e3a;
+}
+
+.admin-tab-content {
+    display: block;
+}
+
+.admin-tab-content.hidden {
+    display: none;
 }
 
 .admin-form {
@@ -626,7 +750,7 @@ footer p {
     font-size: 13px;
     font-weight: 600;
     margin-bottom: 6px;
-    color: #333;
+    color: #343a40;
 }
 
 .form-group input,
@@ -639,6 +763,7 @@ footer p {
     font-size: 14px;
     font-family: 'Noto Sans KR', sans-serif;
     font-weight: 400;
+    color: #343a40;
 }
 
 .form-group textarea {
@@ -650,7 +775,7 @@ footer p {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #333;
+    border-color: #cd2e3a;
     background: #fafafa;
 }
 
@@ -673,17 +798,17 @@ footer p {
 }
 
 .btn-primary {
-    background: #333;
+    background: #cd2e3a;
     color: white;
 }
 
 .btn-primary:active {
-    background: #555;
+    background: #a02329;
 }
 
 .btn-secondary {
     background: #e9ecef;
-    color: #333;
+    color: #343a40;
 }
 
 .btn-secondary:active {
@@ -723,11 +848,12 @@ footer p {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 4px;
+    color: #343a40;
 }
 
 .shop-item-meta {
     font-size: 12px;
-    color: #999;
+    color: #6c757d;
     font-weight: 400;
 }
 
@@ -747,29 +873,51 @@ footer p {
 }
 
 .shop-item-edit {
-    background: #333;
+    background: #343a40;
     color: white;
 }
 
 .shop-item-edit:active {
-    background: #555;
+    background: #495057;
 }
 
 .shop-item-delete {
     background: #ffdbdb;
-    color: #ff6b6b;
+    color: #cd2e3a;
 }
 
 .shop-item-delete:active {
     background: #ffb3b3;
 }
 
-.export-buttons {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
+/* 푸터 */
+footer {
+    background: #343a40;
+    color: white;
+    padding: 30px 16px 40px;
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.8;
+    font-weight: 400;
 }
 
-.export-buttons button {
-    flex: 1;
+footer a {
+    color: #b2bec3;
+    text-decoration: none;
+}
+
+footer p {
+    margin-bottom: 10px;
+}
+
+.footer-divider {
+    height: 1px;
+    background-color: #495057;
+    margin: 15px 0;
+}
+
+.footer-bottom {
+    text-align: center;
+    color: #6c757d;
+    margin-top: 15px;
 }

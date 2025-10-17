@@ -1,5 +1,7 @@
 // ==================== 데이터 관리 ====================
 let shopsData = [];
+let currentLocation = null;
+let currentCategory = null;
 
 // 초기 샘플 데이터
 const sampleData = [
@@ -53,6 +55,23 @@ const sampleData = [
         latitude: 37.4979,
         longitude: 127.0276,
         views: 750
+    },
+    {
+        id: 4,
+        name: "트렌드 헤어 성수",
+        category: "hair",
+        location: "성수",
+        price: 45000,
+        images: ["https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop"],
+        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        mood: "busy",
+        communication: "easy",
+        payment: "both",
+        hours: "화~일 10:00 AM - 9:00 PM / 월요일 휴무",
+        description: "성수의 인기 헤어샵입니다.",
+        latitude: 37.5349,
+        longitude: 127.0566,
+        views: 620
     }
 ];
 
@@ -72,31 +91,74 @@ function saveToStorage() {
 }
 
 // ==================== 네비게이션 ====================
+function goToHome() {
+    document.getElementById('homePage').classList.remove('hidden');
+    document.getElementById('locationPage').classList.add('hidden');
+    document.getElementById('categoryFilterPage').classList.add('hidden');
+    document.getElementById('detailPage').classList.add('hidden');
+    document.getElementById('adminPage').classList.add('hidden');
+    closeSearchModal();
+    renderPopularShops();
+}
+
 function goToAdmin() {
     document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('locationPage').classList.add('hidden');
+    document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.remove('hidden');
     refreshShopList();
 }
 
-function goToHome() {
-    document.getElementById('homePage').classList.remove('hidden');
+function goToLocationPage(location) {
+    currentLocation = location;
+    currentCategory = null;
+    
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('locationPage').classList.remove('hidden');
+    document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.add('hidden');
     document.getElementById('adminPage').classList.add('hidden');
-    closeSearchModal();
+    
+    document.getElementById('locationTitle').textContent = location;
+    document.getElementById('locationIntroTitle').textContent = location;
+    document.getElementById('locationIntroDesc').textContent = location + '의 소상공인을 매우지합니다.';
+    
+    renderLocationPage(location);
+}
+
+function goToCategoryFilterPage(location, category) {
+    currentLocation = location;
+    currentCategory = category;
+    
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('locationPage').classList.add('hidden');
+    document.getElementById('categoryFilterPage').classList.remove('hidden');
+    document.getElementById('detailPage').classList.add('hidden');
+    document.getElementById('adminPage').classList.add('hidden');
+    
+    const categoryLabel = getCategoryLabel(category);
+    document.getElementById('filterTitle').textContent = categoryLabel;
+    document.getElementById('filterBreadcrumb').textContent = `${location} > ${categoryLabel}`;
+    document.getElementById('filterPageTitle').textContent = '직접 보고 방문하세요';
+    document.getElementById('filterPageDesc').textContent = location + '의 ' + categoryLabel + '을(를) 매우지합니다.';
+    
+    renderCategoryFilterPage(location, category);
 }
 
 function goToDetail(shopId) {
     const shop = shopsData.find(s => s.id === shopId);
     if (!shop) return;
 
-    // 조회수 증가
     shop.views = (shop.views || 0) + 1;
     saveToStorage();
 
     document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('locationPage').classList.add('hidden');
+    document.getElementById('categoryFilterPage').classList.add('hidden');
     document.getElementById('detailPage').classList.remove('hidden');
     document.getElementById('adminPage').classList.add('hidden');
+    
     renderDetailPage(shop);
 }
 
@@ -113,6 +175,67 @@ function renderPopularShops() {
             </div>
         </div>
     `).join('');
+}
+
+// ==================== 지역별 페이지 ====================
+function renderLocationPage(location) {
+    const categories = ['nail', 'hair', 'glasses', 'vintage', 'hanbok', 'goods'];
+    const categoryMap = {
+        nail: '💅 네일샵',
+        hair: '✂️ 헤어샵',
+        glasses: '👓 안경점',
+        vintage: '👔 빈티지샵',
+        hanbok: '👗 한복대여',
+        goods: '🎁 굿즈샵'
+    };
+
+    let html = '';
+    
+    categories.forEach(category => {
+        const shopsInCategory = shopsData.filter(s => s.location === location && s.category === category);
+        
+        if (shopsInCategory.length > 0) {
+            html += `
+                <div class="category-section-block">
+                    <div class="category-section-title" onclick="goToCategoryFilterPage('${location}', '${category}')" style="cursor: pointer;">
+                        ${categoryMap[category]}
+                    </div>
+                    <div class="shops-grid">
+                        ${shopsInCategory.map(shop => `
+                            <div class="shop-card" onclick="goToDetail(${shop.id})">
+                                <img src="${shop.images[0]}" alt="${shop.name}" class="shop-card-image">
+                                <div class="shop-card-info">
+                                    <div class="shop-card-name">${shop.name}</div>
+                                    <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
+                                    <div class="shop-card-location">조회수: ${shop.views}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+    });
+
+    document.getElementById('categorySections').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">이 지역의 가게가 없습니다.</p>';
+}
+
+// ==================== 카테고리 필터 페이지 ====================
+function renderCategoryFilterPage(location, category) {
+    const shops = shopsData.filter(s => s.location === location && s.category === category);
+    
+    const html = shops.map(shop => `
+        <div class="shop-card" onclick="goToDetail(${shop.id})">
+            <img src="${shop.images[0]}" alt="${shop.name}" class="shop-card-image">
+            <div class="shop-card-info">
+                <div class="shop-card-name">${shop.name}</div>
+                <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
+                <div class="shop-card-location">조회수: ${shop.views}</div>
+            </div>
+        </div>
+    `).join('');
+
+    document.getElementById('filterShopsGrid').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">등록된 가게가 없습니다.</p>';
 }
 
 // ==================== 검색 기능 ====================
@@ -145,7 +268,7 @@ document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
         </div>
     `).join('');
 
-    document.getElementById('searchResults').innerHTML = html || '<div style="padding: 20px; text-align: center; color: #999;">결과가 없습니다</div>';
+    document.getElementById('searchResults').innerHTML = html || '<div style="padding: 20px; text-align: center; color: #6c757d;">결과가 없습니다</div>';
 });
 
 document.getElementById('searchModal')?.addEventListener('click', (e) => {
@@ -157,12 +280,6 @@ function filterByCategory(category) {
     openSearchModal();
     const categoryLabel = getCategoryLabel(category);
     document.getElementById('searchModalInput').value = categoryLabel;
-    document.getElementById('searchModalInput').dispatchEvent(new Event('input'));
-}
-
-function filterByLocation(location) {
-    openSearchModal();
-    document.getElementById('searchModalInput').value = location;
     document.getElementById('searchModalInput').dispatchEvent(new Event('input'));
 }
 
@@ -244,28 +361,7 @@ function renderDetailPage(shop) {
     `;
 
     document.getElementById('detailContent').innerHTML = html;
-
-    // 지도 렌더링
-    renderMap(shop.latitude, shop.longitude);
-
-    // 캐러셀
     setupCarousel(shop.images.length);
-}
-
-function renderMap(lat, lng) {
-    const mapDiv = document.getElementById('map');
-    if (typeof google !== 'undefined') {
-        const map = new google.maps.Map(mapDiv, {
-            zoom: 15,
-            center: { lat, lng }
-        });
-        new google.maps.Marker({
-            position: { lat, lng },
-            map: map
-        });
-    } else {
-        mapDiv.innerHTML = `<div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f0f0f0; color:#999;">지도를 불러올 수 없습니다</div>`;
-    }
 }
 
 function openGoogleMap(lat, lng) {
@@ -278,7 +374,6 @@ function setupCarousel(totalSlides) {
 
     document.getElementById('totalSlides').textContent = totalSlides;
 
-    // 좌우 스와이프
     let startX = 0;
     carousel.parentElement.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
@@ -299,7 +394,7 @@ function setupCarousel(totalSlides) {
 // ==================== 관리자 ====================
 function switchAdminTab(tab) {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('[id$="Tab"]').forEach(t => t.classList.add('hidden'));
+    document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.add('hidden'));
 
     event.target.classList.add('active');
     document.getElementById(tab + 'Tab').classList.remove('hidden');

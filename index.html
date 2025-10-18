@@ -13,12 +13,19 @@
     <!-- HOME 페이지 -->
     <div id="homePage">
     <header>
-         <img class="logo" src="/img/logo.png" alt="로컬가이드">
+         <img class="logo" src="/img/logo.png" alt="Kotreet">
     </header>
 
-        <section class="search-section">
-            <input type="text" class="search-box" placeholder="검색을 시작해보세요." id="searchInput" onclick="openSearchModal()">
-        </section>
+      <section class="search-section"></section>
+      <div class="search-box-wrapper">
+         <button class="search-box" id="searchInput" onclick="openSearchModal()">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
+             aria-hidden="true" role="presentation" focusable="false">
+            <path d="M13 0a13 13 0 0 1 10.5 20.67l7.91 7.92-2.82 2.82-7.92-7.91A12.94 12.94 0 0 1 13 26a13 13 0 1 1 0-26zm0 4a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"></path>
+        </svg>
+        <span class="search-placeholder">검색을 시작해보세요</span>
+    </button>
+</div>
 
         <section class="title-section">
             <h2>어디를 찾으시나요?</h2>
@@ -92,14 +99,40 @@
             <div class="popular-scroll" id="popularScroll"></div>
         </section>
 
-        <footer>
-            <p><strong>Kotreet</strong></p>
-            <p>Introducing Korea’s hidden gems.</p>
-            <div class="footer-divider"></div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Kotreet. All rights reserved.</p>
+    <footer>
+    <div class="footer-content">
+        <img class="footer-logo" src="/img/logo.png" alt="Kotreet">
+        
+        <div class="footer-top-section">
+            <div class="footer-links-group">
+                <a href="#">이용약관</a>
+                <a href="#">개인정보 처리방침</a>
             </div>
-        </footer>
+        </div>
+        
+        <div class="footer-divider"></div>
+        
+        <div class="footer-company-info">
+            <p>상호명 Kotreetㅣ대표 최준영ㅣ개인정보보호책임자 최준영ㅣ
+                사업자등록번호 123-45-67890ㅣ통신판매업신고번호 2024-서울강남-12345ㅣ
+                주소 서울특별시 중랑구 면목동 584-10 2층ㅣ
+                이메일 contact@kotreet.comㅣ고객문의 010-3389-2678</p>
+            <p>코트릿은 광고대행업체로 코트릿 플랫폼을 통하여 판매자와 고객 사이에 이루어지는 통신판매의 당사자가 아닙니다. 
+            코트릿을 통하여 방문하는 업체 서비스에 관한 의무와 책임은 해당 서비스를 제공하는 업체에게 있습니다.</p>
+                </div>
+        <p class="footer-copyright">© 2025 Kotreet Inc. All rights reserved</p>
+        <div class="footer-controls">
+                <button class="footer-select-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    한국어
+                </button>
+                <span class="footer-currency">₩ KRW</span>
+            </div>
+    </div>
+</footer>
     </div>
 
     <!-- 검색 모달 -->

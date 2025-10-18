@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로컬가이드 - 한국 소상공인 플랫폼</title>
+    <title>Korea hidden gem - Kotreet</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
@@ -12,10 +12,9 @@
 <body>
     <!-- HOME 페이지 -->
     <div id="homePage">
-        <header>
-            <img class="logo" src="/img/logo.png">
-            <button class="admin-btn" onclick="goToAdmin()">관리</button>
-        </header>
+    <header>
+         <img class="logo" src="/img/logo.png" alt="로컬가이드">
+    </header>
 
         <section class="search-section">
             <input type="text" class="search-box" placeholder="검색을 시작해보세요." id="searchInput" onclick="openSearchModal()">
@@ -126,141 +125,6 @@
             <button class="search-modal-close" onclick="closeSearchModal()">✕</button>
         </div>
         <div class="search-modal-content" id="searchResults"></div>
-    </div>
-
-    <!-- 관리자 페이지 -->
-    <div id="adminPage" class="hidden">
-        <div class="admin-header">
-            <h1>관리자 대시보드</h1>
-            <button class="back-btn" onclick="goToHome()">✕</button>
-        </div>
-
-        <div class="admin-tabs">
-            <button class="admin-tab active" onclick="switchAdminTab('add')">가게 추가</button>
-            <button class="admin-tab" onclick="switchAdminTab('list')">가게 관리</button>
-            <button class="admin-tab" onclick="switchAdminTab('export')">데이터 관리</button>
-        </div>
-
-        <!-- 가게 추가 탭 -->
-        <div id="addTab" class="admin-tab-content">
-            <div class="admin-form">
-                <div class="form-group">
-                    <label>가게명</label>
-                    <input type="text" id="adminShopName" placeholder="예: 다비치 안경 명동점">
-                </div>
-                <div class="form-group">
-                    <label>카테고리</label>
-                    <select id="adminCategory">
-                        <option value="">선택하세요</option>
-                        <option value="nail">네일샵</option>
-                        <option value="hair">헤어샵</option>
-                        <option value="glasses">안경점</option>
-                        <option value="vintage">빈티지샵</option>
-                        <option value="hanbok">한복대여</option>
-                        <option value="goods">굿즈샵</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>지역</label>
-                    <select id="adminLocation">
-                        <option value="">선택하세요</option>
-                        <option value="홍대">홍대</option>
-                        <option value="명동">명동</option>
-                        <option value="강남">강남</option>
-                        <option value="성수">성수</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>가격대 (숫자만 입력, 예: 50000)</label>
-                    <input type="number" id="adminPrice" placeholder="50000">
-                </div>
-                <div class="form-group">
-                    <label>썸네일 이미지 (카테고리 페이지용, 800x800px)</label>
-                    <input type="text" id="adminThumbnail" placeholder="https://example.com/thumbnail.jpg">
-                </div>
-                <div class="form-group">
-                    <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
-                    <input type="text" id="adminMainImage" placeholder="https://example.com/main-image.jpg">
-                </div>
-                <div class="form-group">
-                    <label>추가 이미지 URL (쉼표로 구분하여 여러 개 입력)</label>
-                    <input type="text" id="adminImages" placeholder="https://example.com/img1.jpg,https://example.com/img2.jpg">
-                </div>
-                <div class="form-group">
-                    <label>동영상 URL (YouTube/Vimeo embed URL)</label>
-                    <input type="text" id="adminVideo" placeholder="https://www.youtube.com/embed/...">
-                </div>
-                <div class="form-group">
-                    <label>분위기</label>
-                    <select id="adminMood">
-                        <option value="">선택하세요</option>
-                        <option value="busy">분주한 분위기</option>
-                        <option value="quiet">조용한 분위기</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>소통</label>
-                    <select id="adminComm">
-                        <option value="">선택하세요</option>
-                        <option value="easy">의사소통 원활</option>
-                        <option value="limited">의사소통 제한</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>결제 수단</label>
-                    <select id="adminPayment">
-                        <option value="">선택하세요</option>
-                        <option value="both">카드/현금 모두 가능</option>
-                        <option value="cash">현금만</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>영업시간</label>
-                    <input type="text" id="adminHours" placeholder="화~일 11:00 AM - 9:00 PM / 월요일 휴무">
-                </div>
-                <div class="form-group">
-                    <label>점주 소개</label>
-                    <textarea id="adminDescription" placeholder="가게에 대한 설명을 작성해주세요"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Google Maps 위도</label>
-                    <input type="text" id="adminLat" placeholder="37.5665">
-                </div>
-                <div class="form-group">
-                    <label>Google Maps 경도</label>
-                    <input type="text" id="adminLng" placeholder="126.9780">
-                </div>
-                <div class="form-buttons">
-                    <button class="btn btn-primary" onclick="addShop()">가게 추가</button>
-                    <button class="btn btn-secondary" onclick="resetForm()">초기화</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 가게 관리 탭 -->
-        <div id="listTab" class="admin-tab-content hidden">
-            <div class="shop-list" id="shopList"></div>
-        </div>
-
-        <!-- 데이터 관리 탭 -->
-        <div id="exportTab" class="admin-tab-content hidden">
-            <div class="admin-form">
-                <div class="form-group">
-                    <label>📥 JSON 데이터 가져오기</label>
-                    <input type="file" id="jsonFile" accept=".json" onchange="importJSON(event)">
-                </div>
-                <div class="form-buttons">
-                    <button class="btn btn-primary" onclick="exportJSON()">📥 JSON 다운로드</button>
-                </div>
-                <div style="margin-top: 20px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; line-height: 1.6; color: #666;">
-                    <p><strong>💡 사용 방법:</strong></p>
-                    <p>1. "JSON 다운로드"로 현재 데이터를 백업하세요</p>
-                    <p>2. 파일을 열어서 데이터를 수정하거나 새로 추가하세요</p>
-                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하세요</p>
-                    <p>4. GitHub에 JSON 파일을 업로드하면 됩니다</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- 플로팅 버튼 (모든 페이지에서 표시) -->

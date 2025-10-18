@@ -20,21 +20,24 @@ header {
     padding: 12px 16px;
     border-bottom: 1px solid #e9ecef;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
     height: 50px;
+}
 
+header.header-with-back {
+    justify-content: space-between;
 }
 
 header .logo {
-    height: 100%;                /* 부모(헤더)의 높이에 맞춤 */
-    max-height: 100%;            /* 안전장치 */
-    width: auto;                 /* 비율 유지 */
-    display: block;              /* 인라인 간격 제거 */
-    object-fit: contain; 
+    height: 100%;
+    max-height: 100%;
+    width: auto;
+    display: block;
+    object-fit: contain;
 }
 
 header .header-back {
@@ -44,25 +47,13 @@ header .header-back {
     cursor: pointer;
     padding: 8px;
     color: #343a40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-header .header-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #343a40;
-}
-
-.admin-btn {
-    appearance: none;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 12px;
-  font: 600 13px/1.2 system-ui, -apple-system, Segoe UI, Roboto, 'Noto Sans KR', sans-serif;
-  cursor: pointer;
-}
-
-.admin-btn:active {
-    background: #212529;
+header .header-back:active {
+    opacity: 0.6;
 }
 
 /* ==================== HOME PAGE ==================== */
@@ -559,25 +550,45 @@ header .header-title {
     background: white;
 }
 
-.detail-header {
+/* ==================== 상세 페이지 ==================== */
+#detailPage {
     background: white;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #e9ecef;
-    position: sticky;
-    top: 0;
-    z-index: 100;
 }
 
-.detail-back-btn {
-    background: none;
+.detail-floating-nav {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 200;
+    pointer-events: none;
+}
+
+.detail-nav-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
     border: none;
-    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+    pointer-events: auto;
     color: #343a40;
+}
+
+.detail-nav-btn:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 1);
+}
+
+.detail-nav-btn svg {
+    display: block;
 }
 
 .detail-carousel {
@@ -733,6 +744,28 @@ header .header-title {
     margin-bottom: 20px;
     padding-bottom: 16px;
     border-bottom: 1px solid #e9ecef;
+}
+.admin-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.admin-header-custom h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #343a40;
+}
+
+.admin-header-custom .back-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #343a40;
 }
 
 .admin-header h1 {

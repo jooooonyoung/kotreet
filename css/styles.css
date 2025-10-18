@@ -269,12 +269,14 @@ header .header-back:active {
     align-items: center;
     justify-content: center;
     background: #fff;
+    overflow: hidden; 
 }
 
 .category-icon img {
     display: block;
-    width: auto;
-    height: 30%;
+    max-width: 80%; 
+    max-height: 60%; 
+    object-fit: contain;     
 }
 
 .category-label {

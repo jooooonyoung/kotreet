@@ -184,3 +184,43 @@ window.addEventListener('scroll', () => {
         }
     }
 });
+
+window.addEventListener('load', () => {
+    if (localStorage.getItem('shopsData')) {
+        shopsData = JSON.parse(localStorage.getItem('shopsData'));
+    }
+    
+    document.getElementById('locationTitle').textContent = currentLocation;
+    
+    // 초기 스크롤 위치 저장
+    const scrollContainer = document.querySelector('.category-tabs-scroll');
+    const initialScrollLeft = scrollContainer ? scrollContainer.scrollLeft : 0;
+    
+    // 카테고리 필터링에 따라 렌더링
+    if (currentCategory === 'all') {
+        renderAllCategories();
+        highlightActiveTab(null);
+    } else {
+        renderSingleCategory(currentCategory);
+        highlightActiveTab(currentCategory);
+        
+        // 스크롤 위치 복원 후 중앙 정렬
+        if (scrollContainer) {
+            scrollContainer.scrollLeft = initialScrollLeft;
+        }
+        
+        setTimeout(() => {
+            const activeButton = document.querySelector('.category-tab.active');
+            if (activeButton && scrollContainer) {
+                const buttonLeft = activeButton.offsetLeft;
+                const buttonWidth = activeButton.offsetWidth;
+                const containerWidth = scrollContainer.offsetWidth;
+                
+                scrollContainer.scrollTo({
+                    left: buttonLeft - (containerWidth / 2) + (buttonWidth / 2),
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
+    }
+});

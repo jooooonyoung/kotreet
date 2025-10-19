@@ -36,7 +36,7 @@ header.header-with-back {
 
 header .logo {
     height: 100%;
-    max-height: 100%;
+    max-height: 60%;
     width: auto;
     display: block;
     object-fit: contain;
@@ -1139,23 +1139,33 @@ footer {
 }
 
 .category-tabs-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #343a40;
-    margin-bottom: 12px;
+    display: none;  /* 카테고리 문구 숨김 */
 }
 
 .category-tabs-scroll {
     display: flex;
-    flex-wrap: wrap;
+    overflow-x: auto;
     gap: 10px;
+    scroll-behavior: auto;
+}
+
+.category-tabs-scroll::after {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 16px;
+}
+
+.category-tabs-scroll::-webkit-scrollbar {
+    display: none;  /* 스크롤바 숨김 */
 }
 
 .category-tab {
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;  /* 추가 */
+    gap: 4px;
     padding: 8px 16px;
     background: white;
     border: 1px solid #e0e0e0;
@@ -1169,22 +1179,41 @@ footer {
     transition: all 0.2s;
 }
 
+.category-tab-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;  /* 추가: 아이콘 크기 고정 */
+}
+
+.category-tab-icon img {
+    max-width: 20px;
+    max-height: 16px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;  /* 추가: 이미지 하단 여백 제거 */
+}
+
+.category-tab span {
+    display: flex;  /* 추가 */
+    align-items: center;  /* 추가 */
+}
+
 .category-tab.active {
     background: #343a40;
     color: white;
     border-color: #343a40;
 }
 
-.category-tab.active .category-tab-dot {
-    background: white;
+.category-tab.active .category-tab-icon img {
+    filter: brightness(0) invert(1);
 }
 
 .category-tab-dot {
-    width: 14px;
-    height: 14px;
-    background: #cd2e3a;
-    border-radius: 50%;
-    flex-shrink: 0;
+    display: none;
 }
 
 .category-section {

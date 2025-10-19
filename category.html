@@ -26,35 +26,57 @@
         </div>
 
         <!-- 카테고리 탭 -->
-        <div class="category-tabs-section">
-            <h3 class="category-tabs-title">카테고리</h3>
-            <div class="category-tabs-scroll">
-                <button class="category-tab" data-category="nail" onclick="filterCategory('nail')">
-                    <div class="category-tab-dot"></div>
-                    <span>네일샵</span>
-                </button>
-                <button class="category-tab" data-category="glasses" onclick="filterCategory('glasses')">
-                    <div class="category-tab-dot"></div>
-                    <span>안경점</span>
-                </button>
-                <button class="category-tab" data-category="hair" onclick="filterCategory('hair')">
-                    <div class="category-tab-dot"></div>
-                    <span>헤어샵</span>
-                </button>
-                <button class="category-tab" data-category="hanbok" onclick="filterCategory('hanbok')">
-                    <div class="category-tab-dot"></div>
-                    <span>한복대여</span>
-                </button>
-                <button class="category-tab" data-category="vintage" onclick="filterCategory('vintage')">
-                    <div class="category-tab-dot"></div>
-                    <span>빈티지샵</span>
-                </button>
-                <button class="category-tab" data-category="goods" onclick="filterCategory('goods')">
-                    <div class="category-tab-dot"></div>
-                    <span>굿즈샵</span>
-                </button>
+<div class="category-tabs-section">
+    <div class="category-tabs-scroll">
+        <!-- 네일샵 -->
+        <button class="category-tab" data-category="nail" onclick="filterCategory('nail')">
+            <div class="category-tab-icon">
+                <img src="img/icn_nail.png" alt="네일샵">
             </div>
-        </div>
+            <span>네일샵</span>
+        </button>
+        
+        <!-- 안경점 -->
+        <button class="category-tab" data-category="glasses" onclick="filterCategory('glasses')">
+            <div class="category-tab-icon">
+                <img src="img/icn_glasses.png" alt="안경점">
+            </div>
+            <span>안경점</span>
+        </button>
+        
+        <!-- 디저트 카페 -->
+        <button class="category-tab" data-category="hair" onclick="filterCategory('hair')">
+            <div class="category-tab-icon">
+                <img src="img/icn_dessert.png" alt="디저트 카페">
+            </div>
+            <span>디저트 카페</span>
+        </button>
+        
+        <!-- 한복 대여 -->
+        <button class="category-tab" data-category="hanbok" onclick="filterCategory('hanbok')">
+            <div class="category-tab-icon">
+                <img src="img/icn_hanbok.png" alt="한복 대여">
+            </div>
+            <span>한복 대여</span>
+        </button>
+        
+        <!-- 빈티지샵 -->
+        <button class="category-tab" data-category="vintage" onclick="filterCategory('vintage')">
+            <div class="category-tab-icon">
+                <img src="img/icn_vintage.png" alt="빈티지샵">
+            </div>
+            <span>빈티지샵</span>
+        </button>
+        
+        <!-- 굿즈샵 -->
+        <button class="category-tab" data-category="goods" onclick="filterCategory('goods')">
+            <div class="category-tab-icon">
+                <img src="img/icn_goods.png" alt="굿즈샵">
+            </div>
+            <span>굿즈샵</span>
+        </button>
+    </div>
+</div>
 
         <!-- 안경점 섹션 -->
         <div class="category-section" id="glassesSection">

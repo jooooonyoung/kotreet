@@ -8,10 +8,19 @@ currentCategory = urlParams.get('category') || 'nail';
 const categoryLabels = {
     nail: '네일샵',
     glasses: '안경점',
-    hair: '헤어샵',
-    hanbok: '한복대여',
+    hair: '디저트 카페',
+    hanbok: '한복 대여',
     vintage: '빈티지샵',
     goods: '굿즈샵'
+};
+
+const categoryDescriptions = {
+    nail: '한국의 네일샵을 소개합니다.',
+    glasses: '한국의 안경점을 소개합니다.',
+    hair: '한국의 디저트 카페를 소개합니다.',
+    hanbok: '한국의 한복 대여샵을 소개합니다.',
+    vintage: '한국의 빈티지샵을 소개합니다.',
+    goods: '한국의 굿즈샵을 소개합니다.'
 };
 
 window.addEventListener('load', () => {
@@ -20,15 +29,16 @@ window.addEventListener('load', () => {
     }
     
     const categoryLabel = categoryLabels[currentCategory] || '카테고리';
-    document.getElementById('categoryAllTitle').textContent = categoryLabel;
+    const categoryDesc = categoryDescriptions[currentCategory] || '한국의 로컬 가게를 소개합니다.';
+    
     document.getElementById('categoryMainTitle').textContent = categoryLabel;
-    document.getElementById('categoryMainDesc').textContent = `한국의 ${categoryLabel}을 매우지합니다.`;
+    document.getElementById('categoryMainDesc').textContent = categoryDesc;
     
     renderAllCategoryShops();
 });
 
 function renderAllCategoryShops() {
-    // 해당 카테고리의 모든 가게 (전국)
+    // 해당 카테고리의 모든 가게만 필터링
     const shops = shopsData.filter(s => s.category === currentCategory);
     const container = document.getElementById('allCategoryShops');
     
@@ -72,25 +82,3 @@ function openCurrentLocation() {
         window.open('https://www.google.com/maps', '_blank');
     }
 }
-
-// Footer 로드
-fetch('footer.html')
-    .then(response => response.text())
-    .then(data => {
-        const footerContainer = document.getElementById('footer-container');
-        if (footerContainer) {
-            footerContainer.innerHTML = data;
-        }
-    });
-
-// 스크롤 이벤트 (Directions 버튼)
-window.addEventListener('scroll', () => {
-    const floatingBtn = document.querySelector('.floating-btn');
-    if (floatingBtn) {
-        if (window.scrollY > 200) {
-            floatingBtn.classList.add('visible');
-        } else {
-            floatingBtn.classList.remove('visible');
-        }
-    }
-});

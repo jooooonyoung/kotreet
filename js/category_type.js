@@ -8,7 +8,7 @@ currentCategory = urlParams.get('category') || 'nail';
 const categoryLabels = {
     nail: '네일샵',
     glasses: '안경점',
-    hair: '디저트 카페',
+    dessert: '디저트 카페',
     hanbok: '한복 대여',
     vintage: '빈티지샵',
     goods: '굿즈샵'
@@ -17,7 +17,7 @@ const categoryLabels = {
 const categoryDescriptions = {
     nail: '한국의 네일샵을 소개합니다.',
     glasses: '한국의 안경점을 소개합니다.',
-    hair: '한국의 디저트 카페를 소개합니다.',
+    dessert: '한국의 디저트 카페를 소개합니다.',
     hanbok: '한국의 한복 대여샵을 소개합니다.',
     vintage: '한국의 빈티지샵을 소개합니다.',
     goods: '한국의 굿즈샵을 소개합니다.'
@@ -34,7 +34,11 @@ window.addEventListener('load', () => {
         }
     }
     
-    // 나머지 렌더링 로직...
+    // 타이틀과 설명 업데이트
+    document.getElementById('categoryMainTitle').textContent = categoryLabels[currentCategory] || currentCategory;
+    document.getElementById('categoryMainDesc').textContent = categoryDescriptions[currentCategory] || '';
+    
+    renderAllCategoryShops();
 });
 
 function renderAllCategoryShops() {
@@ -44,10 +48,10 @@ function renderAllCategoryShops() {
     
     if (shops.length > 0) {
         container.innerHTML = shops.map(shop => {
-            const shopNo = String(shop.id).padStart(4, '0');
+            const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
             return `
-                <div class="category-shop-card" onclick="goToDetail('${shopNo}')">
-                    <img src="${shop.images[0]}" alt="${shop.name}">
+                <div class="category-shop-card" onclick="goToDetail(${shop.id})">
+                    <img src="${imgUrl}" alt="${shop.name}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                     <div class="category-shop-info">
                         <div class="category-shop-name">${shop.name}</div>
                         <div class="category-shop-price">₩${shop.price.toLocaleString()}~</div>
@@ -61,7 +65,8 @@ function renderAllCategoryShops() {
     }
 }
 
-function goToDetail(shopNo) {
+function goToDetail(shopId) {
+    const shopNo = String(shopId).padStart(4, '0');
     window.location.href = `detail.html?no=${shopNo}`;
 }
 
@@ -82,3 +87,15 @@ function openCurrentLocation() {
         window.open('https://www.google.com/maps', '_blank');
     }
 }
+
+// 스크롤 이벤트 (Directions 버튼)
+window.addEventListener('scroll', () => {
+    const floatingBtn = document.querySelector('.floating-btn');
+    if (floatingBtn) {
+        if (window.scrollY > 200) {
+            floatingBtn.classList.add('visible');
+        } else {
+            floatingBtn.classList.remove('visible');
+        }
+    }
+});

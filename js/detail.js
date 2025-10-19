@@ -10,19 +10,39 @@ window.addEventListener('load', () => {
     if (storedData) {
         try {
             shopsData = JSON.parse(storedData);
+            console.log('로드된 가게 수:', shopsData.length);
+            console.log('전체 가게 목록:', shopsData.map(s => ({id: s.id, name: s.name})));
         } catch (e) {
             console.error('데이터 로드 실패:', e);
             shopsData = [];
         }
     }
     
-    // 나머지 렌더링 로직...
+    if (shopNo) {
+        // shopNo는 "0001", "0002" 형식이므로 숫자로 변환
+        const shopId = parseInt(shopNo, 10);
+        console.log('찾는 가게 ID:', shopId);
+        
+        currentShop = shopsData.find(s => s.id === shopId);
+        console.log('찾은 가게:', currentShop);
+        
+        if (currentShop) {
+            renderDetailPage(currentShop);
+        } else {
+            console.error('가게를 찾을 수 없습니다. shopNo:', shopNo, 'shopId:', shopId);
+            alert('가게 정보를 찾을 수 없습니다. (ID: ' + shopId + ')');
+            window.location.href = 'index.html';
+        }
+    } else {
+        alert('잘못된 접근입니다.');
+        window.location.href = 'index.html';
+    }
 });
 
 function renderDetailPage(shop) {
     const categoryMap = {
         nail: '네일샵',
-        hair: '헤어샵',
+        dessert: '디저트 카페',
         glasses: '안경점',
         vintage: '빈티지샵',
         hanbok: '한복대여',
@@ -55,14 +75,16 @@ function renderDetailPage(shop) {
 
     // 이미지 캐러셀
     const carouselContainer = document.getElementById('carousel');
-    carouselContainer.innerHTML = shop.images.map(img => `
+    const images = shop.images && shop.images.length > 0 ? shop.images : [shop.thumbnail || shop.mainImage];
+    
+    carouselContainer.innerHTML = images.map(img => `
         <div class="carousel-slide">
-            <img src="${img}" alt="${shop.name}">
+            <img src="${img}" alt="${shop.name}" onerror="this.src='https://via.placeholder.com/800x600?text=No+Image'">
         </div>
     `).join('');
     
-    document.getElementById('totalSlides').textContent = shop.images.length;
-    setupCarousel(shop.images.length);
+    document.getElementById('totalSlides').textContent = images.length;
+    setupCarousel(images.length);
 
     // 동영상
     if (shop.video) {
@@ -115,6 +137,37 @@ function openGoogleMap(lat, lng) {
 function openMapLink() {
     if (currentShop && currentShop.latitude && currentShop.longitude) {
         openGoogleMap(currentShop.latitude, currentShop.longitude);
+    }
+}
+
+function shareShop() {
+    if (currentShop) {
+        const url = window.location.href;
+        const title = currentShop.name;
+        const categoryMap = {
+            nail: '네일샵',
+            dessert: '디저트 카페',
+            glasses: '안경점',
+            vintage: '빈티지샵',
+            hanbok: '한복대여',
+            goods: '굿즈샵'
+        };
+        const text = `${currentShop.name} - ${currentShop.location}의 ${categoryMap[currentShop.category]}`;
+
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: text,
+                url: url
+            }).catch(err => console.log('공유 취소'));
+        } else {
+            // 공유 API 미지원시 URL 복사
+            navigator.clipboard.writeText(url).then(() => {
+                alert('링크가 복사되었습니다!');
+            }).catch(() => {
+                alert('링크 복사에 실패했습니다.');
+            });
+        }
     }
 }
 

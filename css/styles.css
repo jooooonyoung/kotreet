@@ -224,8 +224,12 @@ header .header-back:active {
     gap: 10px;
     padding-bottom: 8px;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;  /* 스냅 활성화 */
+    scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    user-select: none; /* 텍스트 선택 방지 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -238,6 +242,7 @@ header .header-back:active {
     flex-shrink: 0;
     width: 8px;
 }
+
 .scroll-container::-webkit-scrollbar-track {
     margin: 0 16px 0 0;
 }
@@ -246,6 +251,16 @@ header .header-back:active {
     background: #ccc;
     border-radius: 2px;
 }
+
+/* 드래그 가능 표시 */
+.scroll-container {
+    cursor: grab;
+}
+
+.scroll-container:active {
+    cursor: grabbing;
+}
+
 
 .location-card {
     flex-shrink: 0;
@@ -500,12 +515,36 @@ header .header-back:active {
     gap: 10px;
     padding: 0 0 10px 0;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;  /* 스냅 활성화 */
+    scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    user-select: none; /* 텍스트 선택 방지 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .popular-scroll::-webkit-scrollbar {
     display: none;
+}
+
+/* 드래그 가능 표시 */
+.popular-scroll {
+    cursor: grab;
+}
+
+.popular-scroll:active {
+    cursor: grabbing;
+}
+
+/* 드래그 중 카드 클릭 방지 */
+.location-card,
+.popular-card {
+    pointer-events: auto;
+}
+
+.scroll-container.dragging .location-card,
+.popular-scroll.dragging .popular-card {
+    pointer-events: none;
 }
 
 .popular-card {

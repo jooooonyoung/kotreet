@@ -10,11 +10,11 @@ const sampleData = [
         category: "glasses",
         location: "명동",
         price: 150000,
-        thumbnail: "/img/main_myeongdong.jpg",
-        mainImage: "/img/main_myeongdong.jpg",
+        thumbnail: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
         images: [
-            "/img/main_myeongdong.jpg",
-            "/img/main_myeongdong.jpg"
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400&h=300&fit=crop"
         ],
         video: "",
         mood: "busy",
@@ -32,11 +32,11 @@ const sampleData = [
         category: "nail",
         location: "홍대",
         price: 50000,
-        thumbnail: "/img/main_hongdae.jpg",
-        mainImage: "/img/main_hongdae.jpg",
+        thumbnail: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
         images: [
-            "/img/main_hongdae.jpg",
-            "/img/main_hongdae.jpg"
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=300&fit=crop"
         ],
         video: "",
         mood: "busy",
@@ -51,14 +51,14 @@ const sampleData = [
     {
         id: 3,
         name: "감성 디저트 강남",
-        category: "dessert",
+        category: "hair",
         location: "강남",
         price: 45000,
-        thumbnail: "/img/main_gangnam.jpg",
-        mainImage: "/img/main_gangnam.jpg",
+        thumbnail: "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
         images: [
-            "/img/main_gangnam.jpg",
-            "/img/main_gangnam.jpg"
+            "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1587241321921-91a834d82eee?w=400&h=300&fit=crop"
         ],
         video: "",
         mood: "quiet",
@@ -76,11 +76,11 @@ const sampleData = [
         category: "vintage",
         location: "성수",
         price: 30000,
-        thumbnail: "/img/main_seongsu.jpg",
-        mainImage: "/img/main_seongsu.jpg",
+        thumbnail: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
         images: [
-            "/img/main_seongsu.jpg",
-            "/img/main_seongsu.jpg"
+            "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1558769132-cb1aea579f15?w=400&h=300&fit=crop"
         ],
         video: "",
         mood: "busy",
@@ -98,11 +98,11 @@ const sampleData = [
         category: "hanbok",
         location: "명동",
         price: 80000,
-        thumbnail: "/img/main_myeongdong.jpg",
-        mainImage: "/img/main_myeongdong.jpg",
+        thumbnail: "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
         images: [
-            "/img/main_myeongdong.jpg",
-            "/img/main_myeongdong.jpg"
+            "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1610810847619-e5c95c5fe3c5?w=400&h=300&fit=crop"
         ],
         video: "",
         mood: "quiet",
@@ -158,12 +158,9 @@ function saveToStorage() {
 
 // ==================== 네비게이션 ====================
 function goToDetail(shopId) {
-    console.log('goToDetail 호출됨, shopId:', shopId);
-    
     const shop = shopsData.find(s => s.id === shopId);
     if (!shop) {
         console.error('가게를 찾을 수 없습니다:', shopId);
-        console.log('현재 shopsData:', shopsData);
         alert('가게 정보를 찾을 수 없습니다.');
         return;
     }
@@ -172,7 +169,6 @@ function goToDetail(shopId) {
     saveToStorage();
 
     const shopNo = String(shopId).padStart(4, '0');
-    console.log('이동할 URL:', `detail.html?no=${shopNo}`);
     window.location.href = `detail.html?no=${shopNo}`;
 }
 
@@ -428,7 +424,7 @@ function importJSON(event) {
 function getCategoryLabel(category) {
     const map = {
         nail: '네일샵',
-        dessert: '디저트 카페',
+        hair: '디저트 카페',
         glasses: '안경점',
         vintage: '빈티지샵',
         hanbok: '한복대여',
@@ -461,4 +457,54 @@ function loadFooter() {
             }
         })
         .catch(err => console.error('Footer load failed:', err));
+}
+
+function applyScrollAcceleration() {
+    const scrollContainers = document.querySelectorAll('.scroll-container, .popular-scroll');
+    scrollContainers.forEach(container => {
+        let isScrolling = false;
+        let startX;
+        let scrollLeft;
+        let velocity = 0;
+        let momentumID;
+        
+        container.addEventListener('touchstart', (e) => {
+            isScrolling = true;
+            startX = e.touches[0].pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+            cancelMomentumTracking();
+        });
+        
+        container.addEventListener('touchmove', (e) => {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const x = e.touches[0].pageX - container.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            const prevScrollLeft = container.scrollLeft;
+            container.scrollLeft = scrollLeft - walk;
+            velocity = container.scrollLeft - prevScrollLeft;
+        });
+        
+        container.addEventListener('touchend', () => {
+            isScrolling = false;
+            beginMomentumTracking();
+        });
+        
+        function beginMomentumTracking() {
+            cancelMomentumTracking();
+            momentumID = requestAnimationFrame(momentumLoop);
+        }
+        
+        function cancelMomentumTracking() {
+            cancelAnimationFrame(momentumID);
+        }
+        
+        function momentumLoop() {
+            container.scrollLeft += velocity;
+            velocity *= 0.95;
+            if (Math.abs(velocity) > 0.5) {
+                momentumID = requestAnimationFrame(momentumLoop);
+            }
+        }
+    });
 }

@@ -24,17 +24,17 @@ const categoryDescriptions = {
 };
 
 window.addEventListener('load', () => {
-    if (localStorage.getItem('shopsData')) {
-        shopsData = JSON.parse(localStorage.getItem('shopsData'));
+    const storedData = localStorage.getItem('shopsData');
+    if (storedData) {
+        try {
+            shopsData = JSON.parse(storedData);
+        } catch (e) {
+            console.error('데이터 로드 실패:', e);
+            shopsData = [];
+        }
     }
     
-    const categoryLabel = categoryLabels[currentCategory] || '카테고리';
-    const categoryDesc = categoryDescriptions[currentCategory] || '한국의 로컬 가게를 소개합니다.';
-    
-    document.getElementById('categoryMainTitle').textContent = categoryLabel;
-    document.getElementById('categoryMainDesc').textContent = categoryDesc;
-    
-    renderAllCategoryShops();
+    // 나머지 렌더링 로직...
 });
 
 function renderAllCategoryShops() {

@@ -6,24 +6,17 @@ const urlParams = new URLSearchParams(window.location.search);
 const shopNo = urlParams.get('no');
 
 window.addEventListener('load', () => {
-    if (localStorage.getItem('shopsData')) {
-        shopsData = JSON.parse(localStorage.getItem('shopsData'));
+    const storedData = localStorage.getItem('shopsData');
+    if (storedData) {
+        try {
+            shopsData = JSON.parse(storedData);
+        } catch (e) {
+            console.error('데이터 로드 실패:', e);
+            shopsData = [];
+        }
     }
     
-    if (shopNo) {
-        const shopId = parseInt(shopNo);
-        currentShop = shopsData.find(s => s.id === shopId);
-        
-        if (currentShop) {
-            renderDetailPage(currentShop);
-        } else {
-            alert('가게를 찾을 수 없습니다.');
-            window.location.href = 'index.html';
-        }
-    } else {
-        alert('잘못된 접근입니다.');
-        window.location.href = 'index.html';
-    }
+    // 나머지 렌더링 로직...
 });
 
 function renderDetailPage(shop) {

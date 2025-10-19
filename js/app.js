@@ -3,8 +3,6 @@ let currentLocation = null;
 let currentCategory = null;
 let previousPage = 'home';
 
-const categoryOrder = ['nail', 'glasses', 'hair', 'hanbok', 'vintage', 'goods'];
-
 const sampleData = [
     {
         id: 1,
@@ -12,8 +10,13 @@ const sampleData = [
         category: "glasses",
         location: "명동",
         price: 150000,
-        images: ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop"],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400&h=300&fit=crop"
+        ],
+        video: "",
         mood: "busy",
         communication: "easy",
         payment: "both",
@@ -29,8 +32,13 @@ const sampleData = [
         category: "nail",
         location: "홍대",
         price: 50000,
-        images: ["https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop"],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=300&fit=crop"
+        ],
+        video: "",
         mood: "busy",
         communication: "easy",
         payment: "both",
@@ -42,17 +50,22 @@ const sampleData = [
     },
     {
         id: 3,
-        name: "감성 헤어 강남",
+        name: "감성 디저트 강남",
         category: "hair",
         location: "강남",
         price: 45000,
-        images: ["https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop"],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1587241321921-91a834d82eee?w=400&h=300&fit=crop"
+        ],
+        video: "",
         mood: "quiet",
         communication: "easy",
         payment: "both",
         hours: "화~일 10:00 AM - 9:00 PM / 월요일 휴무",
-        description: "강남의 감성 헤어샵입니다.",
+        description: "강남의 감성 디저트 카페입니다.",
         latitude: 37.4979,
         longitude: 127.0276,
         views: 750
@@ -63,8 +76,13 @@ const sampleData = [
         category: "vintage",
         location: "성수",
         price: 30000,
-        images: ["https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop"],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1558769132-cb1aea579f15?w=400&h=300&fit=crop"
+        ],
+        video: "",
         mood: "busy",
         communication: "easy",
         payment: "both",
@@ -80,8 +98,13 @@ const sampleData = [
         category: "hanbok",
         location: "명동",
         price: 80000,
-        images: ["https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop"],
-        video: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        thumbnail: "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
+        mainImage: "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
+        images: [
+            "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
+            "https://images.unsplash.com/photo-1610810847619-e5c95c5fe3c5?w=400&h=300&fit=crop"
+        ],
+        video: "",
         mood: "quiet",
         communication: "easy",
         payment: "both",
@@ -95,62 +118,52 @@ const sampleData = [
 
 // ==================== 초기화 ====================
 window.addEventListener('load', () => {
-    // 데이터 로드
-    if (localStorage.getItem('shopsData')) {
-        shopsData = JSON.parse(localStorage.getItem('shopsData'));
+    const storedData = localStorage.getItem('shopsData');
+    if (storedData) {
+        try {
+            shopsData = JSON.parse(storedData);
+            console.log('localStorage에서 로드:', shopsData.length + '개');
+        } catch (e) {
+            console.error('데이터 로드 실패:', e);
+            shopsData = JSON.parse(JSON.stringify(sampleData));
+            saveToStorage();
+        }
     } else {
         shopsData = JSON.parse(JSON.stringify(sampleData));
         saveToStorage();
+        console.log('샘플 데이터 로드:', shopsData.length + '개');
     }
     
-    // 페이지 렌더링
     renderPopularShops();
-    
-    // 스크롤 가속 적용
-    applyScrollAcceleration();
-    
-    // Footer 로드
     loadFooter();
 });
 
-// 스크롤 이벤트 (Directions 버튼)
 window.addEventListener('scroll', () => {
     const floatingBtn = document.querySelector('.floating-btn');
     if (floatingBtn) {
-        if (window.scrollY > 200) {
-            floatingBtn.classList.add('visible');
-        } else {
-            floatingBtn.classList.remove('visible');
-        }
+        floatingBtn.classList.toggle('visible', window.scrollY > 200);
     }
 });
 
 // ==================== 데이터 관리 ====================
 function saveToStorage() {
-    localStorage.setItem('shopsData', JSON.stringify(shopsData));
-}
-
-function getCurrentLocation() {
-    return currentLocation;
+    try {
+        localStorage.setItem('shopsData', JSON.stringify(shopsData));
+        console.log('데이터 저장 완료:', shopsData.length + '개');
+    } catch (e) {
+        console.error('데이터 저장 실패:', e);
+        alert('데이터 저장에 실패했습니다.');
+    }
 }
 
 // ==================== 네비게이션 ====================
-function goToHome() {
-    document.getElementById('homePage').classList.remove('hidden');
-    document.getElementById('adminPage').classList.add('hidden');
-    closeSearchModal();
-    renderPopularShops();
-}
-
-function goToAdmin() {
-    document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('adminPage').classList.remove('hidden');
-    refreshShopList();
-}
-
 function goToDetail(shopId) {
     const shop = shopsData.find(s => s.id === shopId);
-    if (!shop) return;
+    if (!shop) {
+        console.error('가게를 찾을 수 없습니다:', shopId);
+        alert('가게 정보를 찾을 수 없습니다.');
+        return;
+    }
 
     shop.views = (shop.views || 0) + 1;
     saveToStorage();
@@ -160,26 +173,21 @@ function goToDetail(shopId) {
 }
 
 function goBack() {
-    if (previousPage === 'category') {
-        goToLocationPage(currentLocation);
-    } else if (previousPage === 'location') {
-        goToHome();
-    } else {
-        goToHome();
-    }
+    window.history.back();
 }
 
 // ==================== HOME 페이지 ====================
 function renderPopularShops() {
-    const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
     const container = document.getElementById('popularScroll');
     if (!container) return;
     
+    const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
+    
     container.innerHTML = sorted.map(shop => {
-        const shopNo = String(shop.id).padStart(4, '0');
+        const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
         return `
-            <div class="popular-card" onclick="window.location.href='detail.html?no=${shopNo}'">
-                <img src="${shop.images[0]}" alt="${shop.name}">
+            <div class="popular-card" onclick="goToDetail(${shop.id})">
+                <img src="${imgUrl}" alt="${shop.name}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
                 <div class="popular-card-info">
                     <div class="popular-card-name">${shop.name}</div>
                     <div class="popular-card-location">${shop.location}</div>
@@ -271,14 +279,14 @@ function addShop() {
     const mainImage = document.getElementById('adminMainImage').value.trim();
     const additionalImages = document.getElementById('adminImages').value.split(',').map(s => s.trim()).filter(s => s);
     const images = [thumbnail, mainImage, ...additionalImages].filter(s => s);
-    const video = document.getElementById('adminVideo').value;
+    const video = document.getElementById('adminVideo').value.trim();
     const mood = document.getElementById('adminMood').value;
     const communication = document.getElementById('adminComm').value;
     const payment = document.getElementById('adminPayment').value;
-    const hours = document.getElementById('adminHours').value;
-    const description = document.getElementById('adminDescription').value;
-    const latitude = parseFloat(document.getElementById('adminLat').value);
-    const longitude = parseFloat(document.getElementById('adminLng').value);
+    const hours = document.getElementById('adminHours').value.trim();
+    const description = document.getElementById('adminDescription').value.trim();
+    const latitude = parseFloat(document.getElementById('adminLat').value) || 0;
+    const longitude = parseFloat(document.getElementById('adminLng').value) || 0;
 
     if (!name || !category || !location || !price || !thumbnail || !mainImage || !mood || !communication || !payment) {
         alert('모든 필수 항목을 입력하세요');
@@ -287,10 +295,21 @@ function addShop() {
 
     const newShop = {
         id: Math.max(...shopsData.map(s => s.id), 0) + 1,
-        name, category, location, price, 
-        thumbnail, mainImage,
-        images, video, mood,
-        communication, payment, hours, description, latitude, longitude,
+        name,
+        category,
+        location,
+        price,
+        thumbnail,
+        mainImage,
+        images,
+        video,
+        mood,
+        communication,
+        payment,
+        hours,
+        description,
+        latitude,
+        longitude,
         views: 0
     };
 
@@ -298,7 +317,8 @@ function addShop() {
     saveToStorage();
     resetForm();
     renderPopularShops();
-    alert('가게가 추가되었습니다!');
+    refreshShopList();
+    alert('가게가 추가되었습니다!\n\n가게명: ' + newShop.name + '\n카테고리: ' + getCategoryLabel(newShop.category) + '\n지역: ' + newShop.location);
 }
 
 function resetForm() {
@@ -317,7 +337,7 @@ function refreshShopList() {
         <div class="shop-item">
             <div class="shop-item-info">
                 <div class="shop-item-name">${shop.name}</div>
-                <div class="shop-item-meta">${getCategoryLabel(shop.category)} • ${shop.location} • 조회수: ${shop.views}</div>
+                <div class="shop-item-meta">${getCategoryLabel(shop.category)} • ${shop.location} • 조회수: ${shop.views || 0}</div>
             </div>
             <div class="shop-item-actions">
                 <button class="shop-item-btn shop-item-edit" onclick="editShop(${shop.id})">수정</button>
@@ -347,15 +367,15 @@ function editShop(id) {
     document.getElementById('adminPrice').value = shop.price;
     document.getElementById('adminThumbnail').value = shop.thumbnail || '';
     document.getElementById('adminMainImage').value = shop.mainImage || '';
-    document.getElementById('adminImages').value = shop.images.slice(2).join(',');
+    document.getElementById('adminImages').value = (shop.images && shop.images.length > 2) ? shop.images.slice(2).join(',') : '';
     document.getElementById('adminVideo').value = shop.video || '';
     document.getElementById('adminMood').value = shop.mood;
     document.getElementById('adminComm').value = shop.communication;
     document.getElementById('adminPayment').value = shop.payment;
-    document.getElementById('adminHours').value = shop.hours;
-    document.getElementById('adminDescription').value = shop.description;
-    document.getElementById('adminLat').value = shop.latitude;
-    document.getElementById('adminLng').value = shop.longitude;
+    document.getElementById('adminHours').value = shop.hours || '';
+    document.getElementById('adminDescription').value = shop.description || '';
+    document.getElementById('adminLat').value = shop.latitude || '';
+    document.getElementById('adminLng').value = shop.longitude || '';
 
     shopsData = shopsData.filter(s => s.id !== id);
     saveToStorage();
@@ -404,7 +424,7 @@ function importJSON(event) {
 function getCategoryLabel(category) {
     const map = {
         nail: '네일샵',
-        hair: '헤어샵',
+        hair: '디저트 카페',
         glasses: '안경점',
         vintage: '빈티지샵',
         hanbok: '한복대여',
@@ -445,23 +465,46 @@ function applyScrollAcceleration() {
         let isScrolling = false;
         let startX;
         let scrollLeft;
+        let velocity = 0;
+        let momentumID;
         
         container.addEventListener('touchstart', (e) => {
             isScrolling = true;
             startX = e.touches[0].pageX - container.offsetLeft;
             scrollLeft = container.scrollLeft;
+            cancelMomentumTracking();
         });
         
         container.addEventListener('touchmove', (e) => {
             if (!isScrolling) return;
             e.preventDefault();
             const x = e.touches[0].pageX - container.offsetLeft;
-            const walk = (x - startX) * 1.2;  // 2.5 → 1.2로 변경 (더 부드럽게)
+            const walk = (x - startX) * 1.5;
+            const prevScrollLeft = container.scrollLeft;
             container.scrollLeft = scrollLeft - walk;
+            velocity = container.scrollLeft - prevScrollLeft;
         });
         
         container.addEventListener('touchend', () => {
             isScrolling = false;
+            beginMomentumTracking();
         });
+        
+        function beginMomentumTracking() {
+            cancelMomentumTracking();
+            momentumID = requestAnimationFrame(momentumLoop);
+        }
+        
+        function cancelMomentumTracking() {
+            cancelAnimationFrame(momentumID);
+        }
+        
+        function momentumLoop() {
+            container.scrollLeft += velocity;
+            velocity *= 0.95;
+            if (Math.abs(velocity) > 0.5) {
+                momentumID = requestAnimationFrame(momentumLoop);
+            }
+        }
     });
 }

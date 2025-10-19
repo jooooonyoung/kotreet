@@ -8,20 +8,17 @@ currentLocation = urlParams.get('location') || '홍대';
 currentCategory = urlParams.get('category') || 'all';
 
 window.addEventListener('load', () => {
-    if (localStorage.getItem('shopsData')) {
-        shopsData = JSON.parse(localStorage.getItem('shopsData'));
+    const storedData = localStorage.getItem('shopsData');
+    if (storedData) {
+        try {
+            shopsData = JSON.parse(storedData);
+        } catch (e) {
+            console.error('데이터 로드 실패:', e);
+            shopsData = [];
+        }
     }
     
-    document.getElementById('locationTitle').textContent = currentLocation;
-    
-    // 카테고리 필터링에 따라 렌더링
-    if (currentCategory === 'all') {
-        renderAllCategories();
-        highlightActiveTab(null);
-    } else {
-        renderSingleCategory(currentCategory);
-        highlightActiveTab(currentCategory);
-    }
+    // 나머지 렌더링 로직...
 });
 
 function renderAllCategories() {

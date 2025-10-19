@@ -456,7 +456,7 @@ function applyScrollAcceleration() {
             if (!isScrolling) return;
             e.preventDefault();
             const x = e.touches[0].pageX - container.offsetLeft;
-            const walk = (x - startX) * 2.5;  // 2.5배 속도
+            const walk = (x - startX) * 1.2;  // 2.5 → 1.2로 변경 (더 부드럽게)
             container.scrollLeft = scrollLeft - walk;
         });
         

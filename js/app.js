@@ -3,7 +3,6 @@ let currentLocation = null;
 let currentCategory = null;
 let previousPage = 'home';
 
-// 카테고리 순서 고정
 const categoryOrder = ['nail', 'glasses', 'hair', 'hanbok', 'vintage', 'goods'];
 
 const sampleData = [
@@ -94,16 +93,39 @@ const sampleData = [
     }
 ];
 
+// ==================== 초기화 ====================
 window.addEventListener('load', () => {
+    // 데이터 로드
     if (localStorage.getItem('shopsData')) {
         shopsData = JSON.parse(localStorage.getItem('shopsData'));
     } else {
         shopsData = JSON.parse(JSON.stringify(sampleData));
         saveToStorage();
     }
+    
+    // 페이지 렌더링
     renderPopularShops();
+    
+    // 스크롤 가속 적용
+    applyScrollAcceleration();
+    
+    // Footer 로드
+    loadFooter();
 });
 
+// 스크롤 이벤트 (Directions 버튼)
+window.addEventListener('scroll', () => {
+    const floatingBtn = document.querySelector('.floating-btn');
+    if (floatingBtn) {
+        if (window.scrollY > 200) {
+            floatingBtn.classList.add('visible');
+        } else {
+            floatingBtn.classList.remove('visible');
+        }
+    }
+});
+
+// ==================== 데이터 관리 ====================
 function saveToStorage() {
     localStorage.setItem('shopsData', JSON.stringify(shopsData));
 }
@@ -126,37 +148,6 @@ function goToAdmin() {
     refreshShopList();
 }
 
-function goToLocationPage(location) {
-    currentLocation = location;
-    currentCategory = null;
-    previousPage = 'location';
-    
-    document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('locationPage').classList.remove('hidden');
-    document.getElementById('categoryFilterPage').classList.add('hidden');
-    document.getElementById('detailPage').classList.add('hidden');
-    document.getElementById('adminPage').classList.add('hidden');
-    
-    document.getElementById('locationTitle').textContent = location;
-    renderLocationPage(location);
-}
-
-function goToCategoryPage(category, location) {
-    currentCategory = category;
-    currentLocation = location;
-    previousPage = 'category';
-    
-    document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('locationPage').classList.add('hidden');
-    document.getElementById('categoryFilterPage').classList.remove('hidden');
-    document.getElementById('detailPage').classList.add('hidden');
-    document.getElementById('adminPage').classList.add('hidden');
-    
-    const categoryLabel = getCategoryLabel(category);
-    document.getElementById('filterTitle').textContent = categoryLabel;
-    renderCategoryFilterPage(location, category);
-}
-
 function goToDetail(shopId) {
     const shop = shopsData.find(s => s.id === shopId);
     if (!shop) return;
@@ -164,7 +155,6 @@ function goToDetail(shopId) {
     shop.views = (shop.views || 0) + 1;
     saveToStorage();
 
-    // 4자리 숫자로 변환
     const shopNo = String(shopId).padStart(4, '0');
     window.location.href = `detail.html?no=${shopNo}`;
 }
@@ -183,6 +173,8 @@ function goBack() {
 function renderPopularShops() {
     const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
     const container = document.getElementById('popularScroll');
+    if (!container) return;
+    
     container.innerHTML = sorted.map(shop => {
         const shopNo = String(shop.id).padStart(4, '0');
         return `
@@ -197,78 +189,28 @@ function renderPopularShops() {
     }).join('');
 }
 
-// ==================== 지역별 페이지 ====================
-function renderLocationPage(location) {
-    const categories = ['nail', 'glasses', 'hair', 'hanbok', 'vintage', 'goods'];
-    const categoryLabels = {
-        nail: '네일샵',
-        glasses: '안경점',
-        hair: '헤어샵',
-        hanbok: '한복대여',
-        vintage: '빈티지샵',
-        goods: '굿즈샵'
-    };
-
-    let html = '';
-    
-    categories.forEach(category => {
-        const shopsInCategory = shopsData.filter(s => s.location === location && s.category === category);
-        
-        html += `
-            <div class="category-shops-section">
-                <div class="category-shops-title">${categoryLabels[category]}</div>
-                <div class="category-shops-desc">${location}의 ${categoryLabels[category]}은 매우지합니다.</div>
-                ${shopsInCategory.length > 0 ? `
-                    <div class="shops-grid">
-                        ${shopsInCategory.map(shop => `
-                            <div class="shop-card" onclick="goToDetail(${shop.id})">
-                                <img src="${shop.images[0]}" alt="${shop.name}">
-                                <div class="shop-card-info">
-                                    <div class="shop-card-name">${shop.name}</div>
-                                    <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                ` : '<p style="color: #6c757d; font-size: 13px;">등록된 가게가 없습니다.</p>'}
-            </div>
-        `;
-    });
-
-    document.getElementById('categoryShopsSections').innerHTML = html;
-}
-
-// ==================== 카테고리 필터 페이지 ====================
-function renderCategoryFilterPage(location, category) {
-    const filteredShops = shopsData.filter(s => s.location === location && s.category === category);
-    
-    const html = filteredShops.map(shop => `
-        <div class="shop-card" onclick="goToDetail(${shop.id})">
-            <img src="${shop.images[0]}" alt="${shop.name}">
-            <div class="shop-card-info">
-                <div class="shop-card-name">${shop.name}</div>
-                <div class="shop-card-price">₩${shop.price.toLocaleString()}~</div>
-            </div>
-        </div>
-    `).join('');
-
-    document.getElementById('filteredShopsGrid').innerHTML = html || '<p style="text-align: center; color: #6c757d; padding: 40px 20px;">등록된 가게가 없습니다.</p>';
-}
-
 // ==================== 검색 기능 ====================
 function openSearchModal() {
-    document.getElementById('searchModal').classList.remove('hidden');
-    document.getElementById('searchModalInput').focus();
+    const modal = document.getElementById('searchModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        document.getElementById('searchModalInput')?.focus();
+    }
 }
 
 function closeSearchModal() {
-    document.getElementById('searchModal').classList.add('hidden');
+    const modal = document.getElementById('searchModal');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
 }
 
 document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
+    const resultsContainer = document.getElementById('searchResults');
+    
     if (!query) {
-        document.getElementById('searchResults').innerHTML = '';
+        resultsContainer.innerHTML = '';
         return;
     }
 
@@ -285,126 +227,28 @@ document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
         </div>
     `).join('');
 
-    document.getElementById('searchResults').innerHTML = html || '<div style="padding: 20px; text-align: center; color: #6c757d;">결과가 없습니다</div>';
+    resultsContainer.innerHTML = html || '<div style="padding: 20px; text-align: center; color: #6c757d;">결과가 없습니다</div>';
 });
 
 document.getElementById('searchModal')?.addEventListener('click', (e) => {
     if (e.target.id === 'searchModal') closeSearchModal();
 });
 
-function filterByCategory(category) {
-    openSearchModal();
-    const categoryLabel = getCategoryLabel(category);
-    document.getElementById('searchModalInput').value = categoryLabel;
-    document.getElementById('searchModalInput').dispatchEvent(new Event('input'));
+// ==================== 사이드 메뉴 ====================
+function openSideMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    if (sideMenu) {
+        sideMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
-// ==================== 상세 페이지 ====================
-function renderDetailPage(shop) {
-    const categoryMap = {
-        nail: '네일샵',
-        hair: '헤어샵',
-        glasses: '안경점',
-        vintage: '빈티지샵',
-        hanbok: '한복대여',
-        goods: '굿즈샵'
-    };
-
-    const moodMap = {
-        busy: '분주한 분위기',
-        quiet: '조용한 분위기'
-    };
-
-    const commMap = {
-        easy: '의사소통 원활',
-        limited: '의사소통 제한'
-    };
-
-    const paymentMap = {
-        both: '카드/현금 모두 가능',
-        cash: '현금만'
-    };
-
-    const carouselHtml = shop.images.map((img, idx) => `
-        <div class="carousel-slide">
-            <img src="${img}" alt="이미지 ${idx + 1}">
-        </div>
-    `).join('');
-
-    let html = `
-        <div class="detail-carousel">
-            <div class="carousel-container" id="carousel" style="transform: translateX(0)">
-                ${carouselHtml}
-            </div>
-            <div class="carousel-counter"><span id="currentSlide">1</span>/<span id="totalSlides">${shop.images.length}</span></div>
-        </div>
-
-        <div class="detail-content">
-            <div class="breadcrumb">${shop.location} > ${categoryMap[shop.category]}</div>
-            <div class="detail-title">${shop.name}</div>
-            <div class="detail-price">평균가격 ${shop.price.toLocaleString()}won~</div>
-
-            ${shop.video ? `<div class="detail-video"><iframe src="${shop.video}?autoplay=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>` : ''}
-
-            <div class="detail-features">
-                <div class="feature-item">
-                    <span class="feature-icon">🏪</span>
-                    <span>${moodMap[shop.mood]}</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">💬</span>
-                    <span>${commMap[shop.communication]}</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">💳</span>
-                    <span>${paymentMap[shop.payment]}</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🕐</span>
-                    <span>${shop.hours}</span>
-                </div>
-            </div>
-
-            <div class="detail-section-title">점주 소개</div>
-            <div class="detail-description">${shop.description}</div>
-
-            <div class="detail-section-title">위치</div>
-            <div id="map" class="detail-map"></div>
-            <button class="map-button" onclick="openGoogleMap(${shop.latitude}, ${shop.longitude})">
-                ▶ VIEW MORE
-            </button>
-        </div>
-    `;
-
-    document.getElementById('detailContent').innerHTML = html;
-    setupCarousel(shop.images.length);
-}
-
-function openGoogleMap(lat, lng) {
-    window.open(`https://www.google.com/maps/?q=${lat},${lng}`, '_blank');
-}
-
-function setupCarousel(totalSlides) {
-    let currentSlide = 0;
-    const carousel = document.getElementById('carousel');
-
-    document.getElementById('totalSlides').textContent = totalSlides;
-
-    let startX = 0;
-    carousel.parentElement.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-    });
-
-    carousel.parentElement.addEventListener('touchend', (e) => {
-        const endX = e.changedTouches[0].clientX;
-        if (startX - endX > 50 && currentSlide < totalSlides - 1) {
-            currentSlide++;
-        } else if (endX - startX > 50 && currentSlide > 0) {
-            currentSlide--;
-        }
-        carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
-        document.getElementById('currentSlide').textContent = currentSlide + 1;
-    });
+function closeSideMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    if (sideMenu) {
+        sideMenu.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 
 // ==================== 관리자 ====================
@@ -413,7 +257,7 @@ function switchAdminTab(tab) {
     document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.add('hidden'));
 
     event.target.classList.add('active');
-    document.getElementById(tab + 'Tab').classList.remove('hidden');
+    document.getElementById(tab + 'Tab')?.classList.remove('hidden');
 
     if (tab === 'list') refreshShopList();
 }
@@ -458,22 +302,17 @@ function addShop() {
 }
 
 function resetForm() {
-    document.getElementById('adminShopName').value = '';
-    document.getElementById('adminCategory').value = '';
-    document.getElementById('adminLocation').value = '';
-    document.getElementById('adminPrice').value = '';
-    document.getElementById('adminImages').value = '';
-    document.getElementById('adminVideo').value = '';
-    document.getElementById('adminMood').value = '';
-    document.getElementById('adminComm').value = '';
-    document.getElementById('adminPayment').value = '';
-    document.getElementById('adminHours').value = '';
-    document.getElementById('adminDescription').value = '';
-    document.getElementById('adminLat').value = '';
-    document.getElementById('adminLng').value = '';
+    const fields = ['adminShopName', 'adminCategory', 'adminLocation', 'adminPrice', 'adminThumbnail', 'adminMainImage', 'adminImages', 'adminVideo', 'adminMood', 'adminComm', 'adminPayment', 'adminHours', 'adminDescription', 'adminLat', 'adminLng'];
+    fields.forEach(field => {
+        const element = document.getElementById(field);
+        if (element) element.value = '';
+    });
 }
 
 function refreshShopList() {
+    const container = document.getElementById('shopList');
+    if (!container) return;
+    
     const html = shopsData.map(shop => `
         <div class="shop-item">
             <div class="shop-item-info">
@@ -486,7 +325,7 @@ function refreshShopList() {
             </div>
         </div>
     `).join('');
-    document.getElementById('shopList').innerHTML = html;
+    container.innerHTML = html;
 }
 
 function deleteShop(id) {
@@ -506,8 +345,10 @@ function editShop(id) {
     document.getElementById('adminCategory').value = shop.category;
     document.getElementById('adminLocation').value = shop.location;
     document.getElementById('adminPrice').value = shop.price;
-    document.getElementById('adminImages').value = shop.images.join(',');
-    document.getElementById('adminVideo').value = shop.video;
+    document.getElementById('adminThumbnail').value = shop.thumbnail || '';
+    document.getElementById('adminMainImage').value = shop.mainImage || '';
+    document.getElementById('adminImages').value = shop.images.slice(2).join(',');
+    document.getElementById('adminVideo').value = shop.video || '';
     document.getElementById('adminMood').value = shop.mood;
     document.getElementById('adminComm').value = shop.communication;
     document.getElementById('adminPayment').value = shop.payment;
@@ -519,7 +360,7 @@ function editShop(id) {
     shopsData = shopsData.filter(s => s.id !== id);
     saveToStorage();
 
-    document.querySelectorAll('.admin-tab')[0].click();
+    document.querySelectorAll('.admin-tab')[0]?.click();
     window.scrollTo(0, 0);
     alert('수정 후 "가게 추가" 버튼을 눌러주세요');
 }
@@ -572,7 +413,6 @@ function getCategoryLabel(category) {
     return map[category] || category;
 }
 
-// ==================== 플로팅 버튼 ====================
 function openCurrentLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -587,36 +427,41 @@ function openCurrentLocation() {
     }
 }
 
-// Footer 로드
-fetch('footer.html')
-    .then(response => response.text())
-    .then(data => {
-        const footerContainer = document.getElementById('footer-container');
-        if (footerContainer) {
-            footerContainer.innerHTML = data;
-        }
-    });
-
-// 스크롤 이벤트 (Directions 버튼)
-window.addEventListener('scroll', () => {
-    const floatingBtn = document.querySelector('.floating-btn');
-    if (floatingBtn) {
-        if (window.scrollY > 200) {
-            floatingBtn.classList.add('visible');
-        } else {
-            floatingBtn.classList.remove('visible');
-        }
-    }
-});
-
-// 사이드 메뉴 열기
-function openSideMenu() {
-    document.getElementById('sideMenu').classList.add('active');
-    document.body.style.overflow = 'hidden'; // 스크롤 방지
+function loadFooter() {
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            const footerContainer = document.getElementById('footer-container');
+            if (footerContainer) {
+                footerContainer.innerHTML = data;
+            }
+        })
+        .catch(err => console.error('Footer load failed:', err));
 }
 
-// 사이드 메뉴 닫기
-function closeSideMenu() {
-    document.getElementById('sideMenu').classList.remove('active');
-    document.body.style.overflow = ''; // 스크롤 복원
+function applyScrollAcceleration() {
+    const scrollContainers = document.querySelectorAll('.scroll-container, .popular-scroll');
+    scrollContainers.forEach(container => {
+        let isScrolling = false;
+        let startX;
+        let scrollLeft;
+        
+        container.addEventListener('touchstart', (e) => {
+            isScrolling = true;
+            startX = e.touches[0].pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+        });
+        
+        container.addEventListener('touchmove', (e) => {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const x = e.touches[0].pageX - container.offsetLeft;
+            const walk = (x - startX) * 2.5;  // 2.5배 속도
+            container.scrollLeft = scrollLeft - walk;
+        });
+        
+        container.addEventListener('touchend', () => {
+            isScrolling = false;
+        });
+    });
 }

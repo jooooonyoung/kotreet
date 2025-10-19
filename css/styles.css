@@ -464,19 +464,12 @@ header .header-back:active {
     color: #343a40;
 }
 
-.banner-section {
-    padding: 0;
-    background: white;
-    margin-bottom: 0;
-    border-bottom: 1px solid #e9ecef;
-}
-
 .banner-image {
     width: 100%;
     height: auto;
     display: block;
-    aspect-ratio: 1080 / 472;  /* 비율 고정 */
     object-fit: cover;
+    max-height: 200px;  /* 모바일 최적 높이 */
 }
 
 .popular-section {

@@ -31,6 +31,7 @@ header {
 
 header.header-with-back {
     justify-content: space-between;
+    position: relative;  /* 추가 */
 }
 
 header .logo {
@@ -39,6 +40,10 @@ header .logo {
     width: auto;
     display: block;
     object-fit: contain;
+    position: absolute;  /* 추가 */
+    left: 50%;  /* 추가 */
+    transform: translateX(-50%);  /* 추가 */
+    cursor: pointer;  /* 추가 */
 }
 
 header .header-back {
@@ -51,6 +56,7 @@ header .header-back {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;  /* 추가 - 로고보다 위에 */
 }
 
 header .header-back:active {
@@ -63,7 +69,7 @@ header .header-back:active {
 }
 
 .title-section {
-    padding: 20px 16px;
+    padding: 20px 0px 20px 16px;
     background: white;
     border-bottom: 1px solid #e9ecef;
 }
@@ -78,12 +84,22 @@ header .header-back:active {
     display: flex;
     overflow-x: auto;
     gap: 10px;
-    scroll-behavior: smooth;
     padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;  /* iOS에서 부드러운 스크롤 */
+    scroll-snap-type: x proximity;  /* 가까운 위치에서 스냅 (부드러움) */
+}
+.scroll-container::after {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 8px;  /* 오른쪽 여백 */
 }
 
 .scroll-container::-webkit-scrollbar {
     height: 4px;
+}
+.scroll-container::-webkit-scrollbar-track {
+    margin: 0 16px 0 0;  /* 스크롤바 트랙에만 좌우 마진 추가 */
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
@@ -101,6 +117,7 @@ header .header-back:active {
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
+    scroll-snap-align: start;  /* 카드의 시작점에 스냅 */
 }
 
 .location-card:active {
@@ -1294,7 +1311,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 2px;
     box-shadow: 0 4px 12px rgba(205, 46, 58, 0.4);
     cursor: pointer;
     z-index: 150;
@@ -1302,13 +1319,23 @@ footer {
     font-size: 16px;
     font-weight: 700;
     font-family: 'Noto Sans KR', sans-serif;
+    opacity: 0;
+    transform: translateY(100px);
+    pointer-events: none;
+}
+
+.floating-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .floating-btn:active {
-    transform: scale(0.98);
+    transform: scale(0.98) translateY(0);  /* 수정 */
     background: #a02329;
 }
 
 .floating-btn svg {
     display: block;
+    flex-shrink: 0;  /* 추가 */
 }

@@ -13,8 +13,8 @@
     <!-- HOME 페이지 -->
     <div id="homePage">
     <header>
-         <img class="logo" src="/img/logo.png" alt="Kotreet">
-    </header>
+    <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='index.html'">
+</header>
 
       <section class="search-section"></section>
       <div class="search-box-wrapper">
@@ -99,41 +99,8 @@
             <div class="popular-scroll" id="popularScroll"></div>
         </section>
 
-    <footer>
-    <div class="footer-content">
-        <img class="footer-logo" src="/img/logo.png" alt="Kotreet">
-        
-        <div class="footer-top-section">
-            <div class="footer-links-group">
-                <a href="#">이용약관</a>
-                <a href="#">개인정보 처리방침</a>
-            </div>
-        </div>
-        
-        <div class="footer-divider"></div>
-        
-        <div class="footer-company-info">
-            <p>상호명 Kotreetㅣ대표 최준영ㅣ개인정보보호책임자 최준영ㅣ
-                사업자등록번호 123-45-67890ㅣ통신판매업신고번호 2024-서울강남-12345ㅣ
-                주소 서울특별시 중랑구 면목동 584-10 2층ㅣ
-                이메일 contact@kotreet.comㅣ고객문의 010-3389-2678</p>
-            <p>코트릿은 광고대행업체로 코트릿 플랫폼을 통하여 판매자와 고객 사이에 이루어지는 통신판매의 당사자가 아닙니다. 
-            코트릿을 통하여 방문하는 업체 서비스에 관한 의무와 책임은 해당 서비스를 제공하는 업체에게 있습니다.</p>
-                </div>
-        <p class="footer-copyright">© 2025 Kotreet Inc. All rights reserved</p>
-        <div class="footer-controls">
-                <button class="footer-select-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                    </svg>
-                    한국어
-                </button>
-                <span class="footer-currency">₩ KRW</span>
-            </div>
-    </div>
-</footer>
-    </div>
+    <div id="footer-container"></div>
+</div>
 
     <!-- 검색 모달 -->
     <div id="searchModal" class="search-modal hidden">
@@ -146,12 +113,11 @@
 
     <!-- 플로팅 버튼 (모든 페이지에서 표시) -->
     <div id="floatingBtn" class="floating-btn" onclick="openCurrentLocation()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-        </svg>
-        <span>Directions</span>
-    </div>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="none">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+    <span>Directions</span>
+</div>
 
     <script src="js/app.js"></script>
 </body>

@@ -162,3 +162,25 @@ function openCurrentLocation() {
         window.open('https://www.google.com/maps', '_blank');
     }
 }
+
+// Footer 로드
+fetch('footer.html')
+    .then(response => response.text())
+    .then(data => {
+        const footerContainer = document.getElementById('footer-container');
+        if (footerContainer) {
+            footerContainer.innerHTML = data;
+        }
+    });
+
+// 스크롤 이벤트 (Directions 버튼)
+window.addEventListener('scroll', () => {
+    const floatingBtn = document.querySelector('.floating-btn');
+    if (floatingBtn) {
+        if (window.scrollY > 200) {
+            floatingBtn.classList.add('visible');
+        } else {
+            floatingBtn.classList.remove('visible');
+        }
+    }
+});

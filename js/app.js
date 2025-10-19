@@ -608,3 +608,15 @@ window.addEventListener('scroll', () => {
         }
     }
 });
+
+// 사이드 메뉴 열기
+function openSideMenu() {
+    document.getElementById('sideMenu').classList.add('active');
+    document.body.style.overflow = 'hidden'; // 스크롤 방지
+}
+
+// 사이드 메뉴 닫기
+function closeSideMenu() {
+    document.getElementById('sideMenu').classList.remove('active');
+    document.body.style.overflow = ''; // 스크롤 복원
+}

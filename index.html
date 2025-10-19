@@ -13,8 +13,82 @@
     <!-- HOME 페이지 -->
     <div id="homePage">
     <header>
+    <button class="hamburger-btn" onclick="openSideMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
     <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='index.html'">
+    <div style="width:24px;"></div>
 </header>
+
+<!-- 사이드 메뉴 -->
+    <div id="sideMenu" class="side-menu">
+        <div class="side-menu-overlay" onclick="closeSideMenu()"></div>
+        <div class="side-menu-content">
+            <div class="side-menu-header">
+                <img class="side-menu-logo" src="/img/logo.png" alt="Kotreet">
+                <button class="side-menu-close" onclick="closeSideMenu()">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="24" y1="8" x2="8" y2="24"></line>
+                        <line x1="8" y1="8" x2="24" y2="24"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="side-menu-body">
+                <nav class="side-menu-nav">
+                    <!-- 전체 보기 -->
+                    <div class="side-menu-item" onclick="window.location.href='index.html'">
+                        <span>전체 보기</span>
+                    </div>
+                    
+                    <!-- 지역별 보기 -->
+                    <div class="side-menu-section">
+                        <div class="side-menu-section-title">지역별 보기</div>
+                        <div class="side-menu-item" onclick="window.location.href='category.html?location=홍대'">
+                            <span>홍대</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category.html?location=명동'">
+                            <span>명동</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category.html?location=강남'">
+                            <span>강남</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category.html?location=성수'">
+                            <span>성수</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 카테고리별 보기 -->
+                    <div class="side-menu-section">
+                        <div class="side-menu-section-title">카테고리별 보기</div>
+                        <div class="side-menu-item" onclick="window.location.href='category_type.html?category=nail'">
+                            <span>네일샵</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category_type.html?category=glasses'">
+                            <span>안경점</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category_type.html?category=hair'">
+                            <span>디저트 카페</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category_type.html?category=hanbok'">
+                            <span>한복 대여</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category_type.html?category=vintage'">
+                            <span>빈티지샵</span>
+                        </div>
+                        <div class="side-menu-item" onclick="window.location.href='category_type.html?category=goods'">
+                            <span>굿즈샵</span>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
 
       <section class="search-section"></section>
       <div class="search-box-wrapper">

@@ -471,19 +471,12 @@ header .header-back:active {
     border-bottom: 1px solid #e9ecef;
 }
 
-.banner {
+.banner-image {
     width: 100%;
-    height: 234px;
-    background: linear-gradient(135deg, #cd2e3a 0%, #a02329 100%);
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    text-align: center;
-    padding: 20px;
+    height: auto;
+    display: block;
+    aspect-ratio: 1080 / 472;  /* 비율 고정 */
+    object-fit: cover;
 }
 
 .popular-section {

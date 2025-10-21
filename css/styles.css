@@ -218,6 +218,7 @@ header .header-back:active {
     margin-bottom: 15px;
 }
 
+
 .scroll-container {
     display: flex;
     overflow-x: scroll;
@@ -260,7 +261,6 @@ header .header-back:active {
 .scroll-container:active {
     cursor: grabbing;
 }
-
 
 .location-card {
     flex-shrink: 0;
@@ -554,7 +554,6 @@ header .header-back:active {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s;
-    box-shadow: 0 1px 18px rgba(49, 49, 49, 0.1);
 }
 
 .popular-card:nth-child(odd) {

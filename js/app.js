@@ -10,11 +10,11 @@ const sampleData = [
         category: "glasses",
         location: "명동",
         price: 150000,
-        thumbnail: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
-        mainImage: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
+        thumbnail: "/img/main_myeongdong.jpg",
+        mainImage: "/img/main_myeongdong.jpg",
         images: [
-            "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
-            "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400&h=300&fit=crop"
+            "/img/main_myeongdong.jpg",
+            "/img/main_myeongdong.jpg"
         ],
         video: "",
         mood: "busy",
@@ -32,11 +32,11 @@ const sampleData = [
         category: "nail",
         location: "홍대",
         price: 50000,
-        thumbnail: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
-        mainImage: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
+        thumbnail: "/img/main_hongdae.jpg",
+        mainImage: "/img/main_hongdae.jpg",
         images: [
-            "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop",
-            "https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=300&fit=crop"
+            "/img/main_hongdae.jpg",
+            "/img/main_hongdae.jpg"
         ],
         video: "",
         mood: "busy",
@@ -51,14 +51,14 @@ const sampleData = [
     {
         id: 3,
         name: "감성 디저트 강남",
-        category: "hair",
+        category: "dessert",
         location: "강남",
         price: 45000,
-        thumbnail: "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
-        mainImage: "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
+        thumbnail: "/img/main_gangnam.jpg",
+        mainImage: "/img/main_gangnam.jpg",
         images: [
-            "https://images.unsplash.com/photo-1580487944550-e323be2ae537?w=400&h=300&fit=crop",
-            "https://images.unsplash.com/photo-1587241321921-91a834d82eee?w=400&h=300&fit=crop"
+            "/img/main_gangnam.jpg",
+            "/img/main_gangnam.jpg"
         ],
         video: "",
         mood: "quiet",
@@ -76,11 +76,11 @@ const sampleData = [
         category: "vintage",
         location: "성수",
         price: 30000,
-        thumbnail: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
-        mainImage: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
+        thumbnail: "/img/main_seongsu.jpg",
+        mainImage: "/img/main_seongsu.jpg",
         images: [
-            "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
-            "https://images.unsplash.com/photo-1558769132-cb1aea579f15?w=400&h=300&fit=crop"
+            "/img/main_seongsu.jpg",
+            "/img/main_seongsu.jpg"
         ],
         video: "",
         mood: "busy",
@@ -98,11 +98,11 @@ const sampleData = [
         category: "hanbok",
         location: "명동",
         price: 80000,
-        thumbnail: "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
-        mainImage: "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
+        thumbnail: "/img/main_myeongdong.jpg",
+        mainImage: "/img/main_myeongdong.jpg",
         images: [
-            "https://images.unsplash.com/photo-1585349810294-1e1e0ba3f02d?w=400&h=300&fit=crop",
-            "https://images.unsplash.com/photo-1610810847619-e5c95c5fe3c5?w=400&h=300&fit=crop"
+            "/img/main_myeongdong.jpg",
+            "/img/main_myeongdong.jpg"
         ],
         video: "",
         mood: "quiet",
@@ -136,6 +136,7 @@ window.addEventListener('load', () => {
     
     renderPopularShops();
     loadFooter();
+    enableDragScroll(); // 드래그 스크롤 활성화
 });
 
 window.addEventListener('scroll', () => {
@@ -158,9 +159,12 @@ function saveToStorage() {
 
 // ==================== 네비게이션 ====================
 function goToDetail(shopId) {
+    console.log('goToDetail 호출됨, shopId:', shopId);
+    
     const shop = shopsData.find(s => s.id === shopId);
     if (!shop) {
         console.error('가게를 찾을 수 없습니다:', shopId);
+        console.log('현재 shopsData:', shopsData);
         alert('가게 정보를 찾을 수 없습니다.');
         return;
     }
@@ -169,6 +173,7 @@ function goToDetail(shopId) {
     saveToStorage();
 
     const shopNo = String(shopId).padStart(4, '0');
+    console.log('이동할 URL:', `detail.html?no=${shopNo}`);
     window.location.href = `detail.html?no=${shopNo}`;
 }
 
@@ -293,32 +298,73 @@ function addShop() {
         return;
     }
 
-    const newShop = {
-        id: Math.max(...shopsData.map(s => s.id), 0) + 1,
-        name,
-        category,
-        location,
-        price,
-        thumbnail,
-        mainImage,
-        images,
-        video,
-        mood,
-        communication,
-        payment,
-        hours,
-        description,
-        latitude,
-        longitude,
-        views: 0
-    };
+    // 수정 모드인지 확인
+    const editingShopId = sessionStorage.getItem('editingShopId');
+    
+    let newShop;
+    
+    if (editingShopId) {
+        // 수정 모드: 기존 ID 유지
+        const existingShop = shopsData.find(s => s.id === parseInt(editingShopId));
+        const shopViews = existingShop ? existingShop.views : 0;
+        
+        // 기존 가게 삭제
+        shopsData = shopsData.filter(s => s.id !== parseInt(editingShopId));
+        
+        newShop = {
+            id: parseInt(editingShopId), // 기존 ID 유지
+            name,
+            category,
+            location,
+            price,
+            thumbnail,
+            mainImage,
+            images,
+            video,
+            mood,
+            communication,
+            payment,
+            hours,
+            description,
+            latitude,
+            longitude,
+            views: shopViews
+        };
+        
+        // 수정 모드 종료
+        sessionStorage.removeItem('editingShopId');
+        
+    } else {
+        // 신규 추가 모드: 새 ID 생성
+        newShop = {
+            id: Math.max(...shopsData.map(s => s.id), 0) + 1,
+            name,
+            category,
+            location,
+            price,
+            thumbnail,
+            mainImage,
+            images,
+            video,
+            mood,
+            communication,
+            payment,
+            hours,
+            description,
+            latitude,
+            longitude,
+            views: 0
+        };
+    }
 
     shopsData.push(newShop);
     saveToStorage();
     resetForm();
     renderPopularShops();
     refreshShopList();
-    alert('가게가 추가되었습니다!\n\n가게명: ' + newShop.name + '\n카테고리: ' + getCategoryLabel(newShop.category) + '\n지역: ' + newShop.location);
+    
+    const actionText = editingShopId ? '수정' : '추가';
+    alert(`가게가 ${actionText}되었습니다!\n\n가게명: ${newShop.name}\n카테고리: ${getCategoryLabel(newShop.category)}\n지역: ${newShop.location}\nID: ${newShop.id}`);
 }
 
 function resetForm() {
@@ -327,6 +373,9 @@ function resetForm() {
         const element = document.getElementById(field);
         if (element) element.value = '';
     });
+    
+    // 수정 모드 해제
+    sessionStorage.removeItem('editingShopId');
 }
 
 function refreshShopList() {
@@ -361,6 +410,10 @@ function editShop(id) {
     const shop = shopsData.find(s => s.id === id);
     if (!shop) return;
 
+    // 수정 모드임을 표시
+    const editingShopId = id;
+    sessionStorage.setItem('editingShopId', editingShopId);
+
     document.getElementById('adminShopName').value = shop.name;
     document.getElementById('adminCategory').value = shop.category;
     document.getElementById('adminLocation').value = shop.location;
@@ -377,12 +430,9 @@ function editShop(id) {
     document.getElementById('adminLat').value = shop.latitude || '';
     document.getElementById('adminLng').value = shop.longitude || '';
 
-    shopsData = shopsData.filter(s => s.id !== id);
-    saveToStorage();
-
     document.querySelectorAll('.admin-tab')[0]?.click();
     window.scrollTo(0, 0);
-    alert('수정 후 "가게 추가" 버튼을 눌러주세요');
+    alert('수정 후 "가게 추가" 버튼을 눌러주세요\n(기존 ID: ' + id + ' 유지됨)');
 }
 
 // ==================== JSON 관리 ====================
@@ -424,7 +474,7 @@ function importJSON(event) {
 function getCategoryLabel(category) {
     const map = {
         nail: '네일샵',
-        hair: '디저트 카페',
+        dessert: '디저트 카페',
         glasses: '안경점',
         vintage: '빈티지샵',
         hanbok: '한복대여',
@@ -459,52 +509,93 @@ function loadFooter() {
         .catch(err => console.error('Footer load failed:', err));
 }
 
-function applyScrollAcceleration() {
+// ==================== 드래그 스크롤 기능 ====================
+function enableDragScroll() {
     const scrollContainers = document.querySelectorAll('.scroll-container, .popular-scroll');
+    
     scrollContainers.forEach(container => {
-        let isScrolling = false;
+        let isDown = false;
         let startX;
         let scrollLeft;
         let velocity = 0;
-        let momentumID;
-        
-        container.addEventListener('touchstart', (e) => {
-            isScrolling = true;
-            startX = e.touches[0].pageX - container.offsetLeft;
+        let lastX = 0;
+        let lastTime = Date.now();
+        let animationId;
+
+        // 마우스/터치 시작
+        const onStart = (e) => {
+            isDown = true;
+            container.style.cursor = 'grabbing';
+            container.style.scrollBehavior = 'auto'; // 부드러운 스크롤 비활성화
+            
+            const pageX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+            startX = pageX - container.offsetLeft;
             scrollLeft = container.scrollLeft;
-            cancelMomentumTracking();
-        });
-        
-        container.addEventListener('touchmove', (e) => {
-            if (!isScrolling) return;
-            e.preventDefault();
-            const x = e.touches[0].pageX - container.offsetLeft;
-            const walk = (x - startX) * 1.5;
-            const prevScrollLeft = container.scrollLeft;
-            container.scrollLeft = scrollLeft - walk;
-            velocity = container.scrollLeft - prevScrollLeft;
-        });
-        
-        container.addEventListener('touchend', () => {
-            isScrolling = false;
-            beginMomentumTracking();
-        });
-        
-        function beginMomentumTracking() {
-            cancelMomentumTracking();
-            momentumID = requestAnimationFrame(momentumLoop);
-        }
-        
-        function cancelMomentumTracking() {
-            cancelAnimationFrame(momentumID);
-        }
-        
-        function momentumLoop() {
-            container.scrollLeft += velocity;
-            velocity *= 0.95;
-            if (Math.abs(velocity) > 0.5) {
-                momentumID = requestAnimationFrame(momentumLoop);
+            lastX = pageX;
+            lastTime = Date.now();
+            velocity = 0;
+            
+            if (animationId) {
+                cancelAnimationFrame(animationId);
             }
-        }
+        };
+
+        // 마우스/터치 이동
+        const onMove = (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            
+            const pageX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+            const x = pageX - container.offsetLeft;
+            const walk = (x - startX) * 1.5; // 드래그 민감도
+            container.scrollLeft = scrollLeft - walk;
+            
+            // 속도 계산
+            const now = Date.now();
+            const dt = now - lastTime;
+            const dx = pageX - lastX;
+            velocity = dx / dt;
+            
+            lastX = pageX;
+            lastTime = now;
+        };
+
+        // 마우스/터치 종료
+        const onEnd = () => {
+            if (!isDown) return;
+            isDown = false;
+            container.style.cursor = 'grab';
+            
+            // 관성 스크롤
+            const decelerate = () => {
+                if (Math.abs(velocity) > 0.1) {
+                    container.scrollLeft -= velocity * 10;
+                    velocity *= 0.95; // 감속
+                    animationId = requestAnimationFrame(decelerate);
+                } else {
+                    container.style.scrollBehavior = 'smooth';
+                }
+            };
+            
+            if (Math.abs(velocity) > 0.5) {
+                decelerate();
+            } else {
+                container.style.scrollBehavior = 'smooth';
+            }
+        };
+
+        // 마우스 이벤트
+        container.addEventListener('mousedown', onStart);
+        container.addEventListener('mousemove', onMove);
+        container.addEventListener('mouseup', onEnd);
+        container.addEventListener('mouseleave', onEnd);
+
+        // 터치 이벤트
+        container.addEventListener('touchstart', onStart, { passive: true });
+        container.addEventListener('touchmove', onMove, { passive: false });
+        container.addEventListener('touchend', onEnd);
+        
+        // 초기 커서 스타일
+        container.style.cursor = 'grab';
     });
 }

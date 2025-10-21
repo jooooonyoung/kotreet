@@ -35,7 +35,7 @@
                     <select id="adminCategory">
                         <option value="">선택하세요</option>
                         <option value="nail">네일샵</option>
-                        <option value="hair">헤어샵</option>
+                        <option value="dessert">디저트 카페</option>
                         <option value="glasses">안경점</option>
                         <option value="vintage">빈티지샵</option>
                         <option value="hanbok">한복대여</option>
@@ -58,15 +58,16 @@
                 </div>
                 <div class="form-group">
                     <label>썸네일 이미지 (카테고리 페이지용, 800x800px)</label>
-                    <input type="text" id="adminThumbnail" placeholder="https://example.com/thumbnail.jpg">
+                    <input type="text" id="adminThumbnail" placeholder="/img/s_1_t1.jpg 또는 https://example.com/thumbnail.jpg">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">상대경로(/img/...)나 절대경로(https://...) 모두 가능</small>
                 </div>
                 <div class="form-group">
                     <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
-                    <input type="text" id="adminMainImage" placeholder="https://example.com/main-image.jpg">
+                    <input type="text" id="adminMainImage" placeholder="/img/s_1_m1.jpg 또는 https://example.com/main-image.jpg">
                 </div>
                 <div class="form-group">
                     <label>추가 이미지 URL (쉼표로 구분하여 여러 개 입력)</label>
-                    <input type="text" id="adminImages" placeholder="https://example.com/img1.jpg,https://example.com/img2.jpg">
+                    <input type="text" id="adminImages" placeholder="/img/s_1_m2.jpg,/img/s_1_m3.jpg">
                 </div>
                 <div class="form-group">
                     <label>동영상 URL (YouTube/Vimeo embed URL)</label>
@@ -135,16 +136,18 @@
                     <button class="btn btn-primary" onclick="exportJSON()">📥 JSON 다운로드</button>
                 </div>
                 <div style="margin-top: 20px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; line-height: 1.6; color: #666;">
-                    <p><strong>💡 사용 방법:</strong></p>
+                    <p><strong>💡 JSON 사용 방법:</strong></p>
                     <p>1. "JSON 다운로드"로 현재 데이터를 백업하세요</p>
-                    <p>2. 파일을 열어서 데이터를 수정하거나 새로 추가하세요</p>
-                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하세요</p>
-                    <p>4. GitHub에 JSON 파일을 업로드하면 됩니다</p>
+                    <p>2. 다운로드된 JSON 파일을 텍스트 에디터로 열어서 데이터를 수정하세요</p>
+                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하면 바로 반영됩니다</p>
+                    <p>4. JSON 파일은 브라우저의 localStorage에 저장되므로 브라우저를 초기화하면 데이터가 사라집니다</p>
+                    <p><strong>⚠️ 중요:</strong> 정기적으로 JSON 파일을 백업해두세요!</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

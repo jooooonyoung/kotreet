@@ -517,85 +517,32 @@ function enableDragScroll() {
         let isDown = false;
         let startX;
         let scrollLeft;
-        let velocity = 0;
-        let lastX = 0;
-        let lastTime = Date.now();
-        let animationId;
 
-        // 마우스/터치 시작
-        const onStart = (e) => {
+        container.addEventListener('mousedown', (e) => {
             isDown = true;
             container.style.cursor = 'grabbing';
-            container.style.scrollBehavior = 'auto'; // 부드러운 스크롤 비활성화
-            
-            const pageX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
-            startX = pageX - container.offsetLeft;
+            startX = e.pageX - container.offsetLeft;
             scrollLeft = container.scrollLeft;
-            lastX = pageX;
-            lastTime = Date.now();
-            velocity = 0;
-            
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-        };
+        });
 
-        // 마우스/터치 이동
-        const onMove = (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            
-            const pageX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
-            const x = pageX - container.offsetLeft;
-            const walk = (x - startX) * 1.5; // 드래그 민감도
-            container.scrollLeft = scrollLeft - walk;
-            
-            // 속도 계산
-            const now = Date.now();
-            const dt = now - lastTime;
-            const dx = pageX - lastX;
-            velocity = dx / dt;
-            
-            lastX = pageX;
-            lastTime = now;
-        };
-
-        // 마우스/터치 종료
-        const onEnd = () => {
-            if (!isDown) return;
+        container.addEventListener('mouseleave', () => {
             isDown = false;
             container.style.cursor = 'grab';
-            
-            // 관성 스크롤
-            const decelerate = () => {
-                if (Math.abs(velocity) > 0.1) {
-                    container.scrollLeft -= velocity * 10;
-                    velocity *= 0.95; // 감속
-                    animationId = requestAnimationFrame(decelerate);
-                } else {
-                    container.style.scrollBehavior = 'smooth';
-                }
-            };
-            
-            if (Math.abs(velocity) > 0.5) {
-                decelerate();
-            } else {
-                container.style.scrollBehavior = 'smooth';
-            }
-        };
+        });
 
-        // 마우스 이벤트
-        container.addEventListener('mousedown', onStart);
-        container.addEventListener('mousemove', onMove);
-        container.addEventListener('mouseup', onEnd);
-        container.addEventListener('mouseleave', onEnd);
+        container.addEventListener('mouseup', () => {
+            isDown = false;
+            container.style.cursor = 'grab';
+        });
 
-        // 터치 이벤트
-        container.addEventListener('touchstart', onStart, { passive: true });
-        container.addEventListener('touchmove', onMove, { passive: false });
-        container.addEventListener('touchend', onEnd);
+        container.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 1.5;
+            container.scrollLeft = scrollLeft - walk;
+        });
         
-        // 초기 커서 스타일
         container.style.cursor = 'grab';
     });
 }

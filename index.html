@@ -203,63 +203,65 @@
     <span>Directions</span>
 </div>
 
-    <!-- 지도 모달 -->
-    <div id="mapModal" class="map-modal">
-        <div class="map-modal-header">
-            <h2>주변 가게 찾기</h2>
-            <button class="map-modal-close" onclick="closeMapModal()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-        
-        <!-- 카테고리 필터 -->
-        <div class="map-category-filter">
-            <button class="map-filter-btn active" data-category="all" onclick="filterMapCategory('all')">
-                전체
-            </button>
-            <button class="map-filter-btn" data-category="nail" onclick="filterMapCategory('nail')">
-                <img src="img/icn_nail.png" alt="네일샵">
-                네일샵
-            </button>
-            <button class="map-filter-btn" data-category="glasses" onclick="filterMapCategory('glasses')">
-                <img src="img/icn_glasses.png" alt="안경점">
-                안경점
-            </button>
-            <button class="map-filter-btn" data-category="dessert" onclick="filterMapCategory('dessert')">
-                <img src="img/icn_dessert.png" alt="디저트">
-                디저트
-            </button>
-            <button class="map-filter-btn" data-category="hanbok" onclick="filterMapCategory('hanbok')">
-                <img src="img/icn_hanbok.png" alt="한복">
-                한복
-            </button>
-            <button class="map-filter-btn" data-category="vintage" onclick="filterMapCategory('vintage')">
-                <img src="img/icn_vintage.png" alt="빈티지">
-                빈티지
-            </button>
-            <button class="map-filter-btn" data-category="goods" onclick="filterMapCategory('goods')">
-                <img src="img/icn_goods.png" alt="굿즈">
-                굿즈
-            </button>
-        </div>
-        
-        <!-- 지도 영역 -->
-        <div id="mapContainer" class="map-container"></div>
-        
-        <!-- 가게 정보 카드 (마커 클릭 시 표시) -->
-        <div id="shopInfoCard" class="shop-info-card hidden">
-            <img id="shopInfoImage" src="" alt="">
-            <div class="shop-info-content">
-                <h3 id="shopInfoName"></h3>
-                <p id="shopInfoLocation"></p>
-                <p id="shopInfoPrice"></p>
-                <button class="shop-info-detail-btn" onclick="goToShopDetail()">상세보기</button>
-            </div>
+   <!-- 지도 모달 -->
+<div id="mapModal" class="map-modal">
+    <!-- 드래그 핸들 -->
+    <div class="map-modal-drag-handle">
+        <div class="map-modal-drag-bar"></div>
+    </div>
+    
+    <!-- 지도 영역 -->
+    <div id="mapContainer" class="map-container"></div>
+    
+    <!-- 카테고리 필터 (지도 위에 배치) -->
+    <div class="map-category-filter">
+        <button class="map-filter-btn active" data-category="all" onclick="filterMapCategory('all')">
+            전체
+        </button>
+        <button class="map-filter-btn" data-category="nail" onclick="filterMapCategory('nail')">
+            <img src="img/icn_nail.png" alt="네일샵">
+            네일샵
+        </button>
+        <button class="map-filter-btn" data-category="glasses" onclick="filterMapCategory('glasses')">
+            <img src="img/icn_glasses.png" alt="안경점">
+            안경점
+        </button>
+        <button class="map-filter-btn" data-category="dessert" onclick="filterMapCategory('dessert')">
+            <img src="img/icn_dessert.png" alt="디저트">
+            디저트
+        </button>
+        <button class="map-filter-btn" data-category="hanbok" onclick="filterMapCategory('hanbok')">
+            <img src="img/icn_hanbok.png" alt="한복">
+            한복
+        </button>
+        <button class="map-filter-btn" data-category="vintage" onclick="filterMapCategory('vintage')">
+            <img src="img/icn_vintage.png" alt="빈티지">
+            빈티지
+        </button>
+        <button class="map-filter-btn" data-category="goods" onclick="filterMapCategory('goods')">
+            <img src="img/icn_goods.png" alt="굿즈">
+            굿즈
+        </button>
+    </div>
+    
+    <!-- 내 위치 버튼 -->
+    <button class="my-location-btn" onclick="goToMyLocation()" title="내 위치로 이동">
+        <svg viewBox="0 0 24 24" fill="#4285F4">
+            <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+        </svg>
+    </button>
+    
+    <!-- 가게 정보 카드 (마커 클릭 시 표시) -->
+    <div id="shopInfoCard" class="shop-info-card hidden">
+        <img id="shopInfoImage" src="" alt="">
+        <div class="shop-info-content">
+            <h3 id="shopInfoName"></h3>
+            <p id="shopInfoLocation"></p>
+            <p id="shopInfoPrice"></p>
+            <button class="shop-info-detail-btn" onclick="goToShopDetail()">상세보기</button>
         </div>
     </div>
+</div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpRKt46l1csDfD8pdp-224Yss-LPuGXew&callback=initializeApp" async defer></script>
     <script src="js/app.js"></script>

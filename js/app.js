@@ -546,3 +546,426 @@ function enableDragScroll() {
         container.style.cursor = 'grab';
     });
 }
+
+// ==================== 지도 모달 ====================
+let map = null;
+let markers = [];
+let selectedShopId = null;
+let currentMapCategory = 'all';
+let userLocation = null;
+let userMarker = null;
+
+function openMapModal() {
+    const modal = document.getElementById('mapModal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 뒤 페이지 스크롤 방지
+        document.body.style.position = 'fixed'; // 추가: 완전히 고정
+        document.body.style.width = '100%'; // 추가: 너비 유지
+        
+        // 지도 초기화
+        setTimeout(() => {
+            if (!map) {
+                initMap();
+            }
+            // 현재 위치로 이동하지 않고, 카테고리 전체 표시만
+            renderAllShopsOnMap();
+        }, 300);
+    }
+}
+
+// 드래그로 모달 닫기 기능
+let dragStartY = 0;
+let dragCurrentY = 0;
+let isDragging = false;
+
+function initModalDrag() {
+    const dragHandle = document.querySelector('.map-modal-drag-handle');
+    const modal = document.getElementById('mapModal');
+    const mapContainer = document.getElementById('mapContainer');
+    
+    if (!dragHandle || !modal) return;
+    
+    // 드래그 핸들 영역
+    const setupDragEvents = (element) => {
+        // 터치 이벤트
+        element.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            dragStartY = e.touches[0].clientY;
+            modal.style.transition = 'none';
+            e.stopPropagation(); // 이벤트 전파 방지
+        }, { passive: false });
+        
+        element.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            e.preventDefault(); // 뒤 페이지 스크롤 방지
+            e.stopPropagation();
+            
+            dragCurrentY = e.touches[0].clientY;
+            const deltaY = dragCurrentY - dragStartY;
+            
+            if (deltaY > 0) {
+                // 살짝만 드래그해도 바로 닫기
+                if (deltaY > 20) {
+                    modal.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    closeMapModal();
+                    isDragging = false;
+                }
+            }
+        }, { passive: false });
+        
+        element.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            e.stopPropagation();
+            isDragging = false;
+        });
+        
+        // 마우스 이벤트
+        element.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStartY = e.clientY;
+            modal.style.transition = 'none';
+            e.stopPropagation();
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            dragCurrentY = e.clientY;
+            const deltaY = dragCurrentY - dragStartY;
+            
+            if (deltaY > 0) {
+                // 살짝만 드래그해도 바로 닫기
+                if (deltaY > 20) {
+                    modal.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    closeMapModal();
+                    isDragging = false;
+                }
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+        });
+    };
+    
+    setupDragEvents(dragHandle);
+    
+    // 지도 컨테이너의 맨 위쪽 50px 영역도 드래그 가능
+    mapContainer.addEventListener('touchstart', (e) => {
+        const rect = mapContainer.getBoundingClientRect();
+        if (e.touches[0].clientY - rect.top < 50) {
+            isDragging = true;
+            dragStartY = e.touches[0].clientY;
+            modal.style.transition = 'none';
+            e.stopPropagation();
+        }
+    }, { passive: false });
+    
+    mapContainer.addEventListener('mousedown', (e) => {
+        const rect = mapContainer.getBoundingClientRect();
+        if (e.clientY - rect.top < 50) {
+            isDragging = true;
+            dragStartY = e.clientY;
+            modal.style.transition = 'none';
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    });
+}
+
+// 헤더 빈 공간 클릭 시 모달 닫기
+window.addEventListener('load', () => {
+    const header = document.querySelector('header');
+    if (header) {
+        header.addEventListener('click', (e) => {
+            const modal = document.getElementById('mapModal');
+            if (modal && modal.classList.contains('active')) {
+                // 헤더의 버튼이나 로고를 클릭한 경우는 제외
+                if (!e.target.closest('.hamburger-btn') && !e.target.closest('.logo')) {
+                    closeMapModal();
+                }
+            }
+        });
+    }
+});
+
+function closeMapModal() {
+    const modal = document.getElementById('mapModal');
+    if (modal) {
+        modal.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 스크롤 복구
+        document.body.style.position = ''; // 추가: 고정 해제
+        document.body.style.width = ''; // 추가: 너비 복구
+        hideShopInfoCard();
+    }
+}
+
+function initMap() {
+    // 서울 중심 좌표
+    const seoulCenter = { lat: 37.5665, lng: 126.9780 };
+    
+    const mapContainer = document.getElementById('mapContainer');
+    if (!mapContainer) return;
+    
+    map = new google.maps.Map(mapContainer, {
+        zoom: 13,
+        center: seoulCenter,
+        disableDefaultUI: true, // 모든 기본 UI 제거
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        gestureHandling: 'greedy', // 한 손가락으로 드래그 가능
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }]
+            }
+        ]
+    });
+    
+    // 드래그 기능 초기화
+    initModalDrag();
+    
+    // 사용자 위치 가져오기
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setCenter(userLocation);
+                
+                // 사용자 위치 마커
+                userMarker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 8,
+                        fillColor: '#4285F4',
+                        fillOpacity: 1,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 3
+                    },
+                    zIndex: 1000
+                });
+            },
+            () => {
+                console.log('위치 정보를 가져올 수 없습니다.');
+            }
+        );
+    }
+}
+
+function filterMapCategory(category) {
+    currentMapCategory = category;
+    
+    // 필터 버튼 활성화 상태 변경
+    document.querySelectorAll('.map-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-category') === category) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // 기존 마커 제거
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+    
+    // 필터링된 가게 가져오기
+    const filteredShops = category === 'all' 
+        ? shopsData 
+        : shopsData.filter(s => s.category === category);
+    
+    // 카테고리별 마커 아이콘 (커스텀 이미지)
+    const categoryIcons = {
+        nail: '/img/icn_nail.png',
+        glasses: '/img/icn_glasses.png',
+        dessert: '/img/icn_dessert.png',
+        hanbok: '/img/icn_hanbok.png',
+        vintage: '/img/icn_vintage.png',
+        goods: '/img/icn_goods.png'
+    };
+    
+    // 모든 필터링된 가게를 표시 (지도 영역 제한 없이)
+    filteredShops.forEach(shop => {
+        if (!shop.latitude || !shop.longitude) return;
+        
+        const iconUrl = categoryIcons[shop.category] || '/img/icn_goods.png';
+        
+        const marker = new google.maps.Marker({
+            position: { lat: shop.latitude, lng: shop.longitude },
+            map: map,
+            title: shop.name,
+            icon: {
+                url: iconUrl,
+                scaledSize: new google.maps.Size(32, 32),
+                anchor: new google.maps.Point(16, 16)
+            }
+        });
+        
+        marker.addListener('click', () => {
+            showShopInfoCard(shop);
+            map.panTo(marker.getPosition());
+        });
+        
+        markers.push(marker);
+    });
+    
+    console.log(`${category} 카테고리: ${markers.length}개 마커 표시됨`);
+}
+
+// 모든 가게를 지도에 표시 (초기 로딩용)
+function renderAllShopsOnMap() {
+    // 기존 마커 제거
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+    
+    const categoryIcons = {
+        nail: '/img/icn_nail.png',
+        glasses: '/img/icn_glasses.png',
+        dessert: '/img/icn_dessert.png',
+        hanbok: '/img/icn_hanbok.png',
+        vintage: '/img/icn_vintage.png',
+        goods: '/img/icn_goods.png'
+    };
+    
+    // 모든 가게 마커 추가
+    shopsData.forEach(shop => {
+        if (!shop.latitude || !shop.longitude) return;
+        
+        const iconUrl = categoryIcons[shop.category] || '/img/icn_goods.png';
+        
+        const marker = new google.maps.Marker({
+            position: { lat: shop.latitude, lng: shop.longitude },
+            map: map,
+            title: shop.name,
+            icon: {
+                url: iconUrl,
+                scaledSize: new google.maps.Size(32, 32),
+                anchor: new google.maps.Point(16, 16)
+            }
+        });
+        
+        marker.addListener('click', () => {
+            showShopInfoCard(shop);
+            map.panTo(marker.getPosition());
+        });
+        
+        markers.push(marker);
+    });
+}
+
+// 두 지점 간 거리 계산 (Haversine formula)
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // 지구 반지름 (km)
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+// 내 위치로 이동 함수
+function goToMyLocation() {
+    if (userLocation && map) {
+        map.setCenter(userLocation);
+        map.setZoom(15);
+        // 애니메이션 완전 제거
+    } else if (navigator.geolocation) {
+        // 위치 정보 다시 가져오기
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                
+                if (userMarker) {
+                    userMarker.setPosition(userLocation);
+                } else {
+                    userMarker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: '#4285F4',
+                            fillOpacity: 1,
+                            strokeColor: '#FFFFFF',
+                            strokeWeight: 3
+                        },
+                        zIndex: 1000,
+                        animation: null // 애니메이션 명시적으로 제거
+                    });
+                }
+                
+                map.setCenter(userLocation);
+                map.setZoom(15);
+            },
+            () => {
+                alert('위치 정보를 가져올 수 없습니다.');
+            }
+        );
+    }
+}
+
+function showShopInfoCard(shop) {
+    selectedShopId = shop.id;
+    const card = document.getElementById('shopInfoCard');
+    if (!card) return;
+    
+    const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+    
+    document.getElementById('shopInfoImage').src = imgUrl;
+    document.getElementById('shopInfoImage').onerror = function() {
+        this.src = 'https://via.placeholder.com/80x80?text=No+Image';
+    };
+    document.getElementById('shopInfoName').textContent = shop.name;
+    document.getElementById('shopInfoLocation').textContent = shop.location;
+    document.getElementById('shopInfoPrice').textContent = `₩${shop.price.toLocaleString()}~`;
+    
+    card.classList.remove('hidden');
+}
+
+function hideShopInfoCard() {
+    const card = document.getElementById('shopInfoCard');
+    if (card) {
+        card.classList.add('hidden');
+    }
+    selectedShopId = null;
+}
+
+function goToShopDetail() {
+    if (selectedShopId) {
+        const shopNo = String(selectedShopId).padStart(4, '0');
+        window.location.href = `detail.html?no=${shopNo}`;
+    }
+}
+
+// 지도 모달 외부 클릭 시 닫기
+document.getElementById('mapModal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'mapModal') {
+        closeMapModal();
+    }
+});
+
+// Google Maps API 초기화 콜백
+window.initializeApp = function() {
+    console.log('Google Maps API loaded');
+};

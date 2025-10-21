@@ -196,13 +196,72 @@
     </div>
 
     <!-- 플로팅 버튼 (모든 페이지에서 표시) -->
-    <div id="floatingBtn" class="floating-btn" onclick="openCurrentLocation()">
+    <div id="floatingBtn" class="floating-btn" onclick="openMapModal()">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="none">
         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
     </svg>
     <span>Directions</span>
 </div>
 
+    <!-- 지도 모달 -->
+    <div id="mapModal" class="map-modal">
+        <div class="map-modal-header">
+            <h2>주변 가게 찾기</h2>
+            <button class="map-modal-close" onclick="closeMapModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- 카테고리 필터 -->
+        <div class="map-category-filter">
+            <button class="map-filter-btn active" data-category="all" onclick="filterMapCategory('all')">
+                전체
+            </button>
+            <button class="map-filter-btn" data-category="nail" onclick="filterMapCategory('nail')">
+                <img src="img/icn_nail.png" alt="네일샵">
+                네일샵
+            </button>
+            <button class="map-filter-btn" data-category="glasses" onclick="filterMapCategory('glasses')">
+                <img src="img/icn_glasses.png" alt="안경점">
+                안경점
+            </button>
+            <button class="map-filter-btn" data-category="dessert" onclick="filterMapCategory('dessert')">
+                <img src="img/icn_dessert.png" alt="디저트">
+                디저트
+            </button>
+            <button class="map-filter-btn" data-category="hanbok" onclick="filterMapCategory('hanbok')">
+                <img src="img/icn_hanbok.png" alt="한복">
+                한복
+            </button>
+            <button class="map-filter-btn" data-category="vintage" onclick="filterMapCategory('vintage')">
+                <img src="img/icn_vintage.png" alt="빈티지">
+                빈티지
+            </button>
+            <button class="map-filter-btn" data-category="goods" onclick="filterMapCategory('goods')">
+                <img src="img/icn_goods.png" alt="굿즈">
+                굿즈
+            </button>
+        </div>
+        
+        <!-- 지도 영역 -->
+        <div id="mapContainer" class="map-container"></div>
+        
+        <!-- 가게 정보 카드 (마커 클릭 시 표시) -->
+        <div id="shopInfoCard" class="shop-info-card hidden">
+            <img id="shopInfoImage" src="" alt="">
+            <div class="shop-info-content">
+                <h3 id="shopInfoName"></h3>
+                <p id="shopInfoLocation"></p>
+                <p id="shopInfoPrice"></p>
+                <button class="shop-info-detail-btn" onclick="goToShopDetail()">상세보기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpRKt46l1csDfD8pdp-224Yss-LPuGXew&callback=initializeApp" async defer></script>
     <script src="js/app.js"></script>
 </body>
 </html>

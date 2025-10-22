@@ -1,3 +1,13 @@
+(function() {
+    const path = window.location.pathname;
+    const search = window.location.search;
+    
+    if (path.endsWith('.html')) {
+        const newPath = path.replace('.html', '');
+        window.history.replaceState(null, '', newPath + search);
+    }
+})();
+
 let shopsData = [];
 let currentCategory = '';
 

@@ -1,3 +1,21 @@
+(function() {
+    const path = window.location.pathname;
+    const search = window.location.search;
+    
+    // .html 확장자가 있으면 제거
+    if (path.endsWith('.html')) {
+        const newPath = path.replace('.html', '');
+        const newUrl = newPath + search; // 쿼리 파라미터 유지
+        window.history.replaceState(null, '', newUrl);
+    }
+    
+    // 루트에서 index.html이 보이면 제거
+    if (path.endsWith('/index.html') || path === '/index.html') {
+        const newUrl = path.replace('index.html', '') + search;
+        window.history.replaceState(null, '', newUrl);
+    }
+})();
+
 let shopsData = [];
 let currentLocation = null;
 let currentCategory = null;

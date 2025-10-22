@@ -557,7 +557,6 @@ header .header-back:active {
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s ease-out;
-    box-shadow: 0 1px 18px rgba(49, 49, 49, 0.1);
     background: white;
     scroll-snap-align: start;  
     scroll-snap-stop: always;  

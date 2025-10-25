@@ -1668,14 +1668,6 @@ footer {
     border-radius: 2px;
 }
 
-body.modal-open .directions-btn {
-    bottom: 426px;
-}
-
-body.modal-open .my-location-btn {
-    bottom: 356px;
-}
-
 /* 카테고리 필터 - 지도 위에 배치 */
 .map-category-filter {
     position: absolute;
@@ -1753,6 +1745,7 @@ body.modal-open .my-location-btn {
 
 /* 내 위치 버튼 */
 /* 길찾기 버튼 (현위치 버튼 위) */
+/* 길찾기 버튼 - 우측 하단 */
 .directions-btn {
     position: fixed;
     bottom: 90px;
@@ -1790,7 +1783,7 @@ body.modal-open .my-location-btn {
     filter: brightness(0) invert(1);
 }
 
-/* 현위치 버튼 */
+/* 내위치 버튼 - 우측 하단 */
 .my-location-btn {
     position: fixed;
     bottom: 20px;
@@ -1821,6 +1814,15 @@ body.modal-open .my-location-btn {
     height: 24px;
 }
 
+/* 모달창이 열릴 때 버튼들 위로 올림 */
+body.modal-open .directions-btn {
+    bottom: 426px;
+}
+
+body.modal-open .my-location-btn {
+    bottom: 356px;
+}
+
 /* 가게 정보 카드 - Airbnb 스타일 (여백 + 그림자 + 라운드) */
 .shop-info-card {
     position: absolute;
@@ -1836,27 +1838,22 @@ body.modal-open .my-location-btn {
     display: flex;
     flex-direction: column;
     transform: translateY(100%);
-    opacity: 0;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
     max-width: calc(100vw - 32px);
 }
 
 
 .shop-info-card.hidden {
     transform: translateY(100%);
-    opacity: 0;
+    
     pointer-events: none;
 }
 
 .shop-info-card:not(.hidden) {
     transform: translateY(0);
-    opacity: 1;
-}
-
-.shop-info-card:not(.hidden) {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;  /* 이 줄 추가 */
+    
 }
 
 .shop-info-card-header {

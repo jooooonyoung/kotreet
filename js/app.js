@@ -339,12 +339,6 @@ function initMap() {
             }
         );
     }
-    map.addListener('click', function() {
-    const card = document.getElementById('shopInfoCard');
-    if (card && !card.classList.contains('hidden')) {
-        hideShopInfoCard();
-    }
-});
 }
 
 let dragStartY = 0;
@@ -606,22 +600,19 @@ imagesWrapper.appendChild(indicators);
         `<span>평균 </span>₩${shop.price.toLocaleString()}~`;
     document.getElementById('shopInfoPrice').innerHTML = priceText;
     
+    // 버튼들을 위로 이동 (애니메이션)
+    const directionsBtn = document.querySelector('.directions-btn');
+    const myLocationBtn = document.querySelector('.my-location-btn');
+    
+    if (directionsBtn) {
+        directionsBtn.style.bottom = '426px';
+    }
+    if (myLocationBtn) {
+        myLocationBtn.style.bottom = '356px';
+    }
+    
+    // 모달창 표시 - CSS transition이 자동 실행
     card.classList.remove('hidden');
-    
-    // body에 modal-open 클래스 추가
-    document.body.classList.add('modal-open');
-    
-    // 초기 위치 설정 (화면 밖)
-    card.style.transform = 'translateY(100%)';
-    card.style.opacity = '0';
-    
-    // 다음 프레임에서 슬라이드 업 애니메이션
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            card.style.transform = 'translateY(0)';
-            card.style.opacity = '1';
-        });
-    });
     
     // 지도 중심 이동 (카드 높이 고려)
     const shopPosition = new google.maps.LatLng(shop.latitude, shop.longitude);
@@ -644,28 +635,30 @@ imagesWrapper.appendChild(indicators);
 function hideShopInfoCard() {
     const card = document.getElementById('shopInfoCard');
     if (card) {
-        // 슬라이드 다운 애니메이션
-        card.style.transform = 'translateY(100%)';
-        card.style.opacity = '0';
+        // 모달창 숨기기 - CSS transition이 자동 실행
+        card.classList.add('hidden');
         
-        // 300ms 후 hidden 클래스 추가
-function hideShopInfoCard() {
-    const card = document.getElementById('shopInfoCard');
-    if (card) {
-        // body에서 modal-open 클래스 제거
-        document.body.classList.remove('modal-open');
+        // 버튼들을 원래 위치로 복귀
+        const directionsBtn = document.querySelector('.directions-btn');
+        const myLocationBtn = document.querySelector('.my-location-btn');
         
-        // 슬라이드 다운 애니메이션
-        card.style.transform = 'translateY(100%)';
-        card.style.opacity = '0';
-        
-        // 300ms 후 hidden 클래스 추가
-        setTimeout(() => {
-            card.classList.add('hidden');
-        }, 300);
+        if (directionsBtn) {
+            directionsBtn.style.bottom = '90px';
+        }
+        if (myLocationBtn) {
+            myLocationBtn.style.bottom = '20px';
+        }
     }
     selectedShopId = null;
 }
+
+function goToShopDetail() {
+    if (selectedShopId) {
+        const shopNo = String(selectedShopId).padStart(4, '0');
+        sessionStorage.setItem('returnToMap', 'true');
+        sessionStorage.setItem('mapState', JSON.stringify({
+            center: {
+                lat: map.getCenter().lat(),
                 lng: map.getCenter().lng()
             },
             zoom: map.getZoom(),
@@ -982,6 +975,8 @@ function enableDragScroll() {
 // ==================== Google Maps API 초기화 콜백 ====================
 window.initializeApp = function() {
     console.log('Google Maps API loaded');
+    // 구글 맵 API가 로드되면 자동으로 호출됨
+    // 별도로 할 작업이 없으면 비워둬도 됨
 };
 
 

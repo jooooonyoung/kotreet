@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
     <title>Korea hidden gem - Kotreet</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,9 +47,9 @@
             <div class="side-menu-body">
                 <nav class="side-menu-nav">
                     <!-- 전체 보기 -->
-                    <div class="side-menu-item" onclick="window.location.href='/'">
-                        <span>전체 보기</span>
-                    </div>
+                    <div class="side-menu-item" onclick="window.location.href='category_all.html'">
+    <span>전체 보기</span>
+</div>
                     
                     <!-- 지역별 보기 -->
                     <div class="side-menu-section">
@@ -83,6 +90,10 @@
                             <span>굿즈샵</span>
                         </div>
                     </div>
+                    <!-- 제휴 문의 -->
+                      <div class="side-menu-section">
+                        <div class="side-menu-section-title" onclick="window.location.href='partnership.html?category=nail'">제휴 문의</div>
+                        </div>
                 </nav>
             </div>
         </div>
@@ -244,6 +255,11 @@
         </button>
     </div>
     
+    <!-- 길찾기 버튼 -->
+    <button class="directions-btn" onclick="openDirections(event)" title="길찾기">
+        <img src="/img/directions.png" alt="길찾기">
+    </button>
+    
     <!-- 내 위치 버튼 -->
     <button class="my-location-btn" onclick="goToMyLocation()" title="내 위치로 이동">
         <svg viewBox="0 0 24 24" fill="#4285F4">
@@ -252,14 +268,28 @@
     </button>
     
     <!-- 가게 정보 카드 (마커 클릭 시 표시) -->
-    <div id="shopInfoCard" class="shop-info-card hidden">
-        <img id="shopInfoImage" src="" alt="">
-        <div class="shop-info-content">
-            <h3 id="shopInfoName"></h3>
-            <p id="shopInfoLocation"></p>
-            <p id="shopInfoPrice"></p>
-            <button class="shop-info-detail-btn" onclick="goToShopDetail()">상세보기</button>
+<div id="shopInfoCard" class="shop-info-card hidden">
+    <!-- 닫기 버튼 -->
+    <button class="shop-info-close" onclick="hideShopInfoCard()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+</button>
+    
+    <!-- 이미지 래퍼 (카드 안) -->
+    <div class="shop-info-images-wrapper" id="shopInfoImagesWrapper">
+        <div class="shop-info-images" id="shopInfoImages">
+            <!-- 이미지 -->
         </div>
+        <!-- indicators -->
+    </div>
+    
+    <!-- 텍스트 콘텐츠 (카드 안) -->
+    <div class="shop-info-content" onclick="goToShopDetail()">
+        <div class="shop-info-name" id="shopInfoName"></div>
+        <div class="shop-info-location" id="shopInfoLocation"></div>
+        <div class="shop-info-price" id="shopInfoPrice"></div>
     </div>
 </div>
 

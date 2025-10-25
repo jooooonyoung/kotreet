@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
     <title>Korea hidden gem - Kotreet</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,8 +60,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>가격대 (숫자만 입력, 예: 50000)</label>
+                    <label>최소 가격 (숫자만 입력, 예: 50000)</label>
                     <input type="number" id="adminPrice" placeholder="50000">
+                </div>
+                <div class="form-group">
+                    <label>최대 가격 (숫자만 입력, 예: 100000)</label>
+                    <input type="number" id="adminPriceMax" placeholder="100000">
                 </div>
                 <div class="form-group">
                     <label>썸네일 이미지 (카테고리 페이지용, 800x800px)</label>

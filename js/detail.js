@@ -1,17 +1,13 @@
-(function() {
-    const path = window.location.pathname;
-    const search = window.location.search;
-    
-    if (path.endsWith('.html')) {
-        const newPath = path.replace('.html', '');
-        window.history.replaceState(null, '', newPath + search);
-    }
-})();
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
 let shopsData = [];
 let currentShop = null;
 
-// URL에서 no 파라미터 가져오기
 const urlParams = new URLSearchParams(window.location.search);
 const shopNo = urlParams.get('no');
 
@@ -29,7 +25,6 @@ window.addEventListener('load', () => {
     }
     
     if (shopNo) {
-        // shopNo는 "0001", "0002" 형식이므로 숫자로 변환
         const shopId = parseInt(shopNo, 10);
         console.log('찾는 가게 ID:', shopId);
         
@@ -41,11 +36,11 @@ window.addEventListener('load', () => {
         } else {
             console.error('가게를 찾을 수 없습니다. shopNo:', shopNo, 'shopId:', shopId);
             alert('가게 정보를 찾을 수 없습니다. (ID: ' + shopId + ')');
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
     } else {
         alert('잘못된 접근입니다.');
-        window.location.href = 'index.html';
+        window.location.href = '/';
     }
 });
 
@@ -74,16 +69,14 @@ function renderDetailPage(shop) {
         cash: '현금만'
     };
 
-    // Breadcrumb
     document.getElementById('detailBreadcrumb').textContent = `${shop.location} > ${categoryMap[shop.category]}`;
-
-    // 가게명
     document.getElementById('detailTitle').textContent = shop.name;
 
-    // 가격
-    document.getElementById('detailPrice').textContent = `평균가격 ${shop.price.toLocaleString()}won~`;
+    const priceText = shop.priceMax ? 
+        `평균가격 ${shop.price.toLocaleString()}won~${shop.priceMax.toLocaleString()}won` :
+        `평균가격 ${shop.price.toLocaleString()}won~`;
+    document.getElementById('detailPrice').textContent = priceText;
 
-    // 이미지 캐러셀
     const carouselContainer = document.getElementById('carousel');
     const images = shop.images && shop.images.length > 0 ? shop.images : [shop.thumbnail || shop.mainImage];
     
@@ -96,22 +89,16 @@ function renderDetailPage(shop) {
     document.getElementById('totalSlides').textContent = images.length;
     setupCarousel(images.length);
 
-    // 동영상
     if (shop.video) {
         document.getElementById('detailVideo').style.display = 'block';
         document.getElementById('detailVideoFrame').src = shop.video + '?autoplay=0';
     }
 
-    // 특징
     document.getElementById('detailMood').textContent = moodMap[shop.mood] || shop.mood;
     document.getElementById('detailComm').textContent = commMap[shop.communication] || shop.communication;
     document.getElementById('detailPayment').textContent = paymentMap[shop.payment] || shop.payment;
     document.getElementById('detailHours').textContent = shop.hours || '영업시간 미정';
-
-    // 설명
     document.getElementById('detailDescription').textContent = shop.description || '가게 설명이 없습니다.';
-
-    // 지도 버튼
     document.getElementById('mapButton').setAttribute('onclick', `openGoogleMap(${shop.latitude}, ${shop.longitude})`);
 }
 
@@ -171,7 +158,6 @@ function shareShop() {
                 url: url
             }).catch(err => console.log('공유 취소'));
         } else {
-            // 공유 API 미지원시 URL 복사
             navigator.clipboard.writeText(url).then(() => {
                 alert('링크가 복사되었습니다!');
             }).catch(() => {
@@ -182,7 +168,27 @@ function shareShop() {
 }
 
 function goBack() {
-    window.history.back();
+    const returnToMap = sessionStorage.getItem('returnToMap');
+    const mapState = sessionStorage.getItem('mapState');
+    
+    if (returnToMap === 'true' && mapState) {
+        window.location.href = '/';
+    } else {
+        const referrer = document.referrer;
+        
+        if (referrer.includes('/category') && !referrer.includes('/category_type')) {
+            const urlParams = new URLSearchParams(referrer.split('?')[1] || '');
+            const location = urlParams.get('location') || '';
+            const category = urlParams.get('category') || '';
+            window.location.href = `category.html?location=${location}${category ? '&category=' + category : ''}`;
+        } else if (referrer.includes('/category_type')) {
+            const urlParams = new URLSearchParams(referrer.split('?')[1] || '');
+            const category = urlParams.get('category') || '';
+            window.location.href = `category_type.html?category=${category}`;
+        } else {
+            window.location.href = '/';
+        }
+    }
 }
 
 function openCurrentLocation() {
@@ -199,7 +205,6 @@ function openCurrentLocation() {
     }
 }
 
-// Footer 로드
 fetch('footer.html')
     .then(response => response.text())
     .then(data => {
@@ -209,7 +214,6 @@ fetch('footer.html')
         }
     });
 
-// 스크롤 이벤트 (Directions 버튼)
 window.addEventListener('scroll', () => {
     const floatingBtn = document.querySelector('.floating-btn');
     if (floatingBtn) {

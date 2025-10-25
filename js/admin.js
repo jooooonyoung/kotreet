@@ -1,12 +1,9 @@
-(function() {
-    const path = window.location.pathname;
-    const search = window.location.search;
-    
-    if (path.endsWith('.html')) {
-        const newPath = path.replace('.html', '');
-        window.history.replaceState(null, '', newPath + search);
-    }
-})();
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
 let shopsData = [];
 
@@ -40,6 +37,41 @@ function addShop() {
     const category = document.getElementById('adminCategory').value;
     const location = document.getElementById('adminLocation').value;
     const price = parseInt(document.getElementById('adminPrice').value);
+    const priceMax = parseInt(document.getElementById('adminPriceMax').value);
+    
+    if (!name || name.length > 100) {
+        alert('❌ 가게명은 1~100자 이내여야 합니다.');
+        return;
+    }
+    
+    if (!price || price < 0 || price > 10000000) {
+        alert('❌ 최소 가격은 0~10,000,000원 이내여야 합니다.');
+        return;
+    }
+    
+    if (!priceMax || priceMax < 0 || priceMax > 10000000) {
+        alert('❌ 최대 가격은 0~10,000,000원 이내여야 합니다.');
+        return;
+    }
+    
+    if (priceMax < price) {
+        alert('❌ 최대 가격은 최소 가격보다 커야 합니다.');
+        return;
+    }
+    
+    const latitude = parseFloat(document.getElementById('adminLat').value);
+    const longitude = parseFloat(document.getElementById('adminLng').value);
+    
+    if (latitude && (latitude < 33 || latitude > 43)) {
+        alert('❌ 위도는 33~43 범위여야 합니다 (대한민국 영역).');
+        return;
+    }
+    
+    if (longitude && (longitude < 124 || longitude > 132)) {
+        alert('❌ 경도는 124~132 범위여야 합니다 (대한민국 영역).');
+        return;
+    }
+    
     const thumbnail = document.getElementById('adminThumbnail').value.trim();
     const mainImage = document.getElementById('adminMainImage').value.trim();
     const additionalImages = document.getElementById('adminImages').value.split(',').map(s => s.trim()).filter(s => s);
@@ -50,17 +82,15 @@ function addShop() {
     const payment = document.getElementById('adminPayment').value;
     const hours = document.getElementById('adminHours').value;
     const description = document.getElementById('adminDescription').value;
-    const latitude = parseFloat(document.getElementById('adminLat').value);
-    const longitude = parseFloat(document.getElementById('adminLng').value);
 
-    if (!name || !category || !location || !price || !thumbnail || !mainImage || !mood || !communication || !payment) {
+    if (!name || !category || !location || !price || !priceMax || !thumbnail || !mainImage || !mood || !communication || !payment) {
         alert('모든 필수 항목을 입력하세요');
         return;
     }
 
     const newShop = {
         id: Math.max(...shopsData.map(s => s.id), 0) + 1,
-        name, category, location, price, 
+        name, category, location, price, priceMax,
         thumbnail, mainImage,
         images, video, mood,
         communication, payment, hours, description, latitude, longitude,
@@ -78,6 +108,7 @@ function resetForm() {
     document.getElementById('adminCategory').value = '';
     document.getElementById('adminLocation').value = '';
     document.getElementById('adminPrice').value = '';
+    document.getElementById('adminPriceMax').value = '';
     document.getElementById('adminThumbnail').value = '';
     document.getElementById('adminMainImage').value = '';
     document.getElementById('adminImages').value = '';
@@ -92,11 +123,14 @@ function resetForm() {
 }
 
 function refreshShopList() {
+    const container = document.getElementById('shopList');
+    if (!container) return;
+    
     const html = shopsData.map(shop => `
         <div class="shop-item">
             <div class="shop-item-info">
-                <div class="shop-item-name">${shop.name}</div>
-                <div class="shop-item-meta">${getCategoryLabel(shop.category)} • ${shop.location} • 조회수: ${shop.views}</div>
+                <div class="shop-item-name">${escapeHtml(shop.name)}</div>
+                <div class="shop-item-meta">${escapeHtml(getCategoryLabel(shop.category))} • ${escapeHtml(shop.location)} • 조회수: ${shop.views || 0}</div>
             </div>
             <div class="shop-item-actions">
                 <button class="shop-item-btn shop-item-edit" onclick="editShop(${shop.id})">수정</button>
@@ -104,7 +138,7 @@ function refreshShopList() {
             </div>
         </div>
     `).join('');
-    document.getElementById('shopList').innerHTML = html;
+    container.innerHTML = html;
 }
 
 function deleteShop(id) {
@@ -123,6 +157,7 @@ function editShop(id) {
     document.getElementById('adminCategory').value = shop.category;
     document.getElementById('adminLocation').value = shop.location;
     document.getElementById('adminPrice').value = shop.price;
+    document.getElementById('adminPriceMax').value = shop.priceMax || shop.price;
     document.getElementById('adminThumbnail').value = shop.thumbnail || '';
     document.getElementById('adminMainImage').value = shop.mainImage || '';
     document.getElementById('adminImages').value = shop.images.slice(2).join(',');
@@ -180,6 +215,7 @@ function getCategoryLabel(category) {
     const map = {
         nail: '네일샵',
         hair: '헤어샵',
+        dessert: '디저트 카페',
         glasses: '안경점',
         vintage: '빈티지샵',
         hanbok: '한복대여',
@@ -201,7 +237,6 @@ function shareShop() {
                 url: url
             }).catch(err => console.log('공유 취소'));
         } else {
-            // 공유 API 미지원시 URL 복사
             navigator.clipboard.writeText(url).then(() => {
                 alert('링크가 복사되었습니다!');
             }).catch(() => {
@@ -209,16 +244,4 @@ function shareShop() {
             });
         }
     }
-}
-
-function getCategoryLabel(category) {
-    const map = {
-        nail: '네일샵',
-        hair: '헤어샵',
-        glasses: '안경점',
-        vintage: '빈티지샵',
-        hanbok: '한복대여',
-        goods: '굿즈샵'
-    };
-    return map[category] || category;
 }

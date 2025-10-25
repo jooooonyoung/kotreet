@@ -1,33 +1,4 @@
-function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
 let shopsData = [];
-let currentCategory = '';
-
-const urlParams = new URLSearchParams(window.location.search);
-currentCategory = urlParams.get('category') || 'nail';
-
-const categoryLabels = {
-    nail: '네일샵',
-    glasses: '안경점',
-    dessert: '디저트 카페',
-    hanbok: '한복 대여',
-    vintage: '빈티지샵',
-    goods: '굿즈샵'
-};
-
-const categoryDescriptions = {
-    nail: '한국의 네일샵을 소개합니다.',
-    glasses: '한국의 안경점을 소개합니다.',
-    dessert: '한국의 디저트 카페를 소개합니다.',
-    hanbok: '한국의 한복 대여샵을 소개합니다.',
-    vintage: '한국의 빈티지샵을 소개합니다.',
-    goods: '한국의 굿즈샵을 소개합니다.'
-};
 
 window.addEventListener('load', () => {
     const storedData = localStorage.getItem('shopsData');
@@ -40,34 +11,45 @@ window.addEventListener('load', () => {
         }
     }
     
-    document.getElementById('categoryMainTitle').textContent = categoryLabels[currentCategory] || currentCategory;
-    document.getElementById('categoryMainDesc').textContent = categoryDescriptions[currentCategory] || '';
-    
-    renderAllCategoryShops();
+    renderAllShops();
+    loadFooter();
 });
 
-function renderAllCategoryShops() {
-    const shops = shopsData.filter(s => s.category === currentCategory);
-    const container = document.getElementById('allCategoryShops');
+function renderAllShops() {
+    const container = document.getElementById('allShops');
     
-    if (shops.length > 0) {
-        container.innerHTML = shops.map(shop => {
+    if (shopsData.length > 0) {
+        container.innerHTML = shopsData.map(shop => {
             const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
             const priceText = shop.priceMax ? 
                 `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
                 `₩${shop.price.toLocaleString()}~`;
             return `
                 <div class="category-shop-card" onclick="goToDetail(${shop.id})">
-                    <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
+                    <img src="${imgUrl}" alt="${shop.name}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                     <div class="category-shop-info">
-                        <div class="category-shop-name">${escapeHtml(shop.name)}</div>
+                        <div class="category-shop-name">${shop.name}</div>
                         <div class="category-shop-price">${priceText}</div>
-                        <div style="font-size: 11px; color: #6c757d; margin-top: 4px;">${escapeHtml(shop.location)}</div>
+                        <div style="font-size: 11px; color: #6c757d; margin-top: 4px;">${shop.location} • ${getCategoryLabel(shop.category)}</div>
                     </div>
                 </div>
             `;
         }).join('');
+    } else {
+        container.innerHTML = '<p style="color: #6c757d; font-size: 13px; text-align: center; padding: 40px 20px;">등록된 가게가 없습니다.</p>';
     }
+}
+
+function getCategoryLabel(category) {
+    const labels = {
+        nail: '네일샵',
+        glasses: '안경점',
+        dessert: '디저트 카페',
+        hanbok: '한복 대여',
+        vintage: '빈티지샵',
+        goods: '굿즈샵'
+    };
+    return labels[category] || category;
 }
 
 function goToDetail(shopId) {
@@ -76,7 +58,7 @@ function goToDetail(shopId) {
 }
 
 function goBack() {
-    window.location.href = 'index.html';
+    window.location.href = '/';
 }
 
 function openCurrentLocation() {
@@ -91,6 +73,17 @@ function openCurrentLocation() {
     } else {
         window.open('https://www.google.com/maps', '_blank');
     }
+}
+
+function loadFooter() {
+    fetch('footer.html')
+        .then(response => response.text())
+        .then(data => {
+            const footerContainer = document.getElementById('footer-container');
+            if (footerContainer) {
+                footerContainer.innerHTML = data;
+            }
+        });
 }
 
 window.addEventListener('scroll', () => {

@@ -314,6 +314,12 @@ function initMap() {
     
     initModalDrag();
     
+    // 지도 빈 공간 클릭 시 모달창 닫기
+    map.addListener('click', function() {
+        hideShopInfoCard();
+    });
+    
+    
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -549,12 +555,24 @@ function showShopInfoCard(shop) {
     
     const images = shop.images && shop.images.length > 0 ? shop.images : [shop.thumbnail || shop.mainImage];
     
-    // 이미지 생성
-    imagesContainer.innerHTML = images.map(img => `
+    console.log('Modal images:', images);
+    
+    // Create images
+    imagesContainer.innerHTML = images.map((img, index) => `
         <div class="shop-info-image-item">
-            <img src="${img}" alt="${shop.name}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+            <img src="${escapeHtml(img)}" 
+                 alt="${escapeHtml(shop.name)}" 
+                 loading="eager"
+                 onerror="console.error('Image load failed:', this.src); this.src='https://via.placeholder.com/400x300?text=No+Image'">
         </div>
     `).join('');
+    
+    // Force horizontal scroll for mobile
+    imagesContainer.style.display = 'flex';
+    imagesContainer.style.flexDirection = 'row';
+    imagesContainer.style.overflowX = 'auto';
+    imagesContainer.style.overflowY = 'hidden';
+    imagesContainer.style.scrollSnapType = 'x mandatory';
     
     // 기존 인디케이터 제거
     const oldIndicators = card.querySelector('.shop-info-image-indicators');
@@ -600,53 +618,40 @@ imagesWrapper.appendChild(indicators);
         `<span>평균 </span>₩${shop.price.toLocaleString()}~`;
     document.getElementById('shopInfoPrice').innerHTML = priceText;
     
-    // 버튼들을 위로 이동 (애니메이션)
+    // 버튼들 숨기기
     const directionsBtn = document.querySelector('.directions-btn');
     const myLocationBtn = document.querySelector('.my-location-btn');
     
     if (directionsBtn) {
-        directionsBtn.style.bottom = '426px';
+        directionsBtn.style.transition = 'none';
+        directionsBtn.style.opacity = '0';
+        directionsBtn.style.pointerEvents = 'none';
     }
+        myLocationBtn.style.transition = 'none';
     if (myLocationBtn) {
-        myLocationBtn.style.bottom = '356px';
+        myLocationBtn.style.opacity = '0';
+        myLocationBtn.style.pointerEvents = 'none';
     }
     
-    // 모달창 표시 - CSS transition이 자동 실행
+    // 모달창 표시
     card.classList.remove('hidden');
-    
-    // 지도 중심 이동 (카드 높이 고려)
-    const shopPosition = new google.maps.LatLng(shop.latitude, shop.longitude);
-
-    
-    // 카드가 나타난 후 위치 조정
-    setTimeout(() => {
-        // 카드 높이 (280px) + 여백 (16px) = 296px
-        // 화면 높이의 약 40% 정도를 차지하므로
-        // 마커가 보이는 영역의 중심(상단 60% 영역의 중간)에 오도록 조정
-
-    const cardHeight = 20; 
-    map.panBy(0, cardHeight); // 아래로 이동할 픽셀
-    map.panTo(new google.maps.LatLng(shop.latitude, shop.longitude));
-        
-        map.panBy(0, offset);
-    }, 100);
 }
-
 function hideShopInfoCard() {
     const card = document.getElementById('shopInfoCard');
     if (card) {
-        // 모달창 숨기기 - CSS transition이 자동 실행
         card.classList.add('hidden');
         
-        // 버튼들을 원래 위치로 복귀
+        // 버튼들 다시 보이기
         const directionsBtn = document.querySelector('.directions-btn');
         const myLocationBtn = document.querySelector('.my-location-btn');
         
         if (directionsBtn) {
-            directionsBtn.style.bottom = '90px';
+            directionsBtn.style.opacity = '1';
+            directionsBtn.style.pointerEvents = 'auto';
         }
         if (myLocationBtn) {
-            myLocationBtn.style.bottom = '20px';
+            myLocationBtn.style.opacity = '1';
+            myLocationBtn.style.pointerEvents = 'auto';
         }
     }
     selectedShopId = null;

@@ -1761,7 +1761,7 @@ footer {
     justify-content: center;
     cursor: pointer;
     z-index: 1002;
-    transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+    transition: opacity 0.3s ease, 
                 transform 0.2s,
                 background 0.2s;
 }
@@ -1799,7 +1799,7 @@ footer {
     justify-content: center;
     cursor: pointer;
     z-index: 1002;
-    transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+    transition: opacity 0.3s ease, 
                 transform 0.2s,
                 background 0.2s;
 }
@@ -2354,5 +2354,49 @@ body.modal-open .my-location-btn {
 
     .language-grid {
         grid-template-columns: 1fr 1fr;
+    }
+}
+/* 모바일 전용 - 모달창 이미지 스크롤 수정 */
+@media (max-width: 768px) {
+    .shop-info-images {
+        display: flex !important;
+        flex-direction: row !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+        touch-action: pan-x !important;
+    }
+    
+    .shop-info-image-item {
+        flex: 0 0 100% !important;
+        min-width: 100% !important;
+        width: 100% !important;
+        height: 200px !important;
+        scroll-snap-align: start !important;
+    }
+    
+    .shop-info-image-item img {
+        width: 100% !important;
+        height: 200px !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+    
+    .shop-info-images-wrapper {
+        overflow: hidden !important;
+        position: relative !important;
+        width: 100% !important;
+        touch-action: pan-x !important;
+    }
+    
+    .shop-info-image-indicators {
+        display: flex !important;
+        position: absolute !important;
+        bottom: 6% !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 10 !important;
     }
 }

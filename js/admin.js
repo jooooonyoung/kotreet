@@ -6,6 +6,8 @@ function escapeHtml(text) {
 }
 
 let shopsData = [];
+let editingShopId = null; // 수정 중인 가게 ID 저장
+let editingShopViews = 0; // 수정 중인 가게의 조회수 저장
 
 window.addEventListener('load', () => {
     if (localStorage.getItem('shopsData')) {
@@ -72,35 +74,72 @@ function addShop() {
         return;
     }
     
-    const thumbnail = document.getElementById('adminThumbnail').value.trim();
-    const mainImage = document.getElementById('adminMainImage').value.trim();
-    const additionalImages = document.getElementById('adminImages').value.split(',').map(s => s.trim()).filter(s => s);
-    const images = [thumbnail, mainImage, ...additionalImages].filter(s => s);
+    const mainImageText = document.getElementById('adminMainImage').value.trim();
+    const thumbnailText = document.getElementById('adminThumbnail').value.trim();
+    
+    // 메인 이미지 배열 생성 (index, 카테고리 페이지용)
+    const mainImages = mainImageText.split('\n').map(s => s.trim()).filter(s => s);
+    
+    // 썸네일 이미지 배열 생성 (상세 페이지용)
+    const thumbnailImages = thumbnailText.split('\n').map(s => s.trim()).filter(s => s);
+    
+    // 첫 번째 메인 이미지를 thumbnail로, 모든 썸네일 이미지를 images로 저장
+    const thumbnail = mainImages[0] || '';
+    const images = thumbnailImages.length > 0 ? thumbnailImages : mainImages;
+    const mainImage = mainImages[0] || '';
+    
     const video = document.getElementById('adminVideo').value;
     const mood = document.getElementById('adminMood').value;
-    const communication = document.getElementById('adminComm').value;
+    
+    // 언어 체크박스에서 선택된 값들 가져오기
+    const commCheckboxes = document.querySelectorAll('#adminComm input[type="checkbox"]:checked');
+    const communication = Array.from(commCheckboxes).map(cb => cb.value);
+    
     const payment = document.getElementById('adminPayment').value;
+    const locationDetail = document.getElementById('adminLocationDetail').value;
     const hours = document.getElementById('adminHours').value;
     const description = document.getElementById('adminDescription').value;
 
-    if (!name || !category || !location || !price || !priceMax || !thumbnail || !mainImage || !mood || !communication || !payment) {
-        alert('모든 필수 항목을 입력하세요');
+    if (!name || !category || !location || !price || !priceMax || !thumbnail || !mainImage || !mood || communication.length === 0 || !payment) {
+        alert('모든 필수 항목을 입력하세요 (언어는 최소 1개 이상 선택)');
         return;
     }
 
-    const newShop = {
-        id: Math.max(...shopsData.map(s => s.id), 0) + 1,
-        name, category, location, price, priceMax,
-        thumbnail, mainImage,
-        images, video, mood,
-        communication, payment, hours, description, latitude, longitude,
-        views: 0
-    };
+    if (editingShopId) {
+        // 수정 모드: 기존 가게 업데이트
+        const index = shopsData.findIndex(s => s.id === editingShopId);
+        if (index !== -1) {
+            shopsData[index] = {
+                id: editingShopId,
+                name, category, location, price, priceMax,
+                thumbnail, mainImage,
+                images, video, mood,
+                communication, payment, locationDetail, hours, description, latitude, longitude,
+                views: editingShopViews,
+                createdAt: shopsData[index].createdAt // 생성일 유지
+            };
+            alert('가게 정보가 수정되었습니다!');
+        }
+    } else {
+        // 신규 추가 모드
+        const newShop = {
+            id: Math.max(...shopsData.map(s => s.id), 0) + 1,
+            name, category, location, price, priceMax,
+            thumbnail, mainImage,
+            images, video, mood,
+            communication, payment, locationDetail, hours, description, latitude, longitude,
+            views: 0,
+            createdAt: new Date().toISOString() // 생성일 기록
+        };
+        shopsData.push(newShop);
+        alert('가게가 추가되었습니다!');
+    }
 
-    shopsData.push(newShop);
     saveToStorage();
     resetForm();
-    alert('가게가 추가되었습니다!');
+    refreshShopList();
+    editingShopId = null;
+    editingShopViews = 0;
 }
 
 function resetForm() {
@@ -109,27 +148,35 @@ function resetForm() {
     document.getElementById('adminLocation').value = '';
     document.getElementById('adminPrice').value = '';
     document.getElementById('adminPriceMax').value = '';
-    document.getElementById('adminThumbnail').value = '';
     document.getElementById('adminMainImage').value = '';
-    document.getElementById('adminImages').value = '';
+    document.getElementById('adminThumbnail').value = '';
     document.getElementById('adminVideo').value = '';
     document.getElementById('adminMood').value = '';
-    document.getElementById('adminComm').value = '';
+    
+    // 언어 체크박스 모두 해제
+    document.querySelectorAll('#adminComm input[type="checkbox"]').forEach(cb => cb.checked = false);
+    
     document.getElementById('adminPayment').value = '';
+    document.getElementById('adminLocationDetail').value = '';
     document.getElementById('adminHours').value = '';
     document.getElementById('adminDescription').value = '';
     document.getElementById('adminLat').value = '';
     document.getElementById('adminLng').value = '';
+    editingShopId = null; // 수정 모드 해제
+    editingShopViews = 0; // 조회수 초기화
 }
 
 function refreshShopList() {
     const container = document.getElementById('shopList');
     if (!container) return;
     
-    const html = shopsData.map(shop => `
+    // ID 순서로 정렬 (생성 순서 유지)
+    const sortedShops = [...shopsData].sort((a, b) => a.id - b.id);
+    
+    const html = sortedShops.map(shop => `
         <div class="shop-item">
             <div class="shop-item-info">
-                <div class="shop-item-name">${escapeHtml(shop.name)}</div>
+                <div class="shop-item-name">#${shop.id} ${escapeHtml(shop.name)}</div>
                 <div class="shop-item-meta">${escapeHtml(getCategoryLabel(shop.category))} • ${escapeHtml(shop.location)} • 조회수: ${shop.views || 0}</div>
             </div>
             <div class="shop-item-actions">
@@ -153,26 +200,43 @@ function editShop(id) {
     const shop = shopsData.find(s => s.id === id);
     if (!shop) return;
 
+    editingShopId = id; // 수정 중인 ID 저장
+    editingShopViews = shop.views || 0; // 조회수 저장
+
     document.getElementById('adminShopName').value = shop.name;
     document.getElementById('adminCategory').value = shop.category;
     document.getElementById('adminLocation').value = shop.location;
     document.getElementById('adminPrice').value = shop.price;
     document.getElementById('adminPriceMax').value = shop.priceMax || shop.price;
-    document.getElementById('adminThumbnail').value = shop.thumbnail || '';
-    document.getElementById('adminMainImage').value = shop.mainImage || '';
-    document.getElementById('adminImages').value = shop.images.slice(2).join(',');
+    
+    // 메인 이미지 필드에 mainImage 또는 thumbnail 설정
+    document.getElementById('adminMainImage').value = shop.mainImage || shop.thumbnail || '';
+    
+    // 썸네일 필드에 images 배열 설정 (또는 mainImage를 대체로 사용)
+    const thumbnailImages = shop.images && shop.images.length > 0 
+        ? shop.images.join('\n') 
+        : (shop.mainImage || shop.thumbnail || '');
+    document.getElementById('adminThumbnail').value = thumbnailImages;
+    
     document.getElementById('adminVideo').value = shop.video || '';
     document.getElementById('adminMood').value = shop.mood;
-    document.getElementById('adminComm').value = shop.communication;
+    
+    // 언어 체크박스 설정
+    document.querySelectorAll('#adminComm input[type="checkbox"]').forEach(cb => cb.checked = false);
+    const commArray = Array.isArray(shop.communication) ? shop.communication : [shop.communication];
+    commArray.forEach(lang => {
+        const checkbox = document.querySelector(`#adminComm input[value="${lang}"]`);
+        if (checkbox) checkbox.checked = true;
+    });
+    
     document.getElementById('adminPayment').value = shop.payment;
+    document.getElementById('adminLocationDetail').value = shop.locationDetail || '';
     document.getElementById('adminHours').value = shop.hours;
     document.getElementById('adminDescription').value = shop.description;
-    document.getElementById('adminLat').value = shop.latitude;
-    document.getElementById('adminLng').value = shop.longitude;
+    document.getElementById('adminLat').value = shop.latitude || '';
+    document.getElementById('adminLng').value = shop.longitude || '';
 
-    shopsData = shopsData.filter(s => s.id !== id);
-    saveToStorage();
-
+    // 배열에서 삭제하지 않음! (순서 유지)
     document.querySelectorAll('.admin-tab')[0].click();
     window.scrollTo(0, 0);
     alert('수정 후 "가게 추가" 버튼을 눌러주세요');
@@ -217,7 +281,7 @@ function getCategoryLabel(category) {
         hair: '헤어샵',
         dessert: '디저트 카페',
         glasses: '안경점',
-        vintage: '빈티지샵',
+        vintage: '음식점',
         hanbok: '한복대여',
         goods: '굿즈샵'
     };

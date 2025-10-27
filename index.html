@@ -53,7 +53,7 @@
                     
                     <!-- 지역별 보기 -->
                     <div class="side-menu-section">
-                        <div class="side-menu-section-title">지역별 보기</div>
+                        <div class="side-menu-section-title" onclick="window.location.href='category_all_region.html'">지역별 보기</div>
                         <div class="side-menu-item" onclick="window.location.href='category.html?location=홍대'">
                             <span>홍대</span>
                         </div>
@@ -70,7 +70,7 @@
                     
                     <!-- 카테고리별 보기 -->
                     <div class="side-menu-section">
-                        <div class="side-menu-section-title">카테고리별 보기</div>
+                        <div class="side-menu-section-title" onclick="window.location.href='category_all_category.html'">카테고리별 보기</div>
                         <div class="side-menu-item" onclick="window.location.href='category_type.html?category=nail'">
                             <span>네일샵</span>
                         </div>
@@ -84,7 +84,7 @@
                             <span>한복 대여</span>
                         </div>
                         <div class="side-menu-item" onclick="window.location.href='category_type.html?category=vintage'">
-                            <span>빈티지샵</span>
+                            <span>음식점</span>
                         </div>
                         <div class="side-menu-item" onclick="window.location.href='category_type.html?category=goods'">
                             <span>굿즈샵</span>
@@ -112,7 +112,7 @@
 </div>
 
         <section class="title-section">
-            <h2>어디를 찾으시나요?</h2>
+            <h2 style="cursor: pointer;" onclick="window.location.href='category_all_region.html'">어디를 찾으시나요?</h2>
             <div class="scroll-container" id="locationScroll">
                 <div class="location-card" onclick="window.location.href='category.html?location=홍대'">
                     <img src="/img/main_hongdae.jpg" alt="홍대">
@@ -167,12 +167,12 @@
             <div class="category-label">한복 대여</div>
         </div>
         
-        <!-- 빈티지샵 -->
+        <!-- 음식점 -->
         <div class="category-item" onclick="window.location.href='category_type.html?category=vintage'">
             <div class="category-icon">
                 <img src="img/vintage.png">
             </div>
-            <div class="category-label">빈티지샵</div>
+            <div class="category-label">음식점</div>
         </div>
         
         <!-- 굿즈샵 -->
@@ -216,6 +216,7 @@
 
    <!-- 지도 모달 -->
 <div id="mapModal" class="map-modal">
+    
     <!-- 드래그 핸들 -->
     <div class="map-modal-drag-handle">
         <div class="map-modal-drag-bar"></div>

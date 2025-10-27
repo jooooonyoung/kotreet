@@ -19,7 +19,8 @@ function renderAllShops() {
     const container = document.getElementById('allShops');
     
     if (shopsData.length > 0) {
-        container.innerHTML = shopsData.map(shop => {
+        const sortedShops = [...shopsData].sort((a, b) => a.id - b.id); // ID순 정렬
+        container.innerHTML = sortedShops.map(shop => {
             const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
             const priceText = shop.priceMax ? 
                 `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
@@ -46,7 +47,7 @@ function getCategoryLabel(category) {
         glasses: '안경점',
         dessert: '디저트 카페',
         hanbok: '한복 대여',
-        vintage: '빈티지샵',
+        vintage: '음식점',
         goods: '굿즈샵'
     };
     return labels[category] || category;
@@ -89,7 +90,7 @@ function loadFooter() {
 window.addEventListener('scroll', () => {
     const floatingBtn = document.querySelector('.floating-btn');
     if (floatingBtn) {
-        if (window.scrollY > 200) {
+        if (window.scrollY > 1) {
             floatingBtn.classList.add('visible');
         } else {
             floatingBtn.classList.remove('visible');

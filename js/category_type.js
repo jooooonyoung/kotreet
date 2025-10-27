@@ -16,7 +16,7 @@ const categoryLabels = {
     glasses: '안경점',
     dessert: '디저트 카페',
     hanbok: '한복 대여',
-    vintage: '빈티지샵',
+    vintage: '음식점',
     goods: '굿즈샵'
 };
 
@@ -25,7 +25,7 @@ const categoryDescriptions = {
     glasses: '한국의 안경점을 소개합니다.',
     dessert: '한국의 디저트 카페를 소개합니다.',
     hanbok: '한국의 한복 대여샵을 소개합니다.',
-    vintage: '한국의 빈티지샵을 소개합니다.',
+    vintage: '한국의 음식점을 소개합니다.',
     goods: '한국의 굿즈샵을 소개합니다.'
 };
 
@@ -47,7 +47,9 @@ window.addEventListener('load', () => {
 });
 
 function renderAllCategoryShops() {
-    const shops = shopsData.filter(s => s.category === currentCategory);
+    const shops = shopsData
+        .filter(s => s.category === currentCategory)
+        .sort((a, b) => a.id - b.id); // ID순 정렬
     const container = document.getElementById('allCategoryShops');
     
     if (shops.length > 0) {
@@ -96,7 +98,7 @@ function openCurrentLocation() {
 window.addEventListener('scroll', () => {
     const floatingBtn = document.querySelector('.floating-btn');
     if (floatingBtn) {
-        if (window.scrollY > 200) {
+        if (window.scrollY > 1) {
             floatingBtn.classList.add('visible');
         } else {
             floatingBtn.classList.remove('visible');

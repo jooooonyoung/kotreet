@@ -44,7 +44,7 @@
                         <option value="nail">네일샵</option>
                         <option value="dessert">디저트 카페</option>
                         <option value="glasses">안경점</option>
-                        <option value="vintage">빈티지샵</option>
+                        <option value="vintage">음식점</option>
                         <option value="hanbok">한복대여</option>
                         <option value="goods">굿즈샵</option>
                     </select>
@@ -68,17 +68,18 @@
                     <input type="number" id="adminPriceMax" placeholder="100000">
                 </div>
                 <div class="form-group">
-                    <label>썸네일 이미지 (카테고리 페이지용, 800x800px)</label>
-                    <input type="text" id="adminThumbnail" placeholder="/img/s_1_t1.jpg 또는 https://example.com/thumbnail.jpg">
-                    <small style="display:block; margin-top:4px; color:#6c757d;">상대경로(/img/...)나 절대경로(https://...) 모두 가능</small>
+                    <label>메인 이미지 (index & 카테고리 페이지용, 800x800px)</label>
+                    <textarea id="adminMainImage" placeholder="/img/s_1_m1.jpg
+/img/s_1_m2.jpg
+https://example.com/main-image.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력 (상대경로 또는 절대경로)</small>
                 </div>
                 <div class="form-group">
-                    <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
-                    <input type="text" id="adminMainImage" placeholder="/img/s_1_m1.jpg 또는 https://example.com/main-image.jpg">
-                </div>
-                <div class="form-group">
-                    <label>추가 이미지 URL (쉼표로 구분하여 여러 개 입력)</label>
-                    <input type="text" id="adminImages" placeholder="/img/s_1_m2.jpg,/img/s_1_m3.jpg">
+                    <label>썸네일 이미지 (상세 페이지용, 800x800px)</label>
+                    <textarea id="adminThumbnail" placeholder="/img/s_1_t1.jpg
+/img/s_1_t2.jpg
+/img/s_1_t3.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
                 </div>
                 <div class="form-group">
                     <label>동영상 URL (YouTube/Vimeo embed URL)</label>
@@ -93,12 +94,24 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>소통</label>
-                    <select id="adminComm">
-                        <option value="">선택하세요</option>
-                        <option value="easy">의사소통 원활</option>
-                        <option value="limited">의사소통 제한</option>
-                    </select>
+                    <label>언어 (중복 선택 가능)</label>
+                    <div class="checkbox-group" id="adminComm">
+                        <label class="checkbox-label"><input type="checkbox" value="KR"> KR</label>
+                        <label class="checkbox-label"><input type="checkbox" value="EN"> EN</label>
+                        <label class="checkbox-label"><input type="checkbox" value="JP"> JP</label>
+                        <label class="checkbox-label"><input type="checkbox" value="CH"> CH</label>
+                        <label class="checkbox-label"><input type="checkbox" value="CH-TW"> CH-TW</label>
+                        <label class="checkbox-label"><input type="checkbox" value="TH"> TH</label>
+                        <label class="checkbox-label"><input type="checkbox" value="VN"> VN</label>
+                        <label class="checkbox-label"><input type="checkbox" value="PH"> PH</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ID"> ID</label>
+                        <label class="checkbox-label"><input type="checkbox" value="FR"> FR</label>
+                        <label class="checkbox-label"><input type="checkbox" value="DE"> DE</label>
+                        <label class="checkbox-label"><input type="checkbox" value="ES"> ES</label>
+                        <label class="checkbox-label"><input type="checkbox" value="RU"> RU</label>
+                        <label class="checkbox-label"><input type="checkbox" value="MY"> MY</label>
+                        <label class="checkbox-label"><input type="checkbox" value="AR"> AR</label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>결제 수단</label>
@@ -107,6 +120,11 @@
                         <option value="both">카드/현금 모두 가능</option>
                         <option value="cash">현금만</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label>위치 (상세)</label>
+                    <input type="text" id="adminLocationDetail" placeholder="홍대입구역 9번출구 300m">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">예: 홍대입구역 9번출구 300m</small>
                 </div>
                 <div class="form-group">
                     <label>영업시간</label>

@@ -73,12 +73,14 @@ function renderAllCategories() {
         glasses: '안경점',
         dessert: '디저트 카페',
         hanbok: '한복대여',
-        vintage: '빈티지샵',
+        vintage: '음식점',
         goods: '굿즈샵'
     };
 
     categories.forEach(category => {
-        const shops = shopsData.filter(s => s.location === currentLocation && s.category === category);
+        const shops = shopsData
+            .filter(s => s.location === currentLocation && s.category === category)
+            .sort((a, b) => a.id - b.id); // ID순 정렬
         
         const sectionIdMap = {
             nail: 'nailSection',
@@ -111,7 +113,7 @@ function renderAllCategories() {
         if (container) {
             if (shops.length > 0) {
                 container.innerHTML = shops.map(shop => {
-                    const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+                    const imgUrl = shop.mainImage || shop.thumbnail || (shop.images && shop.images[0]) || '';
                     const priceText = shop.priceMax ? 
                         `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
                         `₩${shop.price.toLocaleString()}~`;
@@ -138,7 +140,7 @@ function renderSingleCategory(category) {
         glasses: '안경점',
         dessert: '디저트 카페',
         hanbok: '한복대여',
-        vintage: '빈티지샵',
+        vintage: '음식점',
         goods: '굿즈샵'
     };
 
@@ -163,7 +165,9 @@ function renderSingleCategory(category) {
         }
     });
 
-    const shops = shopsData.filter(s => s.location === currentLocation && s.category === category);
+    const shops = shopsData
+        .filter(s => s.location === currentLocation && s.category === category)
+        .sort((a, b) => a.id - b.id); // ID순 정렬
     const containerId = category === 'dessert' ? 'hairShops' : category + 'Shops';
     const descId = category === 'dessert' ? 'hairDesc' : category + 'Desc';
     
@@ -182,7 +186,7 @@ function renderSingleCategory(category) {
         if (shops.length > 0) {
             container.innerHTML = shops.map(shop => {
                 const shopNo = String(shop.id).padStart(4, '0');
-                const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+                const imgUrl = shop.mainImage || shop.thumbnail || (shop.images && shop.images[0]) || '';
                 const priceText = shop.priceMax ? 
                     `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
                     `₩${shop.price.toLocaleString()}~`;
@@ -255,7 +259,7 @@ fetch('footer.html')
 window.addEventListener('scroll', () => {
     const floatingBtn = document.querySelector('.floating-btn');
     if (floatingBtn) {
-        if (window.scrollY > 200) {
+        if (window.scrollY > 1) {
             floatingBtn.classList.add('visible');
         } else {
             floatingBtn.classList.remove('visible');

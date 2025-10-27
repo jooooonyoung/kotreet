@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
+    <title>Korea hidden gem - Kotreet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .location-all-page {
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .location-all-header {
+            padding: 24px 20px 16px;
+            text-align: center;
+        }
+
+        .location-all-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #222;
+            letter-spacing: 0.2px;
+            margin: 16px 0;
+        }
+
+        .location-cards-container {
+            padding: 0 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .location-card-full {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .location-card-full:active {
+            transform: scale(0.98);
+        }
+
+        .location-card-full img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .location-card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .location-card-text {
+            color: white;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        @media (min-width: 768px) {
+            .location-cards-container {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="location-all-page">
+        <!-- 헤더 -->
+        <header class="header-with-back">
+            <button class="header-back" onclick="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='/'">
+            <div style="width:24px;"></div>
+        </header>
+
+        <!-- 타이틀 -->
+        <div class="location-all-header">
+            <h1 class="location-all-title">LOCATION</h1>
+        </div>
+
+        <!-- 지역 카드 -->
+        <div class="location-cards-container">
+            <div class="location-card-full" onclick="window.location.href='category.html?location=홍대'">
+                <img src="/img/main_hongdae.jpg" alt="홍대">
+                <div class="location-card-overlay">
+                    <div class="location-card-text">HONGDAE</div>
+                </div>
+            </div>
+
+            <div class="location-card-full" onclick="window.location.href='category.html?location=명동'">
+                <img src="/img/main_myeongdong.jpg" alt="명동">
+                <div class="location-card-overlay">
+                    <div class="location-card-text">MYEONGDONG</div>
+                </div>
+            </div>
+
+            <div class="location-card-full" onclick="window.location.href='category.html?location=강남'">
+                <img src="/img/main_gangnam.jpg" alt="강남">
+                <div class="location-card-overlay">
+                    <div class="location-card-text">GANGNAM</div>
+                </div>
+            </div>
+
+            <div class="location-card-full" onclick="window.location.href='category.html?location=성수'">
+                <img src="/img/main_seongsu.jpg" alt="성수">
+                <div class="location-card-overlay">
+                    <div class="location-card-text">SEONGSU</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-container"></div>
+    </div>
+
+    <!-- 플로팅 버튼 -->
+    <div id="floatingBtn" class="floating-btn" onclick="openCurrentLocation()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+        <span>Directions</span>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = '/';
+        }
+
+        function openCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+                }, () => {
+                    window.open('https://www.google.com/maps', '_blank');
+                });
+            } else {
+                window.open('https://www.google.com/maps', '_blank');
+            }
+        }
+
+        // 푸터 로드
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const footerContainer = document.getElementById('footer-container');
+                if (footerContainer) {
+                    footerContainer.innerHTML = data;
+                }
+            });
+
+        // 플로팅 버튼 스크롤 이벤트
+        window.addEventListener('scroll', () => {
+            const floatingBtn = document.querySelector('.floating-btn');
+            if (floatingBtn) {
+                if (window.scrollY > 1) {
+                    floatingBtn.classList.add('visible');
+                } else {
+                    floatingBtn.classList.remove('visible');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

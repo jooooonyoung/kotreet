@@ -28,18 +28,21 @@ const sampleData = [
         category: "glasses",
         location: "명동",
         price: 150000,
+        priceMax: 300000,
         thumbnail: "/img/main_myeongdong.jpg",
         mainImage: "/img/main_myeongdong.jpg",
         images: ["/img/main_myeongdong.jpg", "/img/main_myeongdong.jpg"],
         video: "",
         mood: "busy",
-        communication: "easy",
+        communication: "KR",
         payment: "both",
+        locationDetail: "명동역 6번출구 200m",
         hours: "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
         description: "명동에서 가장 트렌디한 안경을 찾을 수 있습니다.",
         latitude: 37.5621,
         longitude: 126.9840,
-        views: 1250
+        views: 1250,
+        createdAt: "2025-01-01T00:00:00.000Z"
     },
     {
         id: 2,
@@ -47,18 +50,21 @@ const sampleData = [
         category: "nail",
         location: "홍대",
         price: 50000,
+        priceMax: 100000,
         thumbnail: "/img/main_hongdae.jpg",
         mainImage: "/img/main_hongdae.jpg",
         images: ["/img/main_hongdae.jpg", "/img/main_hongdae.jpg"],
         video: "",
         mood: "busy",
-        communication: "easy",
+        communication: "EN",
         payment: "both",
+        locationDetail: "홍대입구역 9번출구 300m",
         hours: "월~일 10:00 AM - 8:00 PM",
         description: "홍대의 최고 트렌드 네일샵입니다.",
         latitude: 37.5519,
         longitude: 126.9255,
-        views: 980
+        views: 980,
+        createdAt: "2025-01-01T00:00:00.000Z"
     }
 ];
 
@@ -68,7 +74,26 @@ window.addEventListener('load', () => {
     if (storedData) {
         try {
             shopsData = JSON.parse(storedData);
-            console.log('localStorageに서 로드:', shopsData.length + '개');
+            
+            // 기존 데이터 마이그레이션: createdAt이 없으면 추가
+            let needsSave = false;
+            shopsData = shopsData.map(shop => {
+                if (!shop.createdAt) {
+                    needsSave = true;
+                    return {
+                        ...shop,
+                        createdAt: new Date().toISOString()
+                    };
+                }
+                return shop;
+            });
+            
+            if (needsSave) {
+                saveToStorage();
+                console.log('데이터 마이그레이션 완료');
+            }
+            
+            console.log('localStorage에서 로드:', shopsData.length + '개');
         } catch (e) {
             console.error('데이터 로드 실패:', e);
             shopsData = JSON.parse(JSON.stringify(sampleData));
@@ -96,7 +121,7 @@ window.addEventListener('load', () => {
 window.addEventListener('scroll', () => {
     const floatingBtn = document.querySelector('.floating-btn');
     if (floatingBtn) {
-        floatingBtn.classList.toggle('visible', window.scrollY > 200);
+        floatingBtn.classList.toggle('visible', window.scrollY > 1);
     }
 });
 
@@ -143,7 +168,7 @@ function renderPopularShops() {
     const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
     
     container.innerHTML = sorted.map(shop => {
-        const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+        const imgUrl = shop.mainImage || shop.thumbnail || (shop.images && shop.images[0]) || '';
         return `
             <div class="popular-card" onclick="goToDetail(${shop.id})">
                 <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
@@ -574,6 +599,9 @@ function showShopInfoCard(shop) {
     imagesContainer.style.overflowY = 'hidden';
     imagesContainer.style.scrollSnapType = 'x mandatory';
     
+    // 이미지 스크롤 초기화 (첫 번째 이미지로)
+    imagesContainer.scrollLeft = 0;
+    
     // 기존 인디케이터 제거
     const oldIndicators = card.querySelector('.shop-info-image-indicators');
     if (oldIndicators) {
@@ -614,8 +642,8 @@ imagesWrapper.appendChild(indicators);
     document.getElementById('shopInfoLocation').textContent = shop.location;
     
     const priceText = shop.priceMax ? 
-        `<span>평균 </span>₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
-        `<span>평균 </span>₩${shop.price.toLocaleString()}~`;
+        `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
+        `₩${shop.price.toLocaleString()}~`;
     document.getElementById('shopInfoPrice').innerHTML = priceText;
     
     // 버튼들 숨기기
@@ -906,7 +934,7 @@ function getCategoryLabel(category) {
         nail: '네일샵',
         dessert: '디저트 카페',
         glasses: '안경점',
-        vintage: '빈티지샵',
+        vintage: '음식점',
         hanbok: '한복대여',
         goods: '굿즈샵'
     };

@@ -46,7 +46,7 @@ const sampleData = [
     },
     {
         id: 2,
-        name: "프리미엄 네일 홍대",
+        name: "프리미엄 뷰티 홍대",
         category: "nail",
         location: "홍대",
         price: 50000,
@@ -60,7 +60,7 @@ const sampleData = [
         payment: "both",
         locationDetail: "홍대입구역 9번출구 300m",
         hours: "월~일 10:00 AM - 8:00 PM",
-        description: "홍대의 최고 트렌드 네일샵입니다.",
+        description: "홍대의 최고 트렌드 뷰티샵입니다.",
         latitude: 37.5519,
         longitude: 126.9255,
         views: 980,
@@ -168,13 +168,19 @@ function renderPopularShops() {
     const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
     
     container.innerHTML = sorted.map(shop => {
-        const imgUrl = shop.mainImage || shop.thumbnail || (shop.images && shop.images[0]) || '';
+        const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+        const priceText = shop.priceMax ? 
+            `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
+            `₩${shop.price.toLocaleString()}~`;
+        const categoryLabel = getCategoryLabel(shop.category);
+        
         return `
             <div class="popular-card" onclick="goToDetail(${shop.id})">
                 <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
                 <div class="popular-card-info">
                     <div class="popular-card-name">${escapeHtml(shop.name)}</div>
-                    <div class="popular-card-location">${escapeHtml(shop.location)}</div>
+                    <div class="popular-card-price">${priceText}</div>
+                    <div class="popular-card-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
                 </div>
             </div>
         `;
@@ -498,10 +504,10 @@ function filterMapCategory(category) {
         : shopsData.filter(s => s.category === category);
     
     const categoryIcons = {
-        nail: '/img/map_nail.png',
+        beauty: '/img/map_beauty.png',
         glasses: '/img/map_glasses.png',
         dessert: '/img/map_dessert.png',
-        hanbok: '/img/map_hanbok.png',
+        cloth: '/img/map_cloth.png',
         vintage: '/img/map_vintage.png',
         goods: '/img/map_goods.png'
     };
@@ -538,10 +544,10 @@ function renderAllShopsOnMap() {
     markers = [];
     
     const categoryIcons = {
-        nail: '/img/map_nail.png',
+        beauty: '/img/map_beauty.png',
         glasses: '/img/map_glasses.png',
         dessert: '/img/map_dessert.png',
-        hanbok: '/img/map_hanbok.png',
+        cloth: '/img/map_cloth.png',
         vintage: '/img/map_vintage.png',
         goods: '/img/map_goods.png'
     };
@@ -931,11 +937,11 @@ function importJSON(event) {
 // ==================== 유틸 함수 ====================
 function getCategoryLabel(category) {
     const map = {
-        nail: '네일샵',
+        beauty: '뷰티',
         dessert: '디저트 카페',
         glasses: '안경점',
         vintage: '음식점',
-        hanbok: '한복대여',
+        cloth: '의류',
         goods: '굿즈샵'
     };
     return map[category] || category;

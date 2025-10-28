@@ -78,7 +78,7 @@
                         <label class="form-label">
                             상호명<span class="required">*</span>
                         </label>
-                        <input type="text" class="form-input" name="shopName" required placeholder="홍대 프리미엄 네일샵">
+                        <input type="text" class="form-input" name="shopName" required placeholder="홍대 프리미엄 뷰티샵">
                     </div>
 
                     <div class="form-row">
@@ -101,11 +101,11 @@
                         </label>
                         <select class="form-select" name="shopCategory" required>
                             <option value="">선택하세요</option>
-                            <option value="nail">네일샵</option>
+                            <option value="beauty">뷰티</option>
                             <option value="glasses">안경점</option>
                             <option value="dessert">디저트 카페</option>
-                            <option value="hanbok">한복 대여</option>
-                            <option value="vintage">빈티지샵</option>
+                            <option value="cloth">의류</option>
+                            <option value="food">음식점</option>
                             <option value="goods">굿즈샵</option>
                         </select>
                     </div>
@@ -331,11 +331,11 @@ ${formData.additionalInfo}
 
         function getCategoryLabel(value) {
             const labels = {
-                nail: '네일샵',
+                beauty: '뷰티',
                 glasses: '안경점',
                 dessert: '디저트 카페',
-                hanbok: '한복 대여',
-                vintage: '빈티지샵',
+                cloth: '의류',
+                food: '음식점',
                 goods: '굿즈샵'
             };
             return labels[value] || value;

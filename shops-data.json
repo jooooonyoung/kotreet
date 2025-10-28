@@ -47,7 +47,7 @@
   {
     "id": 7,
     "name": "Myeongdong Nail Pro-Beauty",
-    "category": "nail",
+    "category": "beauty",
     "location": "명동",
     "price": 35000,
     "thumbnail": "/img/s_probeauty_t1.jpg",
@@ -70,7 +70,7 @@
   {
     "id": 8,
     "name": "Yes Hanbok (예스한복)",
-    "category": "hanbok",
+    "category": "cloth",
     "location": "명동",
     "price": 20000,
     "thumbnail": "/img/s_yeshanbok_t1.jpg",

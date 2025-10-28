@@ -439,7 +439,6 @@ header .header-back:active {
 .category-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
 }
 
 .category-item {
@@ -459,7 +458,7 @@ header .header-back:active {
 
 .category-icon {
     width: 80px;
-    height: 80px;
+    height: 100px;
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -582,29 +581,36 @@ header .header-back:active {
 
 
 .popular-card-info {
-    padding: 8px;
+    padding: 6px;
     background: white;
-    height: 60px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .popular-card-name {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     color: #343a40;
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .popular-card-location {
-    font-size: 14px;
+    font-size: 12px;
     color: #6c757d;
-    margin-top: 2px;
+    margin-top: 6px;
     font-weight: 400;
 }
+
+.popular-card-price {
+    font-size: 12px;
+    font-weight: 400;
+    color: #343a40;
+    margin-top: 4px;
+}
+
 
 /* ==================== 지역별 페이지 ==================== */
 #locationPage {
@@ -1604,14 +1610,33 @@ footer {
 }
 
 .category-shop-info {
-    padding: 12px 0;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
 
 .category-shop-name {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     color: #343a40;
-    margin-bottom: 2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.category-shop-price {
+    font-size: 12px;
+    font-weight: 400;
+    color: #343a40;
+    margin-top: 4px;
+}
+
+.category-shop-location {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    font-weight: 400;
 }
 
 .category-shop-badges {
@@ -1637,11 +1662,7 @@ footer {
     background: #adb5bd;
 }
 
-.category-shop-price {
-    font-size: 14px;
-    font-weight: 700;
-    color: #343a40;
-}
+
 
 /* ==================== 카테고리 전체 페이지 (category-all.html) ==================== */
 .category-all-content {

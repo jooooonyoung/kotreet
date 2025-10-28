@@ -15,6 +15,18 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function getCategoryLabel(category) {
+    const categoryMap = {
+        beauty: '뷰티',
+        dessert: '디저트 카페',
+        glasses: '안경점',
+        vintage: '음식점',
+        cloth: '의류',
+        goods: '굿즈샵'
+    };
+    return categoryMap[category] || category;
+}
+
 let shopsData = [];
 let currentLocation = '';
 let currentCategory = '';
@@ -67,12 +79,12 @@ window.addEventListener('load', () => {
 });
 
 function renderAllCategories() {
-    const categories = ['nail', 'glasses', 'dessert', 'hanbok', 'vintage', 'goods'];
+    const categories = ['beauty', 'glasses', 'dessert', 'cloth', 'vintage', 'goods'];
     const categoryLabels = {
-        nail: '네일샵',
+        beauty: '뷰티',
         glasses: '안경점',
         dessert: '디저트 카페',
-        hanbok: '한복대여',
+        cloth: '의류',
         vintage: '음식점',
         goods: '굿즈샵'
     };
@@ -83,10 +95,10 @@ function renderAllCategories() {
             .sort((a, b) => a.id - b.id); // ID순 정렬
         
         const sectionIdMap = {
-            nail: 'nailSection',
+            beauty: 'beautySection',
             glasses: 'glassesSection',
             dessert: 'hairSection',
-            hanbok: 'hanbokSection',
+            cloth: 'clothSection',
             vintage: 'vintageSection',
             goods: 'goodsSection'
         };
@@ -113,16 +125,18 @@ function renderAllCategories() {
         if (container) {
             if (shops.length > 0) {
                 container.innerHTML = shops.map(shop => {
-                    const imgUrl = shop.mainImage || shop.thumbnail || (shop.images && shop.images[0]) || '';
+                    const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
                     const priceText = shop.priceMax ? 
                         `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
                         `₩${shop.price.toLocaleString()}~`;
+                    const categoryLabel = getCategoryLabel(shop.category);
                     return `
                         <div class="category-shop-card" onclick="goToDetail(${shop.id})">
                             <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                             <div class="category-shop-info">
                                 <div class="category-shop-name">${escapeHtml(shop.name)}</div>
                                 <div class="category-shop-price">${priceText}</div>
+                                <div class="category-shop-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
                             </div>
                         </div>
                     `;
@@ -136,24 +150,24 @@ function renderAllCategories() {
 
 function renderSingleCategory(category) {
     const categoryLabels = {
-        nail: '네일샵',
+        beauty: '뷰티',
         glasses: '안경점',
         dessert: '디저트 카페',
-        hanbok: '한복대여',
+        cloth: '의류',
         vintage: '음식점',
         goods: '굿즈샵'
     };
 
     const sectionIdMap = {
-        nail: 'nailSection',
+        beauty: 'beautySection',
         glasses: 'glassesSection',
         dessert: 'hairSection',
-        hanbok: 'hanbokSection',
+        cloth: 'clothSection',
         vintage: 'vintageSection',
         goods: 'goodsSection'
     };
 
-    const allCategories = ['nail', 'glasses', 'dessert', 'hanbok', 'vintage', 'goods'];
+    const allCategories = ['beauty', 'glasses', 'dessert', 'cloth', 'vintage', 'goods'];
     allCategories.forEach(cat => {
         const section = document.getElementById(sectionIdMap[cat]);
         if (section) {
@@ -186,16 +200,18 @@ function renderSingleCategory(category) {
         if (shops.length > 0) {
             container.innerHTML = shops.map(shop => {
                 const shopNo = String(shop.id).padStart(4, '0');
-                const imgUrl = shop.mainImage || shop.thumbnail || (shop.images && shop.images[0]) || '';
+                const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
                 const priceText = shop.priceMax ? 
                     `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
                     `₩${shop.price.toLocaleString()}~`;
+                const categoryLabel = getCategoryLabel(shop.category);
                 return `
                     <div class="category-shop-card" onclick="goToDetail('${shopNo}')">
                         <img src="${imgUrl}" alt="${shop.name}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                         <div class="category-shop-info">
                             <div class="category-shop-name">${shop.name}</div>
                             <div class="category-shop-price">${priceText}</div>
+                            <div class="category-shop-location">${shop.location} · ${categoryLabel}</div>
                         </div>
                     </div>
                 `;

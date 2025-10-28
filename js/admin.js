@@ -80,10 +80,10 @@ function addShop() {
     // 메인 이미지 배열 생성 (index, 카테고리 페이지용)
     const mainImages = mainImageText.split('\n').map(s => s.trim()).filter(s => s);
     
-    // 썸네일 이미지 배열 생성 (상세 페이지용)
+    // 썸뷰티 이미지 배열 생성 (상세 페이지용)
     const thumbnailImages = thumbnailText.split('\n').map(s => s.trim()).filter(s => s);
     
-    // 첫 번째 메인 이미지를 thumbnail로, 모든 썸네일 이미지를 images로 저장
+    // 첫 번째 메인 이미지를 thumbnail로, 모든 썸뷰티 이미지를 images로 저장
     const thumbnail = mainImages[0] || '';
     const images = thumbnailImages.length > 0 ? thumbnailImages : mainImages;
     const mainImage = mainImages[0] || '';
@@ -212,7 +212,7 @@ function editShop(id) {
     // 메인 이미지 필드에 mainImage 또는 thumbnail 설정
     document.getElementById('adminMainImage').value = shop.mainImage || shop.thumbnail || '';
     
-    // 썸네일 필드에 images 배열 설정 (또는 mainImage를 대체로 사용)
+    // 썸뷰티 필드에 images 배열 설정 (또는 mainImage를 대체로 사용)
     const thumbnailImages = shop.images && shop.images.length > 0 
         ? shop.images.join('\n') 
         : (shop.mainImage || shop.thumbnail || '');
@@ -277,12 +277,12 @@ function importJSON(event) {
 
 function getCategoryLabel(category) {
     const map = {
-        nail: '네일샵',
+        beauty: '뷰티',
         hair: '헤어샵',
         dessert: '디저트 카페',
         glasses: '안경점',
-        vintage: '음식점',
-        hanbok: '한복대여',
+        food: '음식점',
+        cloth: '의류',
         goods: '굿즈샵'
     };
     return map[category] || category;

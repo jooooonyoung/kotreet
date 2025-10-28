@@ -46,11 +46,11 @@ window.addEventListener('load', () => {
 
 function renderDetailPage(shop) {
     const categoryMap = {
-        nail: '네일샵',
+        beauty: '뷰티',
         dessert: '디저트 카페',
         glasses: '안경점',
-        vintage: '음식점',
-        hanbok: '한복대여',
+        food: '음식점',
+        cloth: '의류',
         goods: '굿즈샵'
     };
 
@@ -372,11 +372,11 @@ function shareShop() {
         const url = window.location.href;
         const title = currentShop.name;
         const categoryMap = {
-            nail: '네일샵',
+            beauty: '뷰티',
             dessert: '디저트 카페',
             glasses: '안경점',
-            vintage: '음식점',
-            hanbok: '한복대여',
+            food: '음식점',
+            cloth: '의류',
             goods: '굿즈샵'
         };
         const text = `${currentShop.name} - ${currentShop.location}의 ${categoryMap[currentShop.category]}`;

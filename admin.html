@@ -41,11 +41,11 @@
                     <label>카테고리</label>
                     <select id="adminCategory">
                         <option value="">선택하세요</option>
-                        <option value="beauty">뷰티</option>
+                        <option value="nail">뷰티</option>
                         <option value="dessert">디저트 카페</option>
                         <option value="glasses">안경점</option>
-                        <option value="food">음식점</option>
-                        <option value="cloth">의류</option>
+                        <option value="vintage">음식점</option>
+                        <option value="hanbok">의류</option>
                         <option value="goods">굿즈샵</option>
                     </select>
                 </div>
@@ -68,17 +68,24 @@
                     <input type="number" id="adminPriceMax" placeholder="100000">
                 </div>
                 <div class="form-group">
-                    <label>메인 이미지 (index & 카테고리 페이지용, 800x800px)</label>
-                    <textarea id="adminMainImage" placeholder="/img/s_1_m1.jpg
-/img/s_1_m2.jpg
-https://example.com/main-image.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <label>썸뷰티 이미지 (카테고리 페이지용, 800x800px)</label>
+                    <textarea id="adminThumbnail" placeholder="/img/s_1_t1.jpg
+/img/s_1_t2.jpg
+https://example.com/thumbnail.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
                     <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력 (상대경로 또는 절대경로)</small>
                 </div>
                 <div class="form-group">
-                    <label>썸네일 이미지 (상세 페이지용, 800x800px)</label>
-                    <textarea id="adminThumbnail" placeholder="/img/s_1_t1.jpg
-/img/s_1_t2.jpg
-/img/s_1_t3.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
+                    <textarea id="adminMainImage" placeholder="/img/s_1_m1.jpg
+/img/s_1_m2.jpg
+https://example.com/main-image.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
+                </div>
+                <div class="form-group">
+                    <label>추가 이미지 URL</label>
+                    <textarea id="adminImages" placeholder="/img/s_1_m3.jpg
+/img/s_1_m4.jpg
+/img/s_1_m5.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
                     <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
                 </div>
                 <div class="form-group">
@@ -94,24 +101,70 @@ https://example.com/main-image.jpg" style="min-height: 100px; font-family: monos
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>언어 (중복 선택 가능)</label>
-                    <div class="checkbox-group" id="adminComm">
-                        <label class="checkbox-label"><input type="checkbox" value="KR"> KR</label>
-                        <label class="checkbox-label"><input type="checkbox" value="EN"> EN</label>
-                        <label class="checkbox-label"><input type="checkbox" value="JP"> JP</label>
-                        <label class="checkbox-label"><input type="checkbox" value="CH"> CH</label>
-                        <label class="checkbox-label"><input type="checkbox" value="CH-TW"> CH-TW</label>
-                        <label class="checkbox-label"><input type="checkbox" value="TH"> TH</label>
-                        <label class="checkbox-label"><input type="checkbox" value="VN"> VN</label>
-                        <label class="checkbox-label"><input type="checkbox" value="PH"> PH</label>
-                        <label class="checkbox-label"><input type="checkbox" value="ID"> ID</label>
-                        <label class="checkbox-label"><input type="checkbox" value="FR"> FR</label>
-                        <label class="checkbox-label"><input type="checkbox" value="DE"> DE</label>
-                        <label class="checkbox-label"><input type="checkbox" value="ES"> ES</label>
-                        <label class="checkbox-label"><input type="checkbox" value="RU"> RU</label>
-                        <label class="checkbox-label"><input type="checkbox" value="MY"> MY</label>
-                        <label class="checkbox-label"><input type="checkbox" value="AR"> AR</label>
+                    <label>언어 (복수 선택 가능)</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding: 12px; background: #f9f9f9; border-radius: 6px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="KR">
+                            <span>🇰🇷 한국어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="EN">
+                            <span>🇺🇸 영어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="JP">
+                            <span>🇯🇵 일본어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="CH">
+                            <span>🇨🇳 중국어(간체)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="CH-TW">
+                            <span>🇹🇼 중국어(번체)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="TH">
+                            <span>🇹🇭 태국어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="VN">
+                            <span>🇻🇳 베트남어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="PH">
+                            <span>🇵🇭 필리핀어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="ID">
+                            <span>🇮🇩 인도네시아어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="FR">
+                            <span>🇫🇷 프랑스어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="DE">
+                            <span>🇩🇪 독일어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="ES">
+                            <span>🇪🇸 스페인어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="RU">
+                            <span>🇷🇺 러시아어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="MY">
+                            <span>🇲🇾 말레이어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="AR">
+                            <span>🇸🇦 아랍어</span>
+                        </label>
                     </div>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">최소 1개 이상 선택해주세요</small>
                 </div>
                 <div class="form-group">
                     <label>결제 수단</label>
@@ -142,6 +195,11 @@ https://example.com/main-image.jpg" style="min-height: 100px; font-family: monos
                     <label>Google Maps 경도</label>
                     <input type="text" id="adminLng" placeholder="126.9780">
                 </div>
+                <div class="form-group">
+                    <label>지역별 인기 가게 순서 (선택)</label>
+                    <input type="number" id="adminRegionOrder" placeholder="0" min="0" max="10">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">1~10 입력 시 해당 지역 페이지 상단에 '인기 가게'로 우선 노출됩니다. 숫자가 작을수록 먼저 표시됩니다. (0은 노출 안 함)</small>
+                </div>
                 <div class="form-buttons">
                     <button class="btn btn-primary" onclick="addShop()">가게 추가</button>
                     <button class="btn btn-secondary" onclick="resetForm()">초기화</button>
@@ -163,6 +221,7 @@ https://example.com/main-image.jpg" style="min-height: 100px; font-family: monos
                 </div>
                 <div class="form-buttons">
                     <button class="btn btn-primary" onclick="exportJSON()">📥 JSON 다운로드</button>
+                    <button class="btn btn-danger" onclick="resetAllViews()" style="background: #dc3545; margin-left: 8px;">🔄 모든 조회수 초기화</button>
                 </div>
                 <div style="margin-top: 20px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; line-height: 1.6; color: #666;">
                     <p><strong>💡 JSON 사용 방법:</strong></p>

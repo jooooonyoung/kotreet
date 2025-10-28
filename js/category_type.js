@@ -5,23 +5,11 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-function getCategoryLabel(category) {
-    const categoryMap = {
-        beauty: '뷰티',
-        dessert: '디저트 카페',
-        glasses: '안경점',
-        vintage: '음식점',
-        cloth: '의류',
-        goods: '굿즈샵'
-    };
-    return categoryMap[category] || category;
-}
-
 let shopsData = [];
 let currentCategory = '';
 
 const urlParams = new URLSearchParams(window.location.search);
-currentCategory = urlParams.get('category') || 'beauty';
+currentCategory = urlParams.get('category') || 'nail';
 
 const categoryLabels = {
     beauty: '뷰티',
@@ -33,7 +21,7 @@ const categoryLabels = {
 };
 
 const categoryDescriptions = {
-    beauty: '한국의 뷰티샵을 소개합니다.',
+    beauty: '한국의 뷰티을 소개합니다.',
     glasses: '한국의 안경점을 소개합니다.',
     dessert: '한국의 디저트 카페를 소개합니다.',
     cloth: '한국의 의류샵을 소개합니다.',
@@ -55,8 +43,43 @@ window.addEventListener('load', () => {
     document.getElementById('categoryMainTitle').textContent = categoryLabels[currentCategory] || currentCategory;
     document.getElementById('categoryMainDesc').textContent = categoryDescriptions[currentCategory] || '';
     
+    renderPopularShops();
     renderAllCategoryShops();
 });
+
+function renderPopularShops() {
+    const container = document.getElementById('categoryTypePopularScroll');
+    if (!container) return;
+    
+    // 현재 카테고리의 가게만 필터링 후 조회수 높은 순으로 정렬, 상위 10개만 표시
+    const sorted = [...shopsData]
+        .filter(shop => shop.category === currentCategory) // 현재 카테고리만 필터링
+        .sort((a, b) => {
+            const viewsA = a.views || 0;
+            const viewsB = b.views || 0;
+            
+            if (viewsB !== viewsA) {
+                return viewsB - viewsA;
+            }
+            
+            return b.id - a.id;
+        })
+        .slice(0, 10);
+    
+    container.innerHTML = sorted.map(shop => {
+        const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+        const categoryLabel = categoryLabels[shop.category] || shop.category;
+        return `
+            <div class="popular-card" onclick="goToDetail(${shop.id})">
+                <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
+                <div class="popular-card-info">
+                    <div class="popular-card-name">${escapeHtml(shop.name)}</div>
+                    <div class="popular-card-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
 
 function renderAllCategoryShops() {
     const shops = shopsData
@@ -70,14 +93,13 @@ function renderAllCategoryShops() {
             const priceText = shop.priceMax ? 
                 `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
                 `₩${shop.price.toLocaleString()}~`;
-            const categoryLabel = getCategoryLabel(shop.category);
             return `
                 <div class="category-shop-card" onclick="goToDetail(${shop.id})">
                     <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                     <div class="category-shop-info">
                         <div class="category-shop-name">${escapeHtml(shop.name)}</div>
                         <div class="category-shop-price">${priceText}</div>
-                        <div class="category-shop-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
+                        <div style="font-size: 11px; color: #6c757d; margin-top: 4px;">${escapeHtml(shop.location)}</div>
                     </div>
                 </div>
             `;

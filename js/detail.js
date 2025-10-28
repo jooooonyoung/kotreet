@@ -31,8 +31,16 @@ window.addEventListener('load', () => {
         currentShop = shopsData.find(s => s.id === shopId);
         
         if (currentShop) {
-            currentShop.views = (currentShop.views || 0) + 1;
-            localStorage.setItem('shopsData', JSON.stringify(shopsData));
+            // 세션 기반 조회수 증가 (브라우저 닫으면 초기화)
+            const viewedKey = `viewed_shop_${shopId}`;
+            const hasViewed = sessionStorage.getItem(viewedKey);
+            
+            if (!hasViewed) {
+                currentShop.views = (currentShop.views || 0) + 1;
+                localStorage.setItem('shopsData', JSON.stringify(shopsData));
+                sessionStorage.setItem(viewedKey, 'true');
+            }
+            
             renderDetailPage(currentShop);
         } else {
             alert('가게 정보를 찾을 수 없습니다.');

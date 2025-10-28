@@ -47,7 +47,7 @@ const sampleData = [
     {
         id: 2,
         name: "프리미엄 뷰티 홍대",
-        category: "nail",
+        category: "beauty",
         location: "홍대",
         price: 50000,
         priceMax: 100000,
@@ -60,7 +60,7 @@ const sampleData = [
         payment: "both",
         locationDetail: "홍대입구역 9번출구 300m",
         hours: "월~일 10:00 AM - 8:00 PM",
-        description: "홍대의 최고 트렌드 뷰티샵입니다.",
+        description: "홍대의 최고 트렌드 뷰티입니다.",
         latitude: 37.5519,
         longitude: 126.9255,
         views: 980,
@@ -148,8 +148,15 @@ function goToDetail(shopId) {
         return;
     }
 
-    shop.views = (shop.views || 0) + 1;
-    saveToStorage();
+    // 세션 기반 조회수 증가 (브라우저 닫으면 초기화)
+    const viewedKey = `viewed_shop_${shopId}`;
+    const hasViewed = sessionStorage.getItem(viewedKey);
+    
+    if (!hasViewed) {
+        shop.views = (shop.views || 0) + 1;
+        saveToStorage();
+        sessionStorage.setItem(viewedKey, 'true');
+    }
 
     const shopNo = String(shopId).padStart(4, '0');
     console.log('이동할 URL:', `detail.html?no=${shopNo}`);
@@ -165,21 +172,29 @@ function renderPopularShops() {
     const container = document.getElementById('popularScroll');
     if (!container) return;
     
-    const sorted = [...shopsData].sort((a, b) => (b.views || 0) - (a.views || 0));
+    // 조회수 높은 순으로 정렬 후 상위 10개만 표시
+    const sorted = [...shopsData]
+        .sort((a, b) => {
+            const viewsA = a.views || 0;
+            const viewsB = b.views || 0;
+            
+            if (viewsB !== viewsA) {
+                return viewsB - viewsA; // 조회수 높은 순
+            }
+            
+            // 조회수 같으면 최신 가게 우선
+            return b.id - a.id;
+        })
+        .slice(0, 10); // 상위 10개만
     
     container.innerHTML = sorted.map(shop => {
         const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
-        const priceText = shop.priceMax ? 
-            `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
-            `₩${shop.price.toLocaleString()}~`;
         const categoryLabel = getCategoryLabel(shop.category);
-        
         return `
             <div class="popular-card" onclick="goToDetail(${shop.id})">
                 <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
                 <div class="popular-card-info">
                     <div class="popular-card-name">${escapeHtml(shop.name)}</div>
-                    <div class="popular-card-price">${priceText}</div>
                     <div class="popular-card-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
                 </div>
             </div>
@@ -504,10 +519,10 @@ function filterMapCategory(category) {
         : shopsData.filter(s => s.category === category);
     
     const categoryIcons = {
-        beauty: '/img/map_beauty.png',
+        beauty: '/img/map_nail.png',
         glasses: '/img/map_glasses.png',
         dessert: '/img/map_dessert.png',
-        cloth: '/img/map_cloth.png',
+        cloth: '/img/map_hanbok.png',
         vintage: '/img/map_vintage.png',
         goods: '/img/map_goods.png'
     };
@@ -544,10 +559,10 @@ function renderAllShopsOnMap() {
     markers = [];
     
     const categoryIcons = {
-        beauty: '/img/map_beauty.png',
+        beauty: '/img/map_nail.png',
         glasses: '/img/map_glasses.png',
         dessert: '/img/map_dessert.png',
-        cloth: '/img/map_cloth.png',
+        cloth: '/img/map_hanbok.png',
         vintage: '/img/map_vintage.png',
         goods: '/img/map_goods.png'
     };

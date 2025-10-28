@@ -15,6 +15,76 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .popular-section {
+            background: #fff;
+            padding: 20px 16px;
+            margin-bottom: 20px;
+        }
+        
+        .popular-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #222;
+            margin: 0 0 8px 0;
+        }
+        
+        .popular-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .popular-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .popular-card {
+            flex: 0 0 160px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .popular-card:active {
+            transform: scale(0.95);
+        }
+        
+        .popular-card img {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .popular-card-info {
+            padding: 0 4px;
+        }
+        
+        .popular-card-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .popular-card-price {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+        
+        .popular-card-location {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
 </head>
 <body>
     <div id="categoryPage">
@@ -31,6 +101,13 @@
         <div class="category-page-header">
             <h1 class="category-page-title" id="locationTitle">홍대</h1>
         </div>
+
+        <!-- 전체 인기 가게 섹션 (조회수 기준) -->
+        <section class="popular-section" id="allPopularSection" style="padding: 20px 16px; background: white; margin-bottom: 0;">
+            <h3 style="font-size: 20px; font-weight: 700; color: #222; margin-bottom: 8px;" id="popularSectionTitle">🔥 홍대에서 가장 많이 본 가게</h3>
+            <p style="font-size: 13px; color: #6c757d; margin: 0 0 16px 0;">이 지역에서 조회수가 높은 인기 가게</p>
+            <div class="popular-scroll" id="allPopularScroll"></div>
+        </section>
 
         <!-- 카테고리 탭 -->
 <div class="category-tabs-section">
@@ -68,9 +145,9 @@
         </button>
         
         <!-- 음식점 -->
-        <button class="category-tab" data-category="food" onclick="filterCategory('food')">
+        <button class="category-tab" data-category="vintage" onclick="filterCategory('vintage')">
             <div class="category-tab-icon">
-                <img src="img/icn_food.png" alt="음식점">
+                <img src="img/icn_vintage.png" alt="음식점">
             </div>
             <span>음식점</span>
         </button>
@@ -85,56 +162,65 @@
     </div>
 </div>
 
+        <!-- 지역별 인기 가게 섹션 (regionOrder 기준) -->
+        <section class="popular-section" id="regionPopularSection" style="display: none; padding: 20px 16px;">
+            <h3 id="regionPopularTitle" style="font-size: 20px; font-weight: 700; color: #222; margin-bottom: 8px;">🔥 홍대의 인기 가게</h3>
+            <p style="font-size: 13px; color: #6c757d; margin: 0 0 16px 0;" id="regionPopularDesc">현지인이 추천하는 특별한 장소</p>
+            <div class="popular-scroll" id="regionPopularScroll" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; -webkit-overflow-scrolling: touch;">
+                <!-- 인기 가게 카드들이 여기에 렌더링됩니다 -->
+            </div>
+        </section>
+
         <!-- 안경점 섹션 -->
         <div class="category-section" id="glassesSection">
             <div class="category-section-header">
                 <h2 class="category-section-title">안경점</h2>
-                <p class="category-section-desc" id="glassesDesc">저렴하고 당일 수령이 가능한 안경점</p>
+                <p class="category-section-desc" id="glassesDesc">한국의 안경점은 매우지합니다.</p>
             </div>
             <div class="category-shops-grid" id="glassesShops"></div>
         </div>
 
         <!-- 뷰티 섹션 -->
-        <div class="category-section" id="beautySection">
+        <div class="category-section" id="nailSection">
             <div class="category-section-header">
                 <h2 class="category-section-title">뷰티</h2>
-                <p class="category-section-desc" id="beautyDesc">K-beauty 스타일의 아름다운 뷰티로 손을 가꿔보세요.</p>
+                <p class="category-section-desc" id="nailDesc">K-Beauty 스타일의 아름다운 뷰티로 손들을 바꿔보세요!</p>
             </div>
-            <div class="category-shops-grid" id="beautyShops"></div>
+            <div class="category-shops-grid" id="nailShops"></div>
         </div>
 
         <!-- 디저트 카페 섹션 (기존 hairSection을 디저트 카페로 사용) -->
         <div class="category-section" id="hairSection">
             <div class="category-section-header">
                 <h2 class="category-section-title">디저트 카페</h2>
-                <p class="category-section-desc" id="hairDesc">한국의 특별한 디저트 카페를 소개합니다..</p>
+                <p class="category-section-desc" id="hairDesc">한국의 디저트 카페는 매우지합니다.</p>
             </div>
             <div class="category-shops-grid" id="hairShops"></div>
         </div>
 
-        <!-- 한복대여 섹션 -->
-        <div class="category-section" id="clothSection">
+        <!-- 의류 섹션 -->
+        <div class="category-section" id="hanbokSection">
             <div class="category-section-header">
-                <h2 class="category-section-title">한복대여</h2>
-                <p class="category-section-desc" id="clothDesc">의류와 체험을 경험해보세요.</p>
+                <h2 class="category-section-title">의류</h2>
+                <p class="category-section-desc" id="hanbokDesc">한국의 의류는 매우지합니다.</p>
             </div>
-            <div class="category-shops-grid" id="clothShops"></div>
+            <div class="category-shops-grid" id="hanbokShops"></div>
         </div>
 
         <!-- 음식점 섹션 -->
-        <div class="category-section" id="foodSection">
+        <div class="category-section" id="vintageSection">
             <div class="category-section-header">
                 <h2 class="category-section-title">음식점</h2>
-                <p class="category-section-desc" id="foodDesc">한국 음식점 맛집</p>
+                <p class="category-section-desc" id="vintageDesc">홍대에서 매니아층이 있는 빈티지 패션 샵</p>
             </div>
-            <div class="category-shops-grid" id="foodShops"></div>
+            <div class="category-shops-grid" id="vintageShops"></div>
         </div>
 
         <!-- 굿즈샵 섹션 -->
         <div class="category-section" id="goodsSection">
             <div class="category-section-header">
                 <h2 class="category-section-title">굿즈샵</h2>
-                <p class="category-section-desc" id="goodsDesc">한국에서만 찾아볼 수 있는 기프트샵을 소개합니다.</p>
+                <p class="category-section-desc" id="goodsDesc">한국의 굿즈샵은 매우지합니다.</p>
             </div>
             <div class="category-shops-grid" id="goodsShops"></div>
         </div>

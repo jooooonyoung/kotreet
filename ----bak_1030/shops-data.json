@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "다비치 안경 명동점",
+    "category": "glasses",
+    "location": "명동",
+    "price": 150000,
+    "thumbnail": "/img/main_myeongdong.jpg",
+    "mainImage": "/img/main_myeongdong.jpg",
+    "images": [
+      "/img/main_myeongdong.jpg",
+      "/img/main_myeongdong.jpg"
+    ],
+    "video": "",
+    "mood": "busy",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "명동에서 가장 트렌디한 안경을 찾을 수 있습니다.",
+    "latitude": 37.5621,
+    "longitude": 126.9840,
+    "views": 1250
+  },
+  {
+    "id": 6,
+    "name": "BUNNISTUDIOS 명동점",
+    "category": "glasses",
+    "location": "명동",
+    "price": 150000,
+    "thumbnail": "/img/s_1_m1.jpg",
+    "mainImage": "/img/s_1_m2.jpg",
+    "images": [
+      "/img/m1.jpg",
+      "/img/s_s1_m1.jpg",
+      "/img/s_s1_m2.jpg"
+    ],
+    "video": "",
+    "mood": "quiet",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "명동 중심가에 위치하며, 비교적 깔끔한 디자이너 안경 선택지가 있는 곳입니다. 리뷰 평점 4.9점으로 높은 만족도를 자랑합니다. 해외 관광객을 위한 영어/중국어 안내가 가능하며, 안경테 및 렌즈 포함 약 ₩150,000 ~ ₩300,000 (디자이너 브랜드 혹은 렌즈 옵션에 따라 상이)의 가격대를 형성하고 있습니다.",
+    "latitude": 37.5635,
+    "longitude": 126.9850,
+    "views": 0
+  },
+  {
+    "id": 7,
+    "name": "Myeongdong Nail Pro-Beauty",
+    "category": "beauty",
+    "location": "명동",
+    "price": 35000,
+    "thumbnail": "/img/s_probeauty_t1.jpg",
+    "mainImage": "/img/s_probeauty_m1.jpg",
+    "images": [
+      "/img/s_probeauty_m1.jpg",
+      "/img/s_probeauty_m2.jpg",
+      "/img/s_probeauty_m3.jpg"
+    ],
+    "video": "",
+    "mood": "busy",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "명동에서 1,000개 이상의 리뷰를 보유한 인기 네일샵입니다. 젤네일 기본 손 약 ₩35,000 ~ ₩50,000 정도부터 시작하며, 발 젤이나 아트 추가 시 ₩40,000 ~ ₩60,000+ 가능합니다. 접근성이 좋아 관광객에게 괜찮은 선택지이며, 예약 및 통역 언어 가능 여부를 확인하시면 더욱 편리합니다. 디자인 샘플을 미리 보고 원하는 스타일 사진을 가져가시면 좋습니다.",
+    "latitude": 37.5640,
+    "longitude": 126.9845,
+    "views": 0
+  },
+  {
+    "id": 8,
+    "name": "Yes Hanbok (예스한복)",
+    "category": "cloth",
+    "location": "명동",
+    "price": 20000,
+    "thumbnail": "/img/s_yeshanbok_t1.jpg",
+    "mainImage": "/img/s_yeshanbok_m1.jpg",
+    "images": [
+      "/img/s_yeshanbok_m1.jpg",
+      "/img/s_yeshanbok_m2.jpg",
+      "/img/s_yeshanbok_m3.jpg"
+    ],
+    "video": "",
+    "mood": "quiet",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "종로 인근에 위치했으나 명동 관광 루트에서도 접근 가능하며, 외국인 관광객 대상 옵션도 많습니다. 리뷰도 약 1,500개 이상으로 5.0점 만점의 높은 평가를 받고 있습니다. 한복 대여 기본 플랜 약 ₩20,000 ~ ₩40,000 내외(시간/옵션/사진 촬영 포함 여부 따라 변동)이며, 사진 촬영 플랜 포함 여부를 확인하고 사이즈/스타일을 미리 문의하면 선택 폭이 넓어집니다.",
+    "latitude": 37.5700,
+    "longitude": 126.9850,
+    "views": 0
+  },
+  {
+    "id": 9,
+    "name": "카페 레 빠리지엥 명동점",
+    "category": "dessert",
+    "location": "명동",
+    "price": 10000,
+    "thumbnail": "/img/s_leparisien_t1.jpg",
+    "mainImage": "/img/s_leparisien_m1.jpg",
+    "images": [
+      "/img/s_leparisien_m1.jpg",
+      "/img/s_leparisien_m2.jpg",
+      "/img/s_leparisien_m3.jpg"
+    ],
+    "video": "",
+    "mood": "quiet",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "명동 중심 골목에 위치해 쇼핑 중간 휴식하기 좋은 카페입니다. 디저트플래터 및 음료 포함 약 ₩10,000 ~ ₩20,000 수준으로 합리적인 가격대를 자랑합니다. 5.0점 만점의 평점을 받고 있으며, 인스타그램용 사진 찍기 좋은 공간으로 관광객에게 인기가 많습니다. 혼잡 시간대에는 대기가 있을 수 있으니 참고하세요.",
+    "latitude": 37.5630,
+    "longitude": 126.9855,
+    "views": 0
+  },
+  {
+    "id": 10,
+    "name": "ROOT 명동 (루트 빈티지샵)",
+    "category": "vintage",
+    "location": "명동",
+    "price": 10000,
+    "thumbnail": "/img/s_root_t1.jpg",
+    "mainImage": "/img/s_root_m1.jpg",
+    "images": [
+      "/img/s_root_m1.jpg",
+      "/img/s_root_m2.jpg",
+      "/img/s_root_m3.jpg"
+    ],
+    "video": "",
+    "mood": "quiet",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "1층·2층 구성으로 다양한 빈티지 아이템을 보유한 매장입니다. 빈티지 상품 특성상 가격은 천차만별이나, 운과 안목만 있다면 1~2만원대부터 발견 가능합니다. 관광객에게도 색다른 쇼핑 경험을 제공하며, 5.0점 만점의 평점을 받고 있습니다. 빈티지 제품은 사이즈가 한정적일 수 있으니 마음에 드는 제품이 있으면 빨리 구매하는 것을 추천합니다.",
+    "latitude": 37.5625,
+    "longitude": 126.9860,
+    "views": 0
+  },
+  {
+    "id": 11,
+    "name": "Wiggle wiggle 명동점",
+    "category": "goods",
+    "location": "명동",
+    "price": 10000,
+    "thumbnail": "/img/s_wiggle_t1.jpg",
+    "mainImage": "/img/s_wiggle_m1.jpg",
+    "images": [
+      "/img/s_wiggle_m1.jpg",
+      "/img/s_wiggle_m2.jpg",
+      "/img/s_wiggle_m3.jpg"
+    ],
+    "video": "",
+    "mood": "busy",
+    "communication": "easy",
+    "payment": "both",
+    "hours": "화~일 11:00 AM - 9:00 PM / 월요일 휴무",
+    "description": "명동 쇼핑 거리 내 위치하며, 외국인 관광객이 접근하기 좋은 굿즈샵입니다. 2,900개 이상의 리뷰를 보유한 인기 있는 곳으로 5.0점 만점의 평가를 받고 있습니다. 기념품/캐릭터 굿즈 중심으로, 상품에 따라 ₩10,000 ~ ₩40,000 선에서 다양하게 구매 가능합니다. 면세 대상 여부 및 영수증 발급 가능 여부를 미리 확인하시면 좋습니다.",
+    "latitude": 37.5628,
+    "longitude": 126.9842,
+    "views": 0
+  }
+]

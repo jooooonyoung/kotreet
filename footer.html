@@ -21,14 +21,61 @@
         </div>
         <p class="footer-copyright">© 2025 Kotreet Inc. All rights reserved</p>
         <div class="footer-controls">
-            <button class="footer-select-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                </svg>
-                한국어
-            </button>
+            <div style="position: relative;">
+                <button class="footer-select-btn" id="languageBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    한국어
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <button class="lang-option" data-lang="ko">🇰🇷 한국어</button>
+                    <button class="lang-option" data-lang="en">🇺🇸 English</button>
+                </div>
+            </div>
             <span class="footer-currency">₩ KRW</span>
         </div>
     </div>
 </footer>
+
+<script>
+    // 언어 선택 기능
+    document.addEventListener('DOMContentLoaded', function() {
+        const languageBtn = document.getElementById('languageBtn');
+        const languageDropdown = document.getElementById('languageDropdown');
+        const langOptions = document.querySelectorAll('.lang-option');
+        
+        // 현재 언어 가져오기
+        const currentLang = localStorage.getItem('language') || 'ko';
+        languageBtn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            ${currentLang === 'ko' ? '한국어' : 'English'}
+        `;
+        
+        // 버튼 클릭시 드롭다운 토글
+        languageBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            languageDropdown.style.display = languageDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // 언어 옵션 클릭
+        langOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const selectedLang = this.getAttribute('data-lang');
+                localStorage.setItem('language', selectedLang);
+                location.reload();
+            });
+        });
+        
+        // 외부 클릭시 드롭다운 닫기
+        document.addEventListener('click', function() {
+            languageDropdown.style.display = 'none';
+        });
+    });
+</script>
+<script src="js/i18n.js"></script>

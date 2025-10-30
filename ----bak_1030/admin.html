@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
+    <title>Korea hidden gem - Kotreet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- 관리자 페이지 -->
+    <div id="adminPage">
+        <div class="admin-header">
+            <h1>관리자 대시보드</h1>
+            <button class="back-btn" onclick="goToHome()">✕</button>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="switchAdminTab('add')">가게 추가</button>
+            <button class="admin-tab" onclick="switchAdminTab('list')">가게 관리</button>
+            <button class="admin-tab" onclick="switchAdminTab('export')">데이터 관리</button>
+        </div>
+
+        <!-- 가게 추가 탭 -->
+        <div id="addTab" class="admin-tab-content">
+            <div class="admin-form">
+                <div class="form-group">
+                    <label>가게명</label>
+                    <input type="text" id="adminShopName" placeholder="예: 다비치 안경 명동점">
+                </div>
+                <div class="form-group">
+                    <label>카테고리</label>
+                    <select id="adminCategory">
+                        <option value="">선택하세요</option>
+                        <option value="nail">뷰티</option>
+                        <option value="dessert">디저트 카페</option>
+                        <option value="glasses">안경점</option>
+                        <option value="vintage">음식점</option>
+                        <option value="hanbok">의류</option>
+                        <option value="goods">굿즈샵</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>지역</label>
+                    <select id="adminLocation">
+                        <option value="">선택하세요</option>
+                        <option value="홍대">홍대</option>
+                        <option value="명동">명동</option>
+                        <option value="강남">강남</option>
+                        <option value="성수">성수</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>최소 가격 (숫자만 입력, 예: 50000)</label>
+                    <input type="number" id="adminPrice" placeholder="50000">
+                </div>
+                <div class="form-group">
+                    <label>최대 가격 (숫자만 입력, 예: 100000)</label>
+                    <input type="number" id="adminPriceMax" placeholder="100000">
+                </div>
+                <div class="form-group">
+                    <label>썸뷰티 이미지 (카테고리 페이지용, 800x800px)</label>
+                    <textarea id="adminThumbnail" placeholder="/img/s_1_t1.jpg
+/img/s_1_t2.jpg
+https://example.com/thumbnail.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력 (상대경로 또는 절대경로)</small>
+                </div>
+                <div class="form-group">
+                    <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
+                    <textarea id="adminMainImage" placeholder="/img/s_1_m1.jpg
+/img/s_1_m2.jpg
+https://example.com/main-image.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
+                </div>
+                <div class="form-group">
+                    <label>추가 이미지 URL</label>
+                    <textarea id="adminImages" placeholder="/img/s_1_m3.jpg
+/img/s_1_m4.jpg
+/img/s_1_m5.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
+                </div>
+                <div class="form-group">
+                    <label>동영상 URL (YouTube/Vimeo embed URL)</label>
+                    <input type="text" id="adminVideo" placeholder="https://www.youtube.com/embed/...">
+                </div>
+                <div class="form-group">
+                    <label>분위기</label>
+                    <select id="adminMood">
+                        <option value="">선택하세요</option>
+                        <option value="busy">분주한 분위기</option>
+                        <option value="quiet">조용한 분위기</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>언어 (복수 선택 가능)</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding: 12px; background: #f9f9f9; border-radius: 6px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="KR">
+                            <span>🇰🇷 한국어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="EN">
+                            <span>🇺🇸 영어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="JP">
+                            <span>🇯🇵 일본어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="CH">
+                            <span>🇨🇳 중국어(간체)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="CH-TW">
+                            <span>🇹🇼 중국어(번체)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="TH">
+                            <span>🇹🇭 태국어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="VN">
+                            <span>🇻🇳 베트남어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="PH">
+                            <span>🇵🇭 필리핀어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="ID">
+                            <span>🇮🇩 인도네시아어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="FR">
+                            <span>🇫🇷 프랑스어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="DE">
+                            <span>🇩🇪 독일어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="ES">
+                            <span>🇪🇸 스페인어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="RU">
+                            <span>🇷🇺 러시아어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="MY">
+                            <span>🇲🇾 말레이어</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="checkbox" name="adminComm" value="AR">
+                            <span>🇸🇦 아랍어</span>
+                        </label>
+                    </div>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">최소 1개 이상 선택해주세요</small>
+                </div>
+                <div class="form-group">
+                    <label>결제 수단</label>
+                    <select id="adminPayment">
+                        <option value="">선택하세요</option>
+                        <option value="both">카드/현금 모두 가능</option>
+                        <option value="cash">현금만</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>위치 (상세)</label>
+                    <input type="text" id="adminLocationDetail" placeholder="홍대입구역 9번출구 300m">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">예: 홍대입구역 9번출구 300m</small>
+                </div>
+                <div class="form-group">
+                    <label>영업시간</label>
+                    <input type="text" id="adminHours" placeholder="화~일 11:00 AM - 9:00 PM / 월요일 휴무">
+                </div>
+                <div class="form-group">
+                    <label>점주 소개</label>
+                    <textarea id="adminDescription" placeholder="가게에 대한 설명을 작성해주세요"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Google Maps 위도</label>
+                    <input type="text" id="adminLat" placeholder="37.5665">
+                </div>
+                <div class="form-group">
+                    <label>Google Maps 경도</label>
+                    <input type="text" id="adminLng" placeholder="126.9780">
+                </div>
+                <div class="form-group">
+                    <label>지역별 인기 가게 순서 (선택)</label>
+                    <input type="number" id="adminRegionOrder" placeholder="0" min="0" max="10">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">1~10 입력 시 해당 지역 페이지 상단에 '인기 가게'로 우선 노출됩니다. 숫자가 작을수록 먼저 표시됩니다. (0은 노출 안 함)</small>
+                </div>
+                <div class="form-buttons">
+                    <button class="btn btn-primary" onclick="addShop()">가게 추가</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">초기화</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 가게 관리 탭 -->
+        <div id="listTab" class="admin-tab-content hidden">
+            <div class="shop-list" id="shopList"></div>
+        </div>
+
+        <!-- 데이터 관리 탭 -->
+        <div id="exportTab" class="admin-tab-content hidden">
+            <div class="admin-form">
+                <div class="form-group">
+                    <label>📥 JSON 데이터 가져오기</label>
+                    <input type="file" id="jsonFile" accept=".json" onchange="importJSON(event)">
+                </div>
+                <div class="form-buttons">
+                    <button class="btn btn-primary" onclick="exportJSON()">📥 JSON 다운로드</button>
+                    <button class="btn btn-danger" onclick="resetAllViews()" style="background: #dc3545; margin-left: 8px;">🔄 모든 조회수 초기화</button>
+                </div>
+                <div style="margin-top: 20px; padding: 12px; background: #f0f0f0; border-radius: 6px; font-size: 12px; line-height: 1.6; color: #666;">
+                    <p><strong>💡 JSON 사용 방법:</strong></p>
+                    <p>1. "JSON 다운로드"로 현재 데이터를 백업하세요</p>
+                    <p>2. 다운로드된 JSON 파일을 텍스트 에디터로 열어서 데이터를 수정하세요</p>
+                    <p>3. 수정된 파일을 "파일 선택"으로 업로드하면 바로 반영됩니다</p>
+                    <p>4. JSON 파일은 브라우저의 localStorage에 저장되므로 브라우저를 초기화하면 데이터가 사라집니다</p>
+                    <p><strong>⚠️ 중요:</strong> 정기적으로 JSON 파일을 백업해두세요!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
+    <title>Redirecting...</title>
+    <script>
+        // GitHub Pages에서 .html 없이 접근 시 자동으로 .html 추가
+        (function() {
+            const path = window.location.pathname;
+            const search = window.location.search;
+            
+            // 루트 경로면 index.html로
+            if (path === '/' || path === '') {
+                window.location.replace('/');
+                return;
+            }
+            
+            // .html이 없으면 추가해서 리다이렉트
+            if (!path.endsWith('.html') && !path.endsWith('/')) {
+                window.location.replace(path + '.html' + search);
+            }
+        })();
+    </script>
+</head>
+<body>
+    <p>Redirecting...</p>
+</body>
+</html>

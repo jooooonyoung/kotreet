@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제휴 문의 - Kotreet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="partnership-container">
+        <!-- 헤더 -->
+        <header class="header-with-back">
+            <button class="header-back" onclick="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='/'">
+            <div style="width:24px;"></div>
+        </header>
+
+        <!-- 히어로 섹션 -->
+        <section class="partnership-hero">
+            <h1>코트릿과 함께<br>성장하세요</h1>
+            <p>해외 관광객에게 당신의 가게를 알리고,<br>새로운 고객을 만나보세요.</p>
+        </section>
+
+        <!-- 혜택 섹션 -->
+        <section class="partnership-section">
+            <h2 class="section-title">제휴 혜택</h2>
+            
+            <div class="benefits-scroll-container">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌏</div>
+                    <div class="benefit-title">글로벌 노출</div>
+                    <div class="benefit-desc">전세계 관광객에게<br>가게를 소개합니다.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📈</div>
+                    <div class="benefit-title">매출 증대</div>
+                    <div class="benefit-desc">외국인 고객 유입으로<br>매출을 올릴 수 있습니다.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <div class="benefit-title">무료 등록</div>
+                    <div class="benefit-desc">초기 등록비 없이<br>시작할 수 있습니다</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📱</div>
+                    <div class="benefit-title">SNS</div>
+                    <div class="benefit-desc">소셜미디어에 효과적으로<br>홍보해드립니다.</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎨</div>
+                    <div class="benefit-title">디자인</div>
+                    <div class="benefit-desc">각종 온/오프라인 제작물을<br>디자인해드립니다.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 폼 섹션 -->
+        <section class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>제휴 신청하기</h2>
+                    <p>아래 정보를 입력해주시면 빠르게 검토 후 연락드리겠습니다.</p>
+                </div>
+
+                <form id="partnershipForm" onsubmit="submitPartnership(event)">
+                    <div class="form-notice">
+                        <strong>안내사항</strong>
+                        신청서 제출 후 1-2 영업일 내에 검토 결과를 알려드립니다.<br>
+                        가게 사진은 답변 이메일에 첨부하여 회신해주세요.
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            상호명<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" name="shopName" required placeholder="홍대 프리미엄 뷰티샵">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            담당자명<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" name="ownerName" required placeholder="홍길동">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            주소<span class="required">*</span>
+                        </label>
+                        <input type="text" class="form-input" name="shopAddress" required placeholder="서울특별시 마포구 홍대입구로 123">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            카테고리<span class="required">*</span>
+                        </label>
+                        <select class="form-select" name="shopCategory" required>
+                            <option value="">선택하세요</option>
+                            <option value="beauty">뷰티</option>
+                            <option value="glasses">안경점</option>
+                            <option value="dessert">디저트 카페</option>
+                            <option value="cloth">의류</option>
+                            <option value="food">음식점</option>
+                            <option value="goods">굿즈샵</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            소개<span class="required">*</span>
+                        </label>
+                        <textarea class="form-textarea" name="shopDescription" required placeholder="가게의 특징, 대표 메뉴/서비스, 분위기 등을 자유롭게 작성해주세요"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            외국어 가능 여부<span class="required">*</span>
+                        </label>
+                        <div class="form-radio-group">
+                            <label class="form-radio-label">
+                                <input type="radio" name="foreignLanguageAvailable" value="yes" required onchange="toggleLanguageSelect(true)">
+                                가능
+                            </label>
+                            <label class="form-radio-label">
+                                <input type="radio" name="foreignLanguageAvailable" value="no" required onchange="toggleLanguageSelect(false)">
+                                불가능
+                            </label>
+                        </div>
+                        
+                        <div id="languageSelectBox" class="language-select-box">
+                            <div class="language-select-title">가능한 외국어 선택 (복수 선택 가능)</div>
+                            <div class="language-grid">
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="영어">
+                                    <span>영어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="일본어">
+                                    <span>일본어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="중국어(간체)">
+                                    <span>중국어(간체)</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="중국어(번체)">
+                                    <span>중국어(번체)</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="태국어">
+                                    <span>태국어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="베트남어">
+                                    <span>베트남어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="인도네시아어">
+                                    <span>인도네시아어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="프랑스어">
+                                    <span>프랑스어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="독일어">
+                                    <span>독일어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="스페인어">
+                                    <span>스페인어</span>
+                                </label>
+                                <label class="language-checkbox-label">
+                                    <input type="checkbox" name="languages" value="러시아어">
+                                    <span>러시아어</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            연락처<span class="required">*</span>
+                        </label>
+                        <input type="tel" class="form-input" name="phone" required placeholder="010-1234-5678">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            이메일<span class="required">*</span>
+                        </label>
+                        <input type="email" class="form-input" name="email" required placeholder="kotreet@example.com">
+                    </div>
+
+                    <div class="form-row">
+                        <label class="form-label">
+                            추가 문의사항
+                        </label>
+                        <textarea class="form-textarea" name="additionalInfo" placeholder="궁금하신 사항이나 요청사항을 자유롭게 작성해주세요."></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit-btn">
+                        제휴 신청하기
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <div id="footer-container"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        // EmailJS 초기화
+        (function(){
+            emailjs.init("9wDp5fZNnBm8iO-yP");
+        })();
+
+        function toggleLanguageSelect(show) {
+            const box = document.getElementById('languageSelectBox');
+            if (show) {
+                box.style.display = 'block';
+            } else {
+                box.style.display = 'none';
+                document.querySelectorAll('input[name="languages"]').forEach(cb => cb.checked = false);
+            }
+        }
+
+        function getSelectedLanguages() {
+            const checkboxes = document.querySelectorAll('input[name="languages"]:checked');
+            const languages = Array.from(checkboxes).map(cb => cb.value);
+            return languages.length > 0 ? languages.join(', ') : '없음';
+        }
+
+        async function submitPartnership(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const submitBtn = form.querySelector('button[type="submit"]');
+            
+            const foreignLanguageAvailable = form.foreignLanguageAvailable.value;
+            if (foreignLanguageAvailable === 'yes') {
+                const selectedLanguages = document.querySelectorAll('input[name="languages"]:checked');
+                if (selectedLanguages.length === 0) {
+                    alert('❌ 가능한 외국어를 최소 1개 이상 선택해주세요.');
+                    return;
+                }
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = '전송 중...';
+
+            const formData = {
+                shopName: form.shopName.value,
+                ownerName: form.ownerName.value,
+                shopAddress: form.shopAddress.value,
+                shopCategory: getCategoryLabel(form.shopCategory.value),
+                shopDescription: form.shopDescription.value,
+                foreignLanguageAvailable: foreignLanguageAvailable === 'yes' ? '가능' : '불가능',
+                selectedLanguages: foreignLanguageAvailable === 'yes' ? getSelectedLanguages() : '해당없음',
+                phone: form.phone.value,
+                email: form.email.value,
+                additionalInfo: form.additionalInfo.value || '없음',
+                timestamp: new Date().toLocaleString('ko-KR')
+            };
+
+            const emailBody = `
+━━━━━━━━━━━━━━━━━━━━━━
+🏪 가게 이름: ${formData.shopName}
+👤 대표자: ${formData.ownerName}
+📍 주소: ${formData.shopAddress}
+🏷️ 카테고리: ${formData.shopCategory}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📝 가게 소개:
+${formData.shopDescription}
+
+🌏 외국어 소통: ${formData.foreignLanguageAvailable}
+💬 가능한 언어: ${formData.selectedLanguages}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📞 연락처: ${formData.phone}
+📧 이메일: ${formData.email}
+
+💬 추가 문의사항:
+${formData.additionalInfo}
+
+━━━━━━━━━━━━━━━━━━━━━━
+📅 신청 시각: ${formData.timestamp}
+
+※ 가게 사진은 이 이메일에 회신하여 첨부해주세요.
+            `.trim();
+
+            try {
+                const response = await emailjs.send(
+                    'service_xyi8cgl',
+                    'template_wmo82wf',
+                    {
+                        to_email: 'joon940910@naver.com',
+                        from_name: formData.ownerName,
+                        from_email: formData.email,
+                        subject: `🤝 [코트릿] ${formData.shopName} 제휴 신청`,
+                        message: emailBody
+                    }
+                );
+
+                console.log('전송 성공:', response);
+                alert('✅ 제휴 신청이 완료되었습니다!\n\n가게 사진은 답변 이메일에 첨부하여 회신해주세요.\n빠른 시일 내에 연락드리겠습니다.\n감사합니다 🙏');
+                form.reset();
+                toggleLanguageSelect(false);
+                
+            } catch (error) {
+                console.error('전송 실패:', error);
+                const subject = encodeURIComponent(`[코트릿] ${formData.shopName} 제휴 신청`);
+                const body = encodeURIComponent(emailBody);
+                const mailtoLink = `mailto:joon940910@naver.com?subject=${subject}&body=${body}`;
+                
+                if (confirm('❌ 자동 전송에 실패했습니다.\n\n이메일 앱으로 직접 전송하시겠습니까?')) {
+                    window.location.href = mailtoLink;
+                }
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '제휴 신청하기';
+            }
+        }
+
+        function getCategoryLabel(value) {
+            const labels = {
+                beauty: '뷰티',
+                glasses: '안경점',
+                dessert: '디저트 카페',
+                cloth: '의류',
+                food: '음식점',
+                goods: '굿즈샵'
+            };
+            return labels[value] || value;
+        }
+
+        function goBack() {
+            window.location.href = '/';
+        }
+
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const footerContainer = document.getElementById('footer-container');
+                if (footerContainer) {
+                    footerContainer.innerHTML = data;
+                }
+            });
+    </script>
+</body>
+</html>

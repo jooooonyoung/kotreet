@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
+    <title>Korea hidden gem - Kotreet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="categoryAllPage">
+        <header class="header-with-back">
+         <button class="header-back" onclick="goBack()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+          <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='/'">
+           <div style="width:24px;"></div>
+        </header>
+
+        <div class="category-all-content">
+            <div class="category-all-header">
+                <h1 class="category-all-title" id="categoryMainTitle">뷰티</h1>
+                <p class="category-all-desc" id="categoryMainDesc">한국의 뷰티샵을 소개합니다.</p>
+            </div>
+
+            <section class="popular-section" style="padding: 20px 16px; background: white; margin-bottom: 20px;">
+                <h3 style="font-size: 20px; font-weight: 700; color: #222; margin-bottom: 8px;" data-i18n="popularShopsTitle">🔥 가장 많이 본 가게</h3>
+                <p style="font-size: 13px; color: #6c757d; margin: 0 0 16px 0;" data-i18n="popularShopsDesc">조회수가 높은 인기 가게</p>
+                <div class="popular-scroll" id="categoryTypePopularScroll"></div>
+            </section>
+
+            <div class="category-all-shops">
+                <div class="category-shops-grid" id="allCategoryShops"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="floatingBtn" class="floating-btn" onclick="openCurrentLocation()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="none">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+        <span data-i18n="directions">Directions</span>
+    </div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/category_type.js"></script>
+</body>
+</html>

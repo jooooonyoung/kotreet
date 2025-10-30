@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
+    <title>Korea hidden gem - Kotreet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header-with-back">
+        <button class="header-back" onclick="goBack()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='/'">
+        <div style="width:24px;"></div>
+    </header>
+
+    <div class="policy-container">
+        <h1 class="policy-title">개인정보처리방침</h1>
+        
+        <div class="policy-content">
+            <h2>제1조 (총칙)</h2>
+            <p>코트릿(Kotreet, 이하 "회사")은 「개인정보보호법」 등 관련 법령을 준수하며, 이용자의 개인정보를 보호하기 위해 다음과 같은 방침을 수립·공개합니다.</p>
+
+            <h2>제2조 (수집하는 개인정보 항목 및 방법)</h2>
+            <p>1. 회사는 서비스 이용 중 다음과 같은 개인정보를 수집할 수 있습니다.</p>
+            <ul>
+                <li><strong>수집 항목:</strong> 이름, 이메일 주소, 문의 내용, 접속 로그, 쿠키, 방문 기록</li>
+                <li><strong>수집 방법:</strong>
+                    <ul>
+                        <li>문의하기/제휴 요청 폼 작성 시</li>
+                        <li>Google Analytics 등 통계 도구를 통한 자동 수집</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2>제3조 (개인정보의 수집 및 이용목적)</h2>
+            <p>회사는 수집한 개인정보를 다음의 목적을 위해 이용합니다.</p>
+            <p>1. 이용자 문의 응대 및 제휴 관련 소통</p>
+            <p>2. 사이트 이용 통계 분석 및 서비스 개선</p>
+            <p>3. 법령 준수 및 분쟁 대응을 위한 기록 보존</p>
+
+            <h2>제4조 (개인정보의 보유 및 이용기간)</h2>
+            <ul>
+                <li>이용자의 개인정보는 수집 목적이 달성된 후 즉시 파기합니다.</li>
+                <li>단, 관련 법령에 따라 일정 기간 보존이 필요한 경우(전자상거래법, 통신비밀보호법 등) 해당 기간 동안 보관합니다.</li>
+            </ul>
+
+            <h2>제5조 (개인정보의 제3자 제공 및 위탁)</h2>
+            <p>1. 회사는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.</p>
+            <p>2. 다만, 법령에 의거하여 수사기관의 요청이 있을 경우 예외적으로 제공될 수 있습니다.</p>
+
+            <h2>제6조 (개인정보의 파기절차 및 방법)</h2>
+            <p>목적이 달성된 개인정보는 즉시 파기하며, 전자적 파일은 복구 불가능한 기술적 방법으로 삭제합니다.</p>
+
+            <h2>제7조 (이용자 권리 및 행사 방법)</h2>
+            <p>이용자는 언제든지 자신의 개인정보 열람, 정정, 삭제를 요청할 수 있으며, 회사는 이에 지체 없이 조치합니다.</p>
+            <p><strong>요청:</strong> contact@kotreet.com</p>
+
+            <h2>제8조 (쿠키의 사용 및 거부)</h2>
+            <ul>
+                <li>회사는 방문 통계 및 사용자 환경 개선을 위해 쿠키를 사용할 수 있습니다.</li>
+                <li>이용자는 브라우저 설정을 통해 쿠키 저장을 거부할 수 있습니다.</li>
+            </ul>
+
+            <h2>제9조 (개인정보 보호책임자)</h2>
+            <ul>
+                <li><strong>이름:</strong> 최준영</li>
+                <li><strong>직책:</strong> 개인정보보호책임자</li>
+                <li><strong>이메일:</strong> contact@kotreet.com</li>
+            </ul>
+
+            <h2>제10조 (개정 및 고지)</h2>
+            <p>본 방침은 변경될 수 있으며, 개정 시 사이트 내 공지사항을 통해 고지합니다.</p>
+
+            <div class="policy-footer">
+                <p><strong>시행일자:</strong> 2025년 10월 18일</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        // Footer 로드
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const footerContainer = document.getElementById('footer-container');
+                if (footerContainer) {
+                    footerContainer.innerHTML = data;
+                }
+            });
+    </script>
+</body>
+</html>

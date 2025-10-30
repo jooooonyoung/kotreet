@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   script-src 'self' 'unsafe-inline' https://maps.googleapis.com https://maps.gstatic.com; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   img-src 'self' https: data: blob:; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   connect-src 'self' https://maps.googleapis.com;">
+    <title>Korea hidden gem - Kotreet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header-with-back">
+        <button class="header-back" onclick="goBack()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <img class="logo" src="/img/logo.png" alt="Kotreet" onclick="window.location.href='index.html'">
+        <div style="width:24px;"></div>
+    </header>
+
+    <div class="policy-container">
+        <h1 class="policy-title">이용약관</h1>
+        
+        <div class="policy-content">
+            <h2>제1조 (목적)</h2>
+            <p>본 약관은 코트릿(Kotreet, 이하 "회사"라 합니다)이 운영하는 웹사이트(kotreet.com, 이하 "사이트")에서 제공하는 서비스의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+
+            <h2>제2조 (용어의 정의)</h2>
+            <p>1. "서비스"라 함은 회사가 운영하는 사이트를 통해 제공하는 한국 내 로컬 가게·공간 등의 정보, 이미지, 영상, 지도, 리뷰 및 광고 콘텐츠 일체를 의미합니다.</p>
+            <p>2. "이용자"란 본 사이트에 접속하여 본 약관에 따라 회사가 제공하는 서비스를 이용하는 자를 말합니다.</p>
+            <p>3. "콘텐츠"란 사이트를 통해 게시·제공되는 텍스트, 이미지, 영상, 링크 등 모든 자료를 의미합니다.</p>
+
+            <h2>제3조 (약관의 효력 및 변경)</h2>
+            <p>1. 본 약관은 이용자가 사이트에 접속하여 서비스를 이용함으로써 효력이 발생합니다.</p>
+            <p>2. 회사는 관련 법령을 위반하지 않는 범위에서 본 약관을 변경할 수 있으며, 변경 시 사이트 내 공지사항을 통해 게시합니다.</p>
+
+            <h2>제4조 (서비스의 제공 및 변경)</h2>
+            <p>1. 회사는 한국 내 로컬 가게 및 관광 관련 정보, 홍보 콘텐츠, 제휴 광고 등의 서비스를 제공합니다.</p>
+            <p>2. 회사는 필요한 경우 서비스의 일부 또는 전부를 변경·중단할 수 있으며, 이에 대해 사전 공지를 합니다.</p>
+            <p>3. 회사는 서비스 제공에 사용되는 콘텐츠의 정확성과 신뢰성을 유지하기 위해 최선을 다하나, 외부 가게의 정보 변경(가격, 위치, 운영시간 등)에 대한 책임은 해당 업체에 있습니다.</p>
+
+            <h2>제5조 (저작권 및 콘텐츠 이용)</h2>
+            <p>1. 회사가 작성한 콘텐츠(텍스트, 이미지, 영상, 디자인 등)에 대한 저작권은 회사에 귀속됩니다.</p>
+            <p>2. 이용자는 회사의 사전 동의 없이 콘텐츠를 무단 복제, 배포, 전송, 수정할 수 없습니다.</p>
+            <p>3. 외부 제휴업체의 상표, 이미지, 정보 등의 권리는 해당 업체에 귀속됩니다.</p>
+
+            <h2>제6조 (면책사항)</h2>
+            <p>1. 회사는 단순히 정보·홍보 제공 플랫폼으로서, 제3자의 상품·서비스 거래에 직접 관여하지 않습니다.</p>
+            <p>2. 회사는 이용자와 제휴업체 간의 분쟁, 예약, 결제, 서비스 불만 등에 대해 법적 책임을 지지 않습니다.</p>
+            <p>3. 사이트에 게시된 정보의 오류, 누락, 지연으로 인한 손해에 대해서도 회사는 책임을 지지 않습니다.</p>
+
+            <h2>제7조 (개인정보 보호)</h2>
+            <p>이용자의 개인정보 보호와 관련된 사항은 별도로 게시된 「개인정보처리방침」에 따릅니다.</p>
+
+            <h2>제8조 (준거법 및 분쟁 해결)</h2>
+            <p>본 약관과 관련된 분쟁은 대한민국 법률을 따르며, 분쟁 발생 시 서울중앙지방법원을 관할 법원으로 합니다.</p>
+
+            <div class="policy-footer">
+                <p><strong>시행일자:</strong> 2025년 10월 18일</p>
+                <p><strong>사업자명:</strong> 코트릿(Kotreet)</p>
+                <p><strong>대표자:</strong> 최준영</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        // Footer 로드
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const footerContainer = document.getElementById('footer-container');
+                if (footerContainer) {
+                    footerContainer.innerHTML = data;
+                }
+            });
+    </script>
+</body>
+</html>

@@ -41,11 +41,11 @@
                     <label>카테고리</label>
                     <select id="adminCategory">
                         <option value="">선택하세요</option>
-                        <option value="nail">뷰티</option>
+                        <option value="beauty">뷰티</option>
                         <option value="dessert">디저트 카페</option>
                         <option value="glasses">안경점</option>
                         <option value="vintage">음식점</option>
-                        <option value="hanbok">의류</option>
+                        <option value="cloth">의류</option>
                         <option value="goods">굿즈샵</option>
                     </select>
                 </div>
@@ -68,25 +68,18 @@
                     <input type="number" id="adminPriceMax" placeholder="100000">
                 </div>
                 <div class="form-group">
-                    <label>썸뷰티 이미지 (카테고리 페이지용, 800x800px)</label>
+                    <label>썸네일 이미지 (800x800px)</label>
                     <textarea id="adminThumbnail" placeholder="/img/s_1_t1.jpg
 /img/s_1_t2.jpg
 https://example.com/thumbnail.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
                     <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력 (상대경로 또는 절대경로)</small>
                 </div>
                 <div class="form-group">
-                    <label>메인 이미지 (타입 페이지용, 880x1280px)</label>
-                    <textarea id="adminMainImage" placeholder="/img/s_1_m1.jpg
-/img/s_1_m2.jpg
-https://example.com/main-image.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
-                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
-                </div>
-                <div class="form-group">
-                    <label>추가 이미지 URL</label>
-                    <textarea id="adminImages" placeholder="/img/s_1_m3.jpg
-/img/s_1_m4.jpg
-/img/s_1_m5.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
-                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력</small>
+                    <label>캐러셀 이미지 (860x484px)</label>
+                    <textarea id="adminImages" placeholder="/img/s_1_c1.jpg
+/img/s_1_c2.jpg
+/img/s_1_c3.jpg" style="min-height: 100px; font-family: monospace; font-size: 13px;"></textarea>
+                    <small style="display:block; margin-top:4px; color:#6c757d;">한 줄에 하나씩 입력 (디테일 페이지 캐러셀용)</small>
                 </div>
                 <div class="form-group">
                     <label>동영상 URL (YouTube/Vimeo embed URL)</label>
@@ -199,6 +192,16 @@ https://example.com/main-image.jpg" style="min-height: 100px; font-family: monos
                     <label>지역별 인기 가게 순서 (선택)</label>
                     <input type="number" id="adminRegionOrder" placeholder="0" min="0" max="10">
                     <small style="display:block; margin-top:4px; color:#6c757d;">1~10 입력 시 해당 지역 페이지 상단에 '인기 가게'로 우선 노출됩니다. 숫자가 작을수록 먼저 표시됩니다. (0은 노출 안 함)</small>
+                </div>
+                <div class="form-group">
+                    <label>코트릿 추천 가게 순서 (선택)</label>
+                    <input type="number" id="adminRecommendedOrder" placeholder="0" min="0" max="10">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">1~10 입력 시 메인 페이지 '코트릿 추천 가게' 섹션에 우선 노출됩니다. 숫자가 작을수록 먼저 표시됩니다. (0은 노출 안 함)</small>
+                </div>
+                <div class="form-group">
+                    <label>숨겨진 명소 순서 (선택)</label>
+                    <input type="number" id="adminHiddenOrder" placeholder="0" min="0" max="10">
+                    <small style="display:block; margin-top:4px; color:#6c757d;">1~10 입력 시 메인 페이지 '숨겨진 명소' 섹션에 우선 노출됩니다. 숫자가 작을수록 먼저 표시됩니다. (0은 노출 안 함)</small>
                 </div>
                 <div class="form-buttons">
                     <button class="btn btn-primary" onclick="addShop()">가게 추가</button>

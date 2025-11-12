@@ -54,18 +54,6 @@ function renderAllShops() {
     }
 }
 
-function getCategoryLabel(category) {
-    const labels = {
-        beauty: '뷰티',
-        glasses: '안경점',
-        dessert: '디저트 카페',
-        cloth: '의류',
-        vintage: '음식점',
-        goods: '굿즈샵'
-    };
-    return labels[category] || category;
-}
-
 function goToDetail(shopId) {
     const shopNo = String(shopId).padStart(4, '0');
     window.location.href = `detail.html?no=${shopNo}`;

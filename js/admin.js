@@ -75,11 +75,11 @@ function addShop() {
     }
     
     const thumbnail = document.getElementById('adminThumbnail').value.trim();
-    const mainImage = document.getElementById('adminMainImage').value.trim();
     const additionalImagesText = document.getElementById('adminImages').value;
     
-    const additionalImages = additionalImagesText.split('\n').map(s => s.trim()).filter(s => s);
-    const images = [thumbnail, mainImage, ...additionalImages].filter(s => s);
+    const thumbnails = thumbnail.split('\n').map(s => s.trim()).filter(s => s);
+    const carouselImages = additionalImagesText.split('\n').map(s => s.trim()).filter(s => s);
+    const images = [...carouselImages]; // 캐러셀 이미지만 images 배열에
     const video = document.getElementById('adminVideo').value;
     const mood = document.getElementById('adminMood').value;
     
@@ -94,8 +94,14 @@ function addShop() {
     
     // 지역별 인기 순서
     const regionOrder = parseInt(document.getElementById('adminRegionOrder') ? document.getElementById('adminRegionOrder').value : 0) || 0;
+    
+    // 코트릿 추천 가게 순서
+    const recommendedOrder = parseInt(document.getElementById('adminRecommendedOrder') ? document.getElementById('adminRecommendedOrder').value : 0) || 0;
+    
+    // 숨겨진 명소 순서
+    const hiddenOrder = parseInt(document.getElementById('adminHiddenOrder') ? document.getElementById('adminHiddenOrder').value : 0) || 0;
 
-    if (!name || !category || !location || !price || !priceMax || !thumbnail || !mainImage || !mood || communication.length === 0 || !payment) {
+    if (!name || !category || !location || !price || !priceMax || thumbnails.length === 0 || !mood || communication.length === 0 || !payment) {
         alert('모든 필수 항목을 입력하세요 (언어는 최소 1개 이상 선택)');
         return;
     }
@@ -106,11 +112,14 @@ function addShop() {
             shopsData[index] = {
                 id: editingShopId,
                 name, category, location, price, priceMax,
-                thumbnail, mainImage,
+                thumbnail: thumbnails[0] || '', // 첫 번째 썸네일을 기본으로
+                thumbnails, // 모든 썸네일 저장
                 images, video, mood,
                 communication, payment, locationDetail, hours, description, latitude, longitude,
                 views: editingShopViews,
                 regionOrder,
+                recommendedOrder,
+                hiddenOrder,
                 createdAt: shopsData[index].createdAt
             };
             alert('가게 정보가 수정되었습니다!');
@@ -119,11 +128,14 @@ function addShop() {
         const newShop = {
             id: Math.max(...shopsData.map(s => s.id), 0) + 1,
             name, category, location, price, priceMax,
-            thumbnail, mainImage,
+            thumbnail: thumbnails[0] || '', // 첫 번째 썸네일을 기본으로
+            thumbnails, // 모든 썸네일 저장
             images, video, mood,
             communication, payment, locationDetail, hours, description, latitude, longitude,
             views: 0,
             regionOrder,
+            recommendedOrder,
+            hiddenOrder,
             createdAt: new Date().toISOString()
         };
         shopsData.push(newShop);
@@ -144,7 +156,6 @@ function resetForm() {
     document.getElementById('adminPrice').value = '';
     document.getElementById('adminPriceMax').value = '';
     document.getElementById('adminThumbnail').value = '';
-    document.getElementById('adminMainImage').value = '';
     document.getElementById('adminImages').value = '';
     document.getElementById('adminVideo').value = '';
     document.getElementById('adminMood').value = '';
@@ -161,6 +172,14 @@ function resetForm() {
     
     if (document.getElementById('adminRegionOrder')) {
         document.getElementById('adminRegionOrder').value = '0';
+    }
+    
+    if (document.getElementById('adminRecommendedOrder')) {
+        document.getElementById('adminRecommendedOrder').value = '0';
+    }
+    
+    if (document.getElementById('adminHiddenOrder')) {
+        document.getElementById('adminHiddenOrder').value = '0';
     }
     
     editingShopId = null;
@@ -211,9 +230,12 @@ function editShop(id) {
     document.getElementById('adminLocation').value = shop.location;
     document.getElementById('adminPrice').value = shop.price;
     document.getElementById('adminPriceMax').value = shop.priceMax || shop.price;
-    document.getElementById('adminThumbnail').value = shop.thumbnail || '';
-    document.getElementById('adminMainImage').value = shop.mainImage || '';
-    document.getElementById('adminImages').value = shop.images.slice(2).join('\n');
+    
+    // thumbnails 배열이 있으면 그걸 사용, 없으면 기존 thumbnail 사용
+    const thumbnailValue = shop.thumbnails ? shop.thumbnails.join('\n') : (shop.thumbnail || '');
+    document.getElementById('adminThumbnail').value = thumbnailValue;
+    
+    document.getElementById('adminImages').value = (shop.images || []).join('\n');
     document.getElementById('adminVideo').value = shop.video || '';
     document.getElementById('adminMood').value = shop.mood;
     
@@ -234,6 +256,14 @@ function editShop(id) {
 
     if (document.getElementById('adminRegionOrder')) {
         document.getElementById('adminRegionOrder').value = shop.regionOrder || 0;
+    }
+    
+    if (document.getElementById('adminRecommendedOrder')) {
+        document.getElementById('adminRecommendedOrder').value = shop.recommendedOrder || 0;
+    }
+    
+    if (document.getElementById('adminHiddenOrder')) {
+        document.getElementById('adminHiddenOrder').value = shop.hiddenOrder || 0;
     }
     
     document.querySelectorAll('.admin-tab')[0].click();

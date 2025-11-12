@@ -75,17 +75,30 @@ window.addEventListener('load', () => {
         try {
             shopsData = JSON.parse(storedData);
             
-            // 기존 데이터 마이그레이션: createdAt이 없으면 추가
+            // 기존 데이터 마이그레이션
             let needsSave = false;
             shopsData = shopsData.map(shop => {
+                let updated = { ...shop };
+                
+                // createdAt이 없으면 추가
                 if (!shop.createdAt) {
+                    updated.createdAt = new Date().toISOString();
                     needsSave = true;
-                    return {
-                        ...shop,
-                        createdAt: new Date().toISOString()
-                    };
                 }
-                return shop;
+                
+                // 구 카테고리명을 신 카테고리명으로 변경
+                if (shop.category === 'nail') {
+                    updated.category = 'beauty';
+                    needsSave = true;
+                    console.log(`카테고리 마이그레이션: ${shop.name} - nail → beauty`);
+                }
+                if (shop.category === 'hanbok') {
+                    updated.category = 'cloth';
+                    needsSave = true;
+                    console.log(`카테고리 마이그레이션: ${shop.name} - hanbok → cloth`);
+                }
+                
+                return updated;
             });
             
             if (needsSave) {
@@ -107,6 +120,7 @@ window.addEventListener('load', () => {
     
     renderPopularShops();
     renderRecommendedShops();
+    renderHiddenShops();
     loadFooter();
     enableDragScroll();
     
@@ -208,10 +222,10 @@ function renderRecommendedShops() {
     const container = document.getElementById('recommendedScroll');
     if (!container) return;
     
-    // regionOrder가 1~10인 가게만 필터링하고 순서대로 정렬
+    // recommendedOrder가 1~10인 가게만 필터링하고 순서대로 정렬
     const recommended = [...shopsData]
-        .filter(shop => shop.regionOrder > 0 && shop.regionOrder <= 10)
-        .sort((a, b) => a.regionOrder - b.regionOrder) // regionOrder 순서대로
+        .filter(shop => shop.recommendedOrder > 0 && shop.recommendedOrder <= 10)
+        .sort((a, b) => a.recommendedOrder - b.recommendedOrder) // recommendedOrder 순서대로
         .slice(0, 10); // 최대 10개
     
     if (recommended.length === 0) {
@@ -220,6 +234,36 @@ function renderRecommendedShops() {
     }
     
     container.innerHTML = recommended.map(shop => {
+        const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
+        const categoryLabel = getCategoryLabel(shop.category);
+        return `
+            <div class="popular-card" onclick="goToDetail(${shop.id})">
+                <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
+                <div class="popular-card-info">
+                    <div class="popular-card-name">${escapeHtml(shop.name)}</div>
+                    <div class="popular-card-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function renderHiddenShops() {
+    const container = document.getElementById('hiddenScroll');
+    if (!container) return;
+    
+    // hiddenOrder가 1~10인 가게만 필터링하고 순서대로 정렬
+    const hidden = [...shopsData]
+        .filter(shop => shop.hiddenOrder > 0 && shop.hiddenOrder <= 10)
+        .sort((a, b) => a.hiddenOrder - b.hiddenOrder) // hiddenOrder 순서대로
+        .slice(0, 10); // 최대 10개
+    
+    if (hidden.length === 0) {
+        container.innerHTML = '<p style="color: #6c757d; font-size: 13px; padding: 0 10px;">숨겨진 명소가 없습니다.</p>';
+        return;
+    }
+    
+    container.innerHTML = hidden.map(shop => {
         const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
         const categoryLabel = getCategoryLabel(shop.category);
         return `
@@ -1088,3 +1132,40 @@ function openDirections(event) {
         window.open(url, '_blank');
     }
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const languageBtn = document.getElementById('languageBtn');
+    const languageDropdown = document.getElementById('languageDropdown');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    const currentLang = localStorage.getItem('language') || 'ko';
+    languageBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        ${currentLang === 'ko' ? '한국어' : 'English'}
+    `;
+
+    // ✅ 버튼 클릭 시 show 클래스 토글
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+
+    // 언어 옵션 클릭 시 이동
+    langOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const selectedLang = this.getAttribute('data-lang');
+            localStorage.setItem('language', selectedLang);
+            if (selectedLang === 'en') window.location.href = '/en/';
+            else window.location.href = '/';
+        });
+    });
+
+    // ✅ 외부 클릭 시 드롭다운 닫기
+    document.addEventListener('click', function() {
+        languageDropdown.classList.remove('show');
+    });
+});

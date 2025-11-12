@@ -105,12 +105,16 @@ function renderAllPopularShops() {
     container.innerHTML = sorted.map(shop => {
         const imgUrl = shop.thumbnail || (shop.images && shop.images[0]) || '';
         const categoryLabel = getCategoryLabel(shop.category);
+        const priceText = shop.priceMax ? 
+            `₩${shop.price.toLocaleString()}~₩${shop.priceMax.toLocaleString()}` :
+            `₩${shop.price.toLocaleString()}~`;
         return `
             <div class="popular-card" onclick="goToDetail(${shop.id})">
                 <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(shop.name)}" onerror="this.src='https://via.placeholder.com/160x160?text=No+Image'">
                 <div class="popular-card-info">
                     <div class="popular-card-name">${escapeHtml(shop.name)}</div>
-                    <div class="popular-card-location">${escapeHtml(shop.location)} · ${categoryLabel}</div>
+                    <div class="popular-card-price">${priceText}</div>
+                    <div class="popular-card-location">${categoryLabel}</div>
                 </div>
             </div>
         `;
